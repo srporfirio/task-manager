@@ -134,9 +134,9 @@
         }
 
         body.print-export-week aside,
-        body.print-export-week header,
+        body.print-export-week main > header,
         body.print-export-planner aside,
-        body.print-export-planner header,
+        body.print-export-planner main > header,
         body.print-export-week .week-screen-only,
         body.print-export-planner .planner-screen-only,
         body.print-export-week #btnExportWeekPdf,
@@ -183,6 +183,8 @@
           margin-bottom: 24px;
           padding-bottom: 16px;
           border-bottom: 2px solid #006768;
+          break-after: avoid-page;
+          page-break-after: avoid;
         }
 
         body.print-export-week .week-print-title,
@@ -485,11 +487,11 @@
             </button>
 
             <div id="plannerPrintReport" class="week-print-report" aria-hidden="true">
-              <header class="week-print-header">
-                <h1 class="week-print-title">Plano Semanal de Atividades</h1>
+              <div class="week-print-header">
+                <h1 class="week-print-title">Week Planner</h1>
                 <p class="week-print-meta" id="plannerPrintPeriod"></p>
                 <p class="week-print-meta" id="plannerPrintSummary"></p>
-              </header>
+              </div>
 
               <section class="week-print-section">
                 <h2 class="week-print-section-title done">Concluído</h2>
@@ -588,11 +590,11 @@
               </div>
 
               <div id="weekPrintReport" class="week-print-report" aria-hidden="true">
-                <header class="week-print-header">
-                  <h1 class="week-print-title">Resumo Semanal de Atividades</h1>
+                <div class="week-print-header">
+                  <h1 class="week-print-title">Week View</h1>
                   <p class="week-print-meta" id="weekPrintPeriod"></p>
                   <p class="week-print-meta" id="weekPrintSummary"></p>
-                </header>
+                </div>
 
                 <section class="week-print-section">
                   <h2 class="week-print-section-title done">Concluído</h2>
@@ -1471,17 +1473,19 @@ Nota 2"
         const printSummary = $("plannerPrintSummary");
         const printEmpty = `<p class="week-print-empty">Nenhum tema planejado nesta semana.</p>`;
         const { monday, sunday } = getWeekRange();
-        const now = new Date();
 
         ensureCurrentWeekPlan();
-        if (!weekPlan.themes.length) {
+        const plannedCount = weekPlan.themes.length;
+        const periodText = `Semana de ${formatDateShort(monday)} a ${formatDateShort(sunday)}`;
+        const countText = `${plannedCount} tema(s) planejado(s).`;
+
+        if (printPeriod) printPeriod.textContent = periodText;
+        if (printSummary) printSummary.textContent = countText;
+
+        if (!plannedCount) {
           if (printDone) printDone.innerHTML = printEmpty;
           if (printInProgress) printInProgress.innerHTML = printEmpty;
           if (printTodo) printTodo.innerHTML = printEmpty;
-          if (printPeriod) {
-            printPeriod.textContent = `Período: ${formatDateShort(monday)} a ${formatDateShort(sunday)} · Gerado em ${formatDateDisplay(now)}`;
-          }
-          if (printSummary) printSummary.textContent = "0 tema(s) planejado(s).";
           return;
         }
 
@@ -1490,13 +1494,6 @@ Nota 2"
         fillWeekPrintSection(printDone, parts.done, { showPlannedTag: true });
         fillWeekPrintSection(printInProgress, parts.inProgress, { showPlannedTag: true });
         fillWeekPrintSection(printTodo, parts.todo, { showPlannedTag: true });
-
-        if (printPeriod) {
-          printPeriod.textContent = `Período: ${formatDateShort(monday)} a ${formatDateShort(sunday)} · Gerado em ${formatDateDisplay(now)}`;
-        }
-        if (printSummary) {
-          printSummary.textContent = `${themes.length} tema(s) planejado(s) · ${parts.done.length} concluído(s) · ${parts.inProgress.length} em progresso · ${parts.todo.length} a fazer`;
-        }
       }
 
       function renderWeekPlanner() {
@@ -1704,7 +1701,7 @@ Nota 2"
           if (printTodo) printTodo.innerHTML = printEmpty;
           if (countEl) countEl.textContent = "0 theme(s) atualizados na semana.";
           if (printPeriod) {
-            printPeriod.textContent = `Período: ${formatDateShort(start)} a ${formatDateShort(now)} · Gerado em ${formatDateDisplay(now)}`;
+            printPeriod.textContent = `Semana de ${formatDateShort(start)} a ${formatDateShort(now)}`;
           }
           if (printSummary) printSummary.textContent = "0 tema(s) atualizado(s) na semana.";
           return;
@@ -1782,10 +1779,10 @@ Nota 2"
 
         if (countEl) countEl.textContent = `${themes.length} theme(s) atualizados na semana.`;
         if (printPeriod) {
-          printPeriod.textContent = `Período: ${formatDateShort(start)} a ${formatDateShort(now)} · Gerado em ${formatDateDisplay(now)}`;
+          printPeriod.textContent = `Semana de ${formatDateShort(start)} a ${formatDateShort(now)}`;
         }
         if (printSummary) {
-          printSummary.textContent = `${themes.length} tema(s) atualizado(s) · ${doneThemes.length} concluído(s) · ${inProgressThemes.length} em progresso · ${todoThemes.length} a fazer`;
+          printSummary.textContent = `${themes.length} tema(s) atualizado(s) na semana.`;
         }
       }
 
