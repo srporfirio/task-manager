@@ -128,19 +128,32 @@
           color: #111 !important;
         }
 
+        body.print-export-planner {
+          background: #fff !important;
+          color: #111 !important;
+        }
+
         body.print-export-week aside,
         body.print-export-week header,
+        body.print-export-planner aside,
+        body.print-export-planner header,
         body.print-export-week .week-screen-only,
-        body.print-export-week #btnExportWeekPdf {
+        body.print-export-planner .planner-screen-only,
+        body.print-export-week #btnExportWeekPdf,
+        body.print-export-planner #btnExportWeekPlannerPdf,
+        body.print-export-planner #weekPlannerAddCard,
+        body.print-export-planner #weekPlannerAddModal {
           display: none !important;
         }
 
-        body.print-export-week main {
+        body.print-export-week main,
+        body.print-export-planner main {
           margin-left: 0 !important;
           width: 100% !important;
         }
 
-        body.print-export-week main > div > section {
+        body.print-export-week main > div > section,
+        body.print-export-planner main > div > section {
           display: none !important;
         }
 
@@ -148,24 +161,32 @@
           display: block !important;
         }
 
-        body.print-export-week #weekView .bg-surface-container-lowest {
+        body.print-export-planner main #weekPlannerView {
+          display: block !important;
+        }
+
+        body.print-export-week #weekView .bg-surface-container-lowest,
+        body.print-export-planner #weekPlannerView .bg-surface-container-lowest {
           border: none !important;
           padding: 0 !important;
           background: transparent !important;
           box-shadow: none !important;
         }
 
-        body.print-export-week .week-print-report {
+        body.print-export-week .week-print-report,
+        body.print-export-planner .week-print-report {
           display: block !important;
         }
 
-        body.print-export-week .week-print-header {
+        body.print-export-week .week-print-header,
+        body.print-export-planner .week-print-header {
           margin-bottom: 24px;
           padding-bottom: 16px;
           border-bottom: 2px solid #006768;
         }
 
-        body.print-export-week .week-print-title {
+        body.print-export-week .week-print-title,
+        body.print-export-planner .week-print-title {
           font-family: "Hanken Grotesk", Inter, sans-serif;
           font-size: 28px;
           font-weight: 700;
@@ -173,18 +194,21 @@
           margin: 0 0 8px;
         }
 
-        body.print-export-week .week-print-meta {
+        body.print-export-week .week-print-meta,
+        body.print-export-planner .week-print-meta {
           font-size: 13px;
           color: #4b5563;
           margin: 0;
         }
 
-        body.print-export-week .week-print-section {
+        body.print-export-week .week-print-section,
+        body.print-export-planner .week-print-section {
           margin-bottom: 28px;
           break-inside: avoid-page;
         }
 
-        body.print-export-week .week-print-section-title {
+        body.print-export-week .week-print-section-title,
+        body.print-export-planner .week-print-section-title {
           font-family: "Hanken Grotesk", Inter, sans-serif;
           font-size: 18px;
           font-weight: 700;
@@ -193,22 +217,26 @@
           border-radius: 6px;
         }
 
-        body.print-export-week .week-print-section-title.done {
+        body.print-export-week .week-print-section-title.done,
+        body.print-export-planner .week-print-section-title.done {
           background: #e6f4f4;
           color: #006768;
         }
 
-        body.print-export-week .week-print-section-title.in-progress {
+        body.print-export-week .week-print-section-title.in-progress,
+        body.print-export-planner .week-print-section-title.in-progress {
           background: #eef4ff;
           color: #1e5db0;
         }
 
-        body.print-export-week .week-print-section-title.todo {
+        body.print-export-week .week-print-section-title.todo,
+        body.print-export-planner .week-print-section-title.todo {
           background: #f3f4f6;
           color: #374151;
         }
 
-        body.print-export-week .week-print-theme {
+        body.print-export-week .week-print-theme,
+        body.print-export-planner .week-print-theme {
           border: 1px solid #d1d5db;
           border-radius: 8px;
           padding: 14px 16px;
@@ -217,7 +245,8 @@
           background: #fff;
         }
 
-        body.print-export-week .week-print-theme-header {
+        body.print-export-week .week-print-theme-header,
+        body.print-export-planner .week-print-theme-header {
           display: flex;
           justify-content: space-between;
           align-items: baseline;
@@ -227,43 +256,50 @@
           border-bottom: 1px solid #e5e7eb;
         }
 
-        body.print-export-week .week-print-theme-name {
+        body.print-export-week .week-print-theme-name,
+        body.print-export-planner .week-print-theme-name {
           font-size: 15px;
           font-weight: 700;
           color: #111827;
           margin: 0;
         }
 
-        body.print-export-week .week-print-theme-description {
+        body.print-export-week .week-print-theme-description,
+        body.print-export-planner .week-print-theme-description {
           font-size: 12px;
           color: #4b5563;
           margin: 4px 0 0;
           white-space: pre-wrap;
         }
 
-        body.print-export-week .week-print-jira {
+        body.print-export-week .week-print-jira,
+        body.print-export-planner .week-print-jira {
           font-size: 12px;
           color: #6b7280;
           white-space: nowrap;
         }
 
-        body.print-export-week .week-print-note {
+        body.print-export-week .week-print-note,
+        body.print-export-planner .week-print-note {
           padding: 8px 0;
           border-top: 1px dashed #e5e7eb;
         }
 
-        body.print-export-week .week-print-note:first-child {
+        body.print-export-week .week-print-note:first-child,
+        body.print-export-planner .week-print-note:first-child {
           border-top: none;
           padding-top: 0;
         }
 
-        body.print-export-week .week-print-note-meta {
+        body.print-export-week .week-print-note-meta,
+        body.print-export-planner .week-print-note-meta {
           font-size: 11px;
           color: #6b7280;
           margin-bottom: 4px;
         }
 
-        body.print-export-week .week-print-note-text {
+        body.print-export-week .week-print-note-text,
+        body.print-export-planner .week-print-note-text {
           font-size: 13px;
           line-height: 1.5;
           color: #1f2937;
@@ -271,12 +307,37 @@
           white-space: pre-wrap;
         }
 
-        body.print-export-week .week-print-empty {
+        body.print-export-week .week-print-empty,
+        body.print-export-planner .week-print-empty {
           font-size: 13px;
           color: #6b7280;
           font-style: italic;
           margin: 0;
         }
+      }
+
+      .week-plan-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .week-planner-add-card {
+        border: 2px dashed #bcc9c9;
+        background: #f2f4f5;
+        min-height: 120px;
+        cursor: pointer;
+        transition: background 0.15s ease, border-color 0.15s ease;
+      }
+
+      .week-planner-add-card:hover {
+        background: #eceeef;
+        border-color: #006768;
+      }
+
+      .week-planner-add-card.is-disabled {
+        opacity: 0.55;
+        cursor: not-allowed;
       }
     </style>
   </head>
@@ -296,6 +357,10 @@
         <a id="navDashboard" class="flex items-center gap-3 px-4 py-3 text-primary font-bold bg-secondary-container/20 rounded-lg transition-all" href="#">
           <span class="material-symbols-outlined">dashboard</span>
           <span class="font-label-md text-label-md">Dashboard</span>
+        </a>
+        <a id="navWeekPlanner" class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-highest rounded-lg transition-all" href="#">
+          <span class="material-symbols-outlined">event_note</span>
+          <span class="font-label-md text-label-md">Week Planner</span>
         </a>
         <a id="navThemeView" class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-highest rounded-lg transition-all" href="#">
           <span class="material-symbols-outlined">view_kanban</span>
@@ -383,6 +448,65 @@
             </div>
           </div>
           <div id="themesGrid" class="flex flex-col gap-6"></div>
+        </section>
+
+        <!-- Week Planner -->
+        <section id="weekPlannerView" class="hidden mt-2">
+          <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant">
+            <div class="planner-screen-only flex items-start justify-between gap-4 mb-6">
+              <div>
+                <p class="font-headline-md text-headline-md text-primary font-bold">Plano da semana</p>
+                <p class="text-label-md text-outline mt-1" id="weekPlannerPeriod"></p>
+                <p class="text-body-md text-on-surface-variant mt-1" id="weekPlannerCount"></p>
+              </div>
+              <button
+                id="btnExportWeekPlannerPdf"
+                type="button"
+                class="bg-primary text-on-primary px-4 py-2 rounded-lg font-title-lg hover:opacity-90 transition-all flex items-center gap-2 print:hidden flex-shrink-0"
+                title="Exportar plano da semana em PDF"
+              >
+                <span class="material-symbols-outlined">picture_as_pdf</span>
+                Export PDF
+              </button>
+            </div>
+
+            <div id="weekPlannerEmpty" class="planner-screen-only hidden bg-surface-container-low border border-dashed border-outline-variant rounded-xl p-4 text-center text-body-md text-outline mb-4">
+              Nenhum tema planejado para esta semana.
+            </div>
+            <div id="weekPlannerList" class="planner-screen-only grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+            <button
+              id="weekPlannerAddCard"
+              type="button"
+              class="planner-screen-only week-planner-add-card mt-4 w-full rounded-xl flex items-center justify-center gap-2 text-on-surface-variant font-label-md text-label-md print:hidden"
+              title="Adicionar tema ao plano da semana"
+            >
+              <span class="material-symbols-outlined">add</span>
+              Adicionar Tema
+            </button>
+
+            <div id="plannerPrintReport" class="week-print-report" aria-hidden="true">
+              <header class="week-print-header">
+                <h1 class="week-print-title">Plano Semanal de Atividades</h1>
+                <p class="week-print-meta" id="plannerPrintPeriod"></p>
+                <p class="week-print-meta" id="plannerPrintSummary"></p>
+              </header>
+
+              <section class="week-print-section">
+                <h2 class="week-print-section-title done">Concluído</h2>
+                <div id="plannerPrintDone"></div>
+              </section>
+
+              <section class="week-print-section">
+                <h2 class="week-print-section-title in-progress">Em progresso</h2>
+                <div id="plannerPrintInProgress"></div>
+              </section>
+
+              <section class="week-print-section">
+                <h2 class="week-print-section-title todo">A fazer</h2>
+                <div id="plannerPrintTodo"></div>
+              </section>
+            </div>
+          </div>
         </section>
 
         <!-- Theme View -->
@@ -666,6 +790,52 @@ Nota 2"
       </div>
     </div>
 
+    <!-- Week Planner Add Modal -->
+    <div id="weekPlannerAddModal" class="fixed inset-0 z-50 hidden" aria-hidden="true">
+      <div class="absolute inset-0 bg-black/40" role="presentation"></div>
+      <div class="relative mx-auto mt-32 w-full max-w-lg px-4">
+        <div class="bg-background border border-outline-variant rounded-xl shadow-lg p-6">
+          <div class="flex items-start justify-between gap-4 mb-4">
+            <div>
+              <h3 class="font-headline-md text-headline-md font-bold text-primary">Adicionar ao plano</h3>
+              <p class="text-body-md text-outline mt-1">Escolha um tema para incluir na semana.</p>
+            </div>
+            <button
+              id="weekPlannerAddModalClose"
+              class="bg-surface-container-low border border-outline-variant px-3 py-2 rounded-lg hover:bg-surface-container-highest transition-colors"
+              type="button"
+              title="Fechar"
+            >
+              <span class="material-symbols-outlined">close</span>
+            </button>
+          </div>
+          <div class="flex flex-col gap-3">
+            <select
+              id="weekPlannerThemeSelect"
+              class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-3 py-2 text-body-md focus:ring-2 focus:ring-primary focus:outline-none"
+            ></select>
+            <div class="flex justify-end gap-3">
+              <button
+                id="weekPlannerAddCancel"
+                class="bg-surface-container-low border border-outline-variant px-4 py-2 rounded-lg hover:bg-surface-container-highest transition-colors"
+                type="button"
+              >
+                Cancelar
+              </button>
+              <button
+                id="btnAddToWeekPlan"
+                type="button"
+                class="bg-primary text-on-primary px-4 py-2 rounded-lg font-label-md hover:opacity-90 transition-all flex items-center gap-2"
+              >
+                <span class="material-symbols-outlined" style="font-size: 18px;">add</span>
+                Adicionar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <script>
       const DB_NAME = "diario-atividades-db-v1";
       const STORE_NAME = "diario";
@@ -673,6 +843,7 @@ Nota 2"
 
       /** @type {{theme:string, theme_status:string, jiraKey:string, themeDescription:string, notes:string, lastUpdate:string, __seq:number}[]} */
       let currentRows = [];
+      let weekPlan = { weekKey: "", themes: [] };
       let seqCounter = 1;
       let isReady = false;
       let activeView = "dashboard";
@@ -774,6 +945,89 @@ Nota 2"
         return new Date(t).toLocaleDateString("pt-BR");
       }
 
+      function getWeekRange(date = new Date()) {
+        const d = new Date(date);
+        const day = d.getDay();
+        const diffToMonday = day === 0 ? -6 : 1 - day;
+        const monday = new Date(d);
+        monday.setDate(d.getDate() + diffToMonday);
+        monday.setHours(0, 0, 0, 0);
+        const sunday = new Date(monday);
+        sunday.setDate(monday.getDate() + 6);
+        sunday.setHours(23, 59, 59, 999);
+        return {
+          monday,
+          sunday,
+          weekKey: monday.toISOString().slice(0, 10),
+        };
+      }
+
+      function ensureCurrentWeekPlan() {
+        const { weekKey } = getWeekRange();
+        if (!weekPlan || typeof weekPlan !== "object") {
+          weekPlan = { weekKey, themes: [] };
+          return;
+        }
+        if (!Array.isArray(weekPlan.themes)) weekPlan.themes = [];
+        if (weekPlan.weekKey !== weekKey) {
+          weekPlan = { weekKey, themes: [] };
+        }
+      }
+
+      function isThemeInWeekPlan(theme) {
+        ensureCurrentWeekPlan();
+        return weekPlan.themes.includes(String(theme || ""));
+      }
+
+      function weekPlanTagHtml() {
+        return `<span class="week-plan-tag px-2 py-0.5 bg-amber-100 text-amber-900 border border-amber-300 text-label-md rounded-full font-semibold" title="Planejado para esta semana"><span class="material-symbols-outlined" style="font-size:14px">event</span>Plano da semana</span>`;
+      }
+
+      function getAllThemeNames() {
+        const map = groupByTheme(currentRows);
+        return Array.from(map.keys()).filter(Boolean).sort((a, b) => a.localeCompare(b, "pt-BR"));
+      }
+
+      function getThemeSummary(theme) {
+        const rows = getThemeRows(theme);
+        if (!rows.length) return null;
+        const sorted = [...rows].sort(compareLastUpdateDesc);
+        return {
+          theme,
+          status: derivedThemeStatusLatest(sorted),
+          jiraKey: sorted.find((r) => (r.jiraKey || "").trim())?.jiraKey || "",
+          themeDescription: getThemeDescription(sorted),
+          lastUpdate: sorted[0]?.lastUpdate || "",
+        };
+      }
+
+      async function addThemeToWeekPlan(theme) {
+        const themeName = String(theme || "").trim();
+        if (!themeName) return false;
+        ensureCurrentWeekPlan();
+        if (weekPlan.themes.includes(themeName)) return false;
+        weekPlan.themes.push(themeName);
+        await persist();
+        return true;
+      }
+
+      async function removeThemeFromWeekPlan(theme) {
+        const themeName = String(theme || "");
+        ensureCurrentWeekPlan();
+        weekPlan.themes = weekPlan.themes.filter((t) => t !== themeName);
+        await persist();
+      }
+
+      function syncWeekPlanThemeRename(oldTheme, newTheme) {
+        ensureCurrentWeekPlan();
+        weekPlan.themes = weekPlan.themes.map((t) => (t === oldTheme ? newTheme : t));
+      }
+
+      function syncWeekPlanThemeDelete(theme) {
+        ensureCurrentWeekPlan();
+        weekPlan.themes = weekPlan.themes.filter((t) => t !== theme);
+      }
+
       function syncSeqCounter(rows) {
         let maxSeq = 0;
         for (const r of rows) {
@@ -801,7 +1055,7 @@ Nota 2"
         return new Promise((resolve, reject) => {
           const tx = db.transaction(STORE_NAME, "readwrite");
           const store = tx.objectStore(STORE_NAME);
-          const payload = { rows: currentRows, savedAt: new Date().toISOString() };
+          const payload = { rows: currentRows, weekPlan, savedAt: new Date().toISOString() };
           const req = store.put(payload, KEY_ALL);
           req.onsuccess = () => resolve(true);
           req.onerror = () => reject(req.error);
@@ -818,6 +1072,8 @@ Nota 2"
             const payload = req.result;
             const rows = payload && Array.isArray(payload.rows) ? payload.rows : [];
             currentRows = normalizeLoadedRows(rows);
+            weekPlan = payload && payload.weekPlan ? payload.weekPlan : { weekKey: "", themes: [] };
+            ensureCurrentWeekPlan();
             syncSeqCounter(currentRows);
             resolve(rows.length > 0);
           };
@@ -827,11 +1083,18 @@ Nota 2"
 
       function updateHeader() {
         const title = document.querySelector("header #pageTitle");
-        if (title) title.textContent = activeView === "dashboard" ? "Dashboard" : activeView === "theme" ? "Theme View" : "Week View";
+        const titles = {
+          dashboard: "Dashboard",
+          planner: "Week Planner",
+          theme: "Theme View",
+          week: "Week View",
+        };
+        if (title) title.textContent = titles[activeView] || "Dashboard";
       }
 
       function setActiveNav(which) {
         const navDashboard = $("navDashboard");
+        const navWeekPlanner = $("navWeekPlanner");
         const navThemeView = $("navThemeView");
         const navWeekView = $("navWeekView");
 
@@ -846,27 +1109,42 @@ Nota 2"
           }
         };
         set(navDashboard, which === "dashboard");
+        set(navWeekPlanner, which === "planner");
         set(navThemeView, which === "theme");
         set(navWeekView, which === "week");
       }
 
-      function showDashboard() {
-        activeView = "dashboard";
-        $("dashboardFilters").classList.remove("hidden");
-        $("notesView").classList.remove("hidden");
+      function hideAllViews() {
+        $("dashboardFilters").classList.add("hidden");
+        $("notesView").classList.add("hidden");
+        $("weekPlannerView").classList.add("hidden");
         $("themeView").classList.add("hidden");
         $("weekView").classList.add("hidden");
+      }
+
+      function showDashboard() {
+        activeView = "dashboard";
+        hideAllViews();
+        $("dashboardFilters").classList.remove("hidden");
+        $("notesView").classList.remove("hidden");
         setActiveNav("dashboard");
         updateHeader();
         renderDashboard();
       }
 
+      function showWeekPlanner() {
+        activeView = "planner";
+        hideAllViews();
+        $("weekPlannerView").classList.remove("hidden");
+        setActiveNav("planner");
+        updateHeader();
+        renderWeekPlanner();
+      }
+
       function showThemeView() {
         activeView = "theme";
-        $("dashboardFilters").classList.add("hidden");
-        $("notesView").classList.add("hidden");
+        hideAllViews();
         $("themeView").classList.remove("hidden");
-        $("weekView").classList.add("hidden");
         setActiveNav("theme");
         updateHeader();
         renderThemeView();
@@ -874,9 +1152,7 @@ Nota 2"
 
       function showWeekView() {
         activeView = "week";
-        $("dashboardFilters").classList.add("hidden");
-        $("notesView").classList.add("hidden");
-        $("themeView").classList.add("hidden");
+        hideAllViews();
         $("weekView").classList.remove("hidden");
         setActiveNav("week");
         updateHeader();
@@ -963,6 +1239,7 @@ Nota 2"
           const themeDescriptionHtml = t.themeDescription
             ? `<p class="text-body-md text-on-surface-variant mt-1" style="white-space: pre-wrap;">${escapeHtml(t.themeDescription)}</p>`
             : "";
+          const plannedTagHtml = isThemeInWeekPlan(t.theme) ? weekPlanTagHtml() : "";
 
           const notesHtml = t.rows
             .map((r) => {
@@ -1006,8 +1283,9 @@ Nota 2"
                   <div class="flex flex-col gap-1">
                     <h3 class="font-headline-md text-headline-md text-on-surface">${escapeHtml(t.theme)}</h3>
                     ${themeDescriptionHtml}
-                    <div class="flex items-center gap-3 mt-1">
+                    <div class="flex items-center gap-3 mt-1 flex-wrap">
                       <span class="px-3 py-1 ${statusPillClass(cardStatus)} text-label-md rounded-full font-semibold">${statusPill}</span>
+                      ${plannedTagHtml}
                       <div class="text-secondary font-label-md">${jiraKeyHtml}</div>
                     </div>
                   </div>
@@ -1082,6 +1360,247 @@ Nota 2"
         }
       }
 
+      function refreshActiveView() {
+        if (activeView === "dashboard") renderDashboard();
+        else if (activeView === "planner") renderWeekPlanner();
+        else if (activeView === "theme") renderThemeView();
+        else if (activeView === "week") renderWeekView();
+      }
+
+      function getRowsInCalendarWeek() {
+        const { monday, sunday } = getWeekRange();
+        return currentRows.filter((r) => {
+          const t = Date.parse(String(r.lastUpdate || ""));
+          return Number.isFinite(t) && t >= monday.getTime() && t <= sunday.getTime();
+        });
+      }
+
+      function buildThemePrintModel(themeName, recentRows) {
+        const mapAll = groupByTheme(currentRows);
+        const mapRecent = groupByTheme(recentRows);
+        const allRows = mapAll.get(themeName) || [];
+        const weekRows = [...(mapRecent.get(themeName) || [])].sort(compareLastUpdateDesc);
+        const sorted = [...allRows].sort(compareLastUpdateDesc);
+        const latest = sorted[0];
+        const status = sorted.length ? derivedThemeStatusLatest(sorted) : "To do";
+        const jiraKey = sorted.find((r) => (r.jiraKey || "").trim())?.jiraKey || "";
+        const themeDescription = getThemeDescription(sorted);
+        const updateMs = latest ? Date.parse(String(latest.lastUpdate || "")) || 0 : 0;
+        return {
+          theme: themeName,
+          status,
+          jiraKey,
+          themeDescription,
+          updateMs,
+          lastSeq: Number(latest?.__seq || 0),
+          weekRows,
+        };
+      }
+
+      function buildPlannedThemesForPrint() {
+        ensureCurrentWeekPlan();
+        const recentRows = getRowsInCalendarWeek();
+        return weekPlan.themes.map((themeName) => buildThemePrintModel(themeName, recentRows));
+      }
+
+      function partitionThemesByStatus(themes) {
+        return {
+          done: themes.filter((t) => t.status === "Done"),
+          inProgress: themes.filter((t) => t.status === "In Progress"),
+          todo: themes.filter((t) => t.status !== "Done" && t.status !== "In Progress"),
+        };
+      }
+
+      function toPrintThemeHtml(t, options = {}) {
+        const showPlannedTag = options.showPlannedTag !== false;
+        const jira = t.jiraKey
+          ? `<span class="week-print-jira">${escapeHtml(t.jiraKey)}</span>`
+          : `<span class="week-print-jira">Sem Jira Key</span>`;
+        const desc = t.themeDescription
+          ? `<p class="week-print-theme-description">${escapeHtml(t.themeDescription)}</p>`
+          : "";
+        const plannedTag =
+          showPlannedTag && isThemeInWeekPlan(t.theme)
+            ? `<p class="week-print-theme-description" style="color:#b45309;font-weight:600;">Plano da semana</p>`
+            : "";
+        const notesHtml = (t.weekRows || [])
+          .map((r) => {
+            const noteText = escapeHtml(r.notes || "");
+            const noteTime = escapeHtml(formatDateDisplay(r.lastUpdate));
+            return `
+              <div class="week-print-note">
+                <div class="week-print-note-meta">${noteTime}</div>
+                <p class="week-print-note-text">${noteText}</p>
+              </div>
+            `;
+          })
+          .join("");
+        const emptyNotes = !notesHtml
+          ? `<p class="week-print-empty">Sem notas registradas nesta semana.</p>`
+          : "";
+
+        return `
+          <article class="week-print-theme">
+            <div class="week-print-theme-header">
+              <div>
+                <h3 class="week-print-theme-name">${escapeHtml(t.theme)}</h3>
+                ${plannedTag}
+                ${desc}
+              </div>
+              ${jira}
+            </div>
+            <div class="week-print-notes">${notesHtml}${emptyNotes}</div>
+          </article>
+        `;
+      }
+
+      function fillWeekPrintSection(el, items, options = {}) {
+        if (!el) return;
+        if (!items.length) {
+          el.innerHTML = `<p class="week-print-empty">Nenhum tema nesta categoria.</p>`;
+          return;
+        }
+        el.innerHTML = items.map((item) => toPrintThemeHtml(item, options)).join("");
+      }
+
+      function renderWeekPlannerPrintReport() {
+        const printDone = $("plannerPrintDone");
+        const printInProgress = $("plannerPrintInProgress");
+        const printTodo = $("plannerPrintTodo");
+        const printPeriod = $("plannerPrintPeriod");
+        const printSummary = $("plannerPrintSummary");
+        const printEmpty = `<p class="week-print-empty">Nenhum tema planejado nesta semana.</p>`;
+        const { monday, sunday } = getWeekRange();
+        const now = new Date();
+
+        ensureCurrentWeekPlan();
+        if (!weekPlan.themes.length) {
+          if (printDone) printDone.innerHTML = printEmpty;
+          if (printInProgress) printInProgress.innerHTML = printEmpty;
+          if (printTodo) printTodo.innerHTML = printEmpty;
+          if (printPeriod) {
+            printPeriod.textContent = `Período: ${formatDateShort(monday)} a ${formatDateShort(sunday)} · Gerado em ${formatDateDisplay(now)}`;
+          }
+          if (printSummary) printSummary.textContent = "0 tema(s) planejado(s).";
+          return;
+        }
+
+        const themes = buildPlannedThemesForPrint();
+        const parts = partitionThemesByStatus(themes);
+        fillWeekPrintSection(printDone, parts.done, { showPlannedTag: true });
+        fillWeekPrintSection(printInProgress, parts.inProgress, { showPlannedTag: true });
+        fillWeekPrintSection(printTodo, parts.todo, { showPlannedTag: true });
+
+        if (printPeriod) {
+          printPeriod.textContent = `Período: ${formatDateShort(monday)} a ${formatDateShort(sunday)} · Gerado em ${formatDateDisplay(now)}`;
+        }
+        if (printSummary) {
+          printSummary.textContent = `${themes.length} tema(s) planejado(s) · ${parts.done.length} concluído(s) · ${parts.inProgress.length} em progresso · ${parts.todo.length} a fazer`;
+        }
+      }
+
+      function renderWeekPlanner() {
+        ensureCurrentWeekPlan();
+        const { monday, sunday } = getWeekRange();
+        const periodEl = $("weekPlannerPeriod");
+        const countEl = $("weekPlannerCount");
+        const listEl = $("weekPlannerList");
+        const emptyEl = $("weekPlannerEmpty");
+        const selectEl = $("weekPlannerThemeSelect");
+        const btnAdd = $("btnAddToWeekPlan");
+        const addCard = $("weekPlannerAddCard");
+
+        if (periodEl) {
+          periodEl.textContent = `Semana de ${formatDateShort(monday)} a ${formatDateShort(sunday)}`;
+        }
+
+        const allThemes = getAllThemeNames();
+        const available = allThemes.filter((t) => !weekPlan.themes.includes(t));
+
+        if (selectEl) {
+          if (!available.length) {
+            selectEl.innerHTML = `<option value="">Nenhum tema disponível</option>`;
+            selectEl.disabled = true;
+          } else {
+            selectEl.disabled = false;
+            selectEl.innerHTML = available
+              .map((t) => `<option value="${encodeURIComponent(t)}">${escapeHtml(t)}</option>`)
+              .join("");
+          }
+        }
+        if (btnAdd) btnAdd.disabled = !available.length;
+        if (addCard) {
+          addCard.disabled = !available.length;
+          addCard.classList.toggle("is-disabled", !available.length);
+          addCard.title = available.length
+            ? "Adicionar tema ao plano da semana"
+            : "Todos os temas já estão no plano da semana";
+        }
+
+        if (countEl) {
+          countEl.textContent = `${weekPlan.themes.length} tema(s) planejado(s).`;
+        }
+
+        if (emptyEl) {
+          emptyEl.classList.toggle("hidden", weekPlan.themes.length > 0);
+        }
+
+        if (listEl) {
+          listEl.innerHTML = "";
+        }
+
+        for (const themeName of weekPlan.themes) {
+          const summary = getThemeSummary(themeName);
+          const jiraKey = summary?.jiraKey || "";
+          const jira = jiraKey
+            ? `<div class="mt-3 pt-2 border-t border-outline-variant text-label-md text-secondary break-all">${escapeHtml(jiraKey)}</div>`
+            : "";
+          const desc = summary?.themeDescription
+            ? `<p class="text-body-md text-on-surface-variant text-sm mt-1" style="white-space: pre-wrap;">${escapeHtml(summary.themeDescription)}</p>`
+            : "";
+          const status = summary ? normalizeStatus(summary.status) : "To do";
+
+          const card = `
+            <div class="bg-surface-container-low border border-outline-variant rounded-xl p-4 flex flex-col gap-2 relative">
+              <button
+                type="button"
+                class="absolute top-3 right-3 bg-error text-on-error w-8 h-8 rounded-md hover:opacity-90 transition-all flex items-center justify-center"
+                data-action="remove-from-week-plan"
+                data-theme-enc="${encodeURIComponent(themeName)}"
+                title="Remover do plano da semana"
+              >
+                <span class="material-symbols-outlined" style="font-size: 18px;">close</span>
+              </button>
+              <div class="pr-10">
+                <div class="font-label-md text-label-md text-on-surface font-bold">${escapeHtml(themeName)}</div>
+                ${desc}
+                <div class="flex items-center gap-2 mt-3 flex-wrap">
+                  <span class="px-2 py-0.5 ${statusPillClass(status)} text-label-md rounded">${escapeHtml(status)}</span>
+                  ${weekPlanTagHtml()}
+                </div>
+                ${jira}
+              </div>
+            </div>
+          `;
+          listEl.insertAdjacentHTML("beforeend", card);
+        }
+
+        renderWeekPlannerPrintReport();
+      }
+
+      function openWeekPlannerAddModal() {
+        const addCard = $("weekPlannerAddCard");
+        if (addCard && addCard.disabled) return;
+        $("weekPlannerAddModal").classList.remove("hidden");
+        $("weekPlannerAddModal").setAttribute("aria-hidden", "false");
+        $("weekPlannerThemeSelect")?.focus();
+      }
+
+      function closeWeekPlannerAddModal() {
+        $("weekPlannerAddModal").classList.add("hidden");
+        $("weekPlannerAddModal").setAttribute("aria-hidden", "true");
+      }
+
       function renderThemeView() {
         const colTodo = $("themeColTodo");
         const colInProgress = $("themeColInProgress");
@@ -1126,10 +1645,12 @@ Nota 2"
           const desc = t.themeDescription
             ? `<p class="text-body-md text-on-surface-variant text-xs mt-0.5" style="white-space: pre-wrap;">${escapeHtml(t.themeDescription)}</p>`
             : "";
+          const plannedTag = isThemeInWeekPlan(t.theme) ? `<div class="mt-1">${weekPlanTagHtml()}</div>` : "";
           return `
             <div class="bg-surface-container-low p-3 rounded-lg border border-outline-variant flex flex-col gap-1">
               <div class="font-label-md text-label-md text-on-surface">${escapeHtml(t.theme)}</div>
               ${desc}
+              ${plannedTag}
               ${jira}
             </div>
           `;
@@ -1214,6 +1735,7 @@ Nota 2"
           const desc = t.themeDescription
             ? `<p class="text-body-md text-on-surface-variant text-xs mt-0.5" style="white-space: pre-wrap;">${escapeHtml(t.themeDescription)}</p>`
             : "";
+          const plannedTag = isThemeInWeekPlan(t.theme) ? `<div class="mt-1">${weekPlanTagHtml()}</div>` : "";
           const notesHtml = (t.weekRows || [])
             .map((r) => {
               const noteText = escapeHtml(r.notes || "");
@@ -1235,45 +1757,14 @@ Nota 2"
             <div class="bg-surface-container-low p-3 rounded-lg border border-outline-variant flex flex-col gap-1">
               <div class="font-label-md text-label-md text-on-surface">${escapeHtml(t.theme)}</div>
               ${desc}
+              ${plannedTag}
               ${jira}
               ${notesHtml}
             </div>
           `;
         };
 
-        const toPrintTheme = (t) => {
-          const jira = t.jiraKey
-            ? `<span class="week-print-jira">${escapeHtml(t.jiraKey)}</span>`
-            : `<span class="week-print-jira">Sem Jira Key</span>`;
-          const desc = t.themeDescription
-            ? `<p class="week-print-theme-description">${escapeHtml(t.themeDescription)}</p>`
-            : "";
-          const notesHtml = (t.weekRows || [])
-            .map((r) => {
-              const noteText = escapeHtml(r.notes || "");
-              const noteTime = escapeHtml(formatDateDisplay(r.lastUpdate));
-              return `
-                <div class="week-print-note">
-                  <div class="week-print-note-meta">${noteTime}</div>
-                  <p class="week-print-note-text">${noteText}</p>
-                </div>
-              `;
-            })
-            .join("");
-
-          return `
-            <article class="week-print-theme">
-              <div class="week-print-theme-header">
-                <div>
-                  <h3 class="week-print-theme-name">${escapeHtml(t.theme)}</h3>
-                  ${desc}
-                </div>
-                ${jira}
-              </div>
-              <div class="week-print-notes">${notesHtml}</div>
-            </article>
-          `;
-        };
+        const toPrintTheme = (t) => toPrintThemeHtml(t, { showPlannedTag: true });
 
         const doneThemes = themes.filter((t) => t.status === "Done");
         const inProgressThemes = themes.filter((t) => t.status === "In Progress");
@@ -1285,18 +1776,9 @@ Nota 2"
           else colTodo.insertAdjacentHTML("beforeend", toScreenItem(t));
         }
 
-        const fillPrintSection = (el, items) => {
-          if (!el) return;
-          if (!items.length) {
-            el.innerHTML = `<p class="week-print-empty">Nenhum tema nesta categoria.</p>`;
-            return;
-          }
-          el.innerHTML = items.map(toPrintTheme).join("");
-        };
-
-        fillPrintSection(printDone, doneThemes);
-        fillPrintSection(printInProgress, inProgressThemes);
-        fillPrintSection(printTodo, todoThemes);
+        fillWeekPrintSection(printDone, doneThemes);
+        fillWeekPrintSection(printInProgress, inProgressThemes);
+        fillWeekPrintSection(printTodo, todoThemes);
 
         if (countEl) countEl.textContent = `${themes.length} theme(s) atualizados na semana.`;
         if (printPeriod) {
@@ -1356,9 +1838,7 @@ Nota 2"
 
         await persist();
         ta.value = "";
-        renderDashboard();
-        if (activeView === "theme") renderThemeView();
-        if (activeView === "week") renderWeekView();
+        refreshActiveView();
       }
 
       function deleteNoteBySeq(seq) {
@@ -1366,19 +1846,16 @@ Nota 2"
         if (!Number.isFinite(n)) return;
         currentRows = currentRows.filter((r) => Number(r.__seq) !== n);
         persist().then(() => {
-          renderDashboard();
-          if (activeView === "theme") renderThemeView();
-          if (activeView === "week") renderWeekView();
+          refreshActiveView();
         });
       }
 
       function deleteThemeByName(theme) {
         const themeStr = String(theme || "");
+        syncWeekPlanThemeDelete(themeStr);
         currentRows = currentRows.filter((r) => String(r.theme || "") !== themeStr);
         persist().then(() => {
-          renderDashboard();
-          if (activeView === "theme") renderThemeView();
-          if (activeView === "week") renderWeekView();
+          refreshActiveView();
         });
       }
 
@@ -1426,6 +1903,8 @@ Nota 2"
           };
         });
 
+        if (newTheme !== oldStr) syncWeekPlanThemeRename(oldStr, newTheme);
+
         await persist();
         return true;
       }
@@ -1454,6 +1933,7 @@ Nota 2"
         if (e.key !== "Escape") return;
         if (!$("addThemeModal").classList.contains("hidden")) closeModal();
         if (!$("editThemeModal").classList.contains("hidden")) closeEditModal();
+        if (!$("weekPlannerAddModal").classList.contains("hidden")) closeWeekPlannerAddModal();
       });
 
       function closeModal() {
@@ -1492,9 +1972,7 @@ Nota 2"
         $("addThemeFormJiraKey").value = "";
         $("addThemeFormThemeDescription").value = "";
         $("addThemeFormTheme").value = "";
-        renderDashboard();
-        if (activeView === "theme") renderThemeView();
-        if (activeView === "week") renderWeekView();
+        refreshActiveView();
       });
 
       $("editThemeForm").addEventListener("submit", async (e) => {
@@ -1509,9 +1987,31 @@ Nota 2"
         if (!ok) return;
 
         closeEditModal();
-        renderDashboard();
-        if (activeView === "theme") renderThemeView();
-        if (activeView === "week") renderWeekView();
+        refreshActiveView();
+      });
+
+      $("btnAddToWeekPlan").addEventListener("click", async () => {
+        const selectEl = $("weekPlannerThemeSelect");
+        if (!selectEl || selectEl.disabled) return;
+        const theme = decodeURIComponent(selectEl.value || "");
+        if (!theme) return;
+        await addThemeToWeekPlan(theme);
+        closeWeekPlannerAddModal();
+        refreshActiveView();
+      });
+
+      $("weekPlannerAddCard").addEventListener("click", openWeekPlannerAddModal);
+      $("weekPlannerAddModalClose").addEventListener("click", closeWeekPlannerAddModal);
+      $("weekPlannerAddCancel").addEventListener("click", closeWeekPlannerAddModal);
+      $("weekPlannerAddModal").addEventListener("click", (e) => {
+        if (e.target === $("weekPlannerAddModal")) closeWeekPlannerAddModal();
+      });
+
+      $("weekPlannerList").addEventListener("click", (e) => {
+        const btn = e.target.closest && e.target.closest('[data-action="remove-from-week-plan"]');
+        if (!btn) return;
+        const theme = decodeURIComponent(btn.getAttribute("data-theme-enc") || "");
+        removeThemeFromWeekPlan(theme).then(() => refreshActiveView());
       });
 
       // Delete + save note (event delegation)
@@ -1554,6 +2054,10 @@ Nota 2"
         e.preventDefault();
         showDashboard();
       });
+      $("navWeekPlanner").addEventListener("click", (e) => {
+        e.preventDefault();
+        showWeekPlanner();
+      });
       $("navThemeView").addEventListener("click", (e) => {
         e.preventDefault();
         showThemeView();
@@ -1570,6 +2074,21 @@ Nota 2"
         setTimeout(() => {
           window.print();
           document.body.classList.remove("print-export-week");
+        }, 120);
+      });
+
+      $("btnExportWeekPlannerPdf").addEventListener("click", () => {
+        showWeekPlanner();
+        renderWeekPlanner();
+        ensureCurrentWeekPlan();
+        if (!weekPlan.themes.length) {
+          alert("Adicione temas ao plano da semana antes de exportar.");
+          return;
+        }
+        document.body.classList.add("print-export-planner");
+        setTimeout(() => {
+          window.print();
+          document.body.classList.remove("print-export-planner");
         }, 120);
       });
 
