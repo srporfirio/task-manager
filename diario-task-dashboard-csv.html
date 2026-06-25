@@ -593,6 +593,79 @@ Nota 2"
       </div>
     </div>
 
+    <!-- Edit Theme Modal -->
+    <div id="editThemeModal" class="fixed inset-0 z-50 hidden" aria-hidden="true">
+      <div class="absolute inset-0 bg-black/40" role="presentation"></div>
+      <div class="relative mx-auto mt-24 w-full max-w-2xl px-4">
+        <div class="bg-background border border-outline-variant rounded-xl shadow-lg p-6">
+          <div class="flex items-start justify-between gap-4 mb-4">
+            <div>
+              <h3 class="font-headline-md text-headline-md font-bold text-primary">Editar tema</h3>
+              <p class="text-body-md text-outline mt-1">Altere nome, Jira Key ou descrição do tema. As notas não são editadas aqui.</p>
+            </div>
+            <button
+              id="editThemeModalClose"
+              class="bg-surface-container-low border border-outline-variant px-3 py-2 rounded-lg hover:bg-surface-container-highest transition-colors"
+              type="button"
+              title="Fechar"
+            >
+              <span class="material-symbols-outlined">close</span>
+            </button>
+          </div>
+
+          <form id="editThemeForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <input id="editThemeFormOriginalTheme" type="hidden" />
+
+            <div class="md:col-span-2 flex flex-col gap-1">
+              <label class="text-label-md text-on-surface-variant font-semibold">theme</label>
+              <input
+                id="editThemeFormTheme"
+                class="bg-surface-container-low border border-outline-variant rounded-lg p-3 text-body-md focus:ring-2 focus:ring-primary focus:outline-none"
+                type="text"
+                required
+              />
+            </div>
+
+            <div class="flex flex-col gap-1">
+              <label class="text-label-md text-on-surface-variant font-semibold">jiraKey (opcional)</label>
+              <input
+                id="editThemeFormJiraKey"
+                class="bg-surface-container-low border border-outline-variant rounded-lg p-3 text-body-md focus:ring-2 focus:ring-primary focus:outline-none"
+                type="text"
+                placeholder="Ex.: BEESOT-68606"
+              />
+            </div>
+
+            <div class="md:col-span-2 flex flex-col gap-1">
+              <label class="text-label-md text-on-surface-variant font-semibold">theme description (opcional)</label>
+              <textarea
+                id="editThemeFormThemeDescription"
+                class="bg-surface-container-low border border-outline-variant rounded-lg p-3 text-body-md min-h-[72px] resize-y focus:ring-2 focus:ring-primary focus:outline-none"
+                placeholder="Breve descrição do tema ou iniciativa"
+              ></textarea>
+            </div>
+
+            <div class="md:col-span-2 flex justify-end gap-3 pt-2">
+              <button
+                id="editThemeCancel"
+                class="bg-surface-container-low border border-outline-variant px-6 py-2.5 rounded-lg hover:bg-surface-container-highest transition-colors"
+                type="button"
+              >
+                Cancelar
+              </button>
+              <button
+                class="bg-primary text-on-primary px-6 py-2.5 rounded-lg font-title-lg hover:opacity-90 transition-all flex items-center gap-2"
+                type="submit"
+              >
+                Salvar alterações
+                <span class="material-symbols-outlined">save</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
     <script>
       const DB_NAME = "diario-atividades-db-v1";
       const STORE_NAME = "diario";
@@ -941,16 +1014,28 @@ Nota 2"
                   <div class="text-right flex flex-col items-end gap-2">
                     <p class="text-label-md text-outline">Última atualização</p>
                     <p class="font-title-lg text-title-lg text-on-surface-variant">${escapeHtml(t.lastUpdate || "-")}</p>
-                    <button
-                      type="button"
-                      class="bg-error-container text-on-error-container px-3 py-1.5 rounded-lg hover:opacity-90 transition-all flex items-center gap-2 print:hidden"
-                      data-action="delete-theme"
-                      data-theme-enc="${encodeURIComponent(t.theme)}"
-                      title="Excluir todas as notas deste tema"
-                    >
-                      <span class="material-symbols-outlined" style="font-size: 18px;">delete_sweep</span>
-                      <span class="font-label-md text-label-md">Excluir tema</span>
-                    </button>
+                    <div class="flex items-center gap-2">
+                      <button
+                        type="button"
+                        class="bg-secondary-container/20 text-primary border border-outline-variant px-3 py-1.5 rounded-lg hover:opacity-90 transition-all flex items-center gap-2 print:hidden"
+                        data-action="edit-theme"
+                        data-theme-enc="${encodeURIComponent(t.theme)}"
+                        title="Editar informações do tema"
+                      >
+                        <span class="material-symbols-outlined" style="font-size: 18px;">edit</span>
+                        <span class="font-label-md text-label-md">Editar tema</span>
+                      </button>
+                      <button
+                        type="button"
+                        class="bg-error-container text-on-error-container px-3 py-1.5 rounded-lg hover:opacity-90 transition-all flex items-center gap-2 print:hidden"
+                        data-action="delete-theme"
+                        data-theme-enc="${encodeURIComponent(t.theme)}"
+                        title="Excluir todas as notas deste tema"
+                      >
+                        <span class="material-symbols-outlined" style="font-size: 18px;">delete_sweep</span>
+                        <span class="font-label-md text-label-md">Excluir tema</span>
+                      </button>
+                    </div>
                   </div>
                 </div>
 
@@ -1297,6 +1382,54 @@ Nota 2"
         });
       }
 
+      function getThemeRows(theme) {
+        return currentRows.filter((r) => String(r.theme || "") === String(theme || ""));
+      }
+
+      function openEditThemeModal(theme) {
+        const rows = getThemeRows(theme);
+        if (!rows.length) return;
+
+        const sorted = [...rows].sort(compareLastUpdateDesc);
+        $("editThemeFormOriginalTheme").value = theme;
+        $("editThemeFormTheme").value = theme;
+        $("editThemeFormJiraKey").value = sorted.find((r) => (r.jiraKey || "").trim())?.jiraKey || "";
+        $("editThemeFormThemeDescription").value = getThemeDescription(sorted);
+
+        $("editThemeModal").classList.remove("hidden");
+        $("editThemeModal").setAttribute("aria-hidden", "false");
+        $("editThemeFormTheme").focus();
+      }
+
+      function closeEditModal() {
+        $("editThemeModal").classList.add("hidden");
+        $("editThemeModal").setAttribute("aria-hidden", "true");
+      }
+
+      async function updateThemeByName(oldTheme, { theme, jiraKey, themeDescription }) {
+        const oldStr = String(oldTheme || "");
+        const newTheme = String(theme || "").trim();
+        if (!newTheme) return false;
+
+        if (newTheme !== oldStr && currentRows.some((r) => String(r.theme || "") === newTheme)) {
+          alert("Já existe um tema com esse nome.");
+          return false;
+        }
+
+        currentRows = currentRows.map((r) => {
+          if (String(r.theme || "") !== oldStr) return r;
+          return {
+            ...r,
+            theme: newTheme,
+            jiraKey: String(jiraKey || "").trim(),
+            themeDescription: String(themeDescription || "").trim(),
+          };
+        });
+
+        await persist();
+        return true;
+      }
+
       // Event bindings
       $("statusSelect").addEventListener("change", () => renderDashboard());
       $("sortSelect").addEventListener("change", () => renderDashboard());
@@ -1312,8 +1445,15 @@ Nota 2"
       $("addThemeModal").addEventListener("click", (e) => {
         if (e.target === $("addThemeModal")) closeModal();
       });
+      $("editThemeModalClose").addEventListener("click", closeEditModal);
+      $("editThemeCancel").addEventListener("click", closeEditModal);
+      $("editThemeModal").addEventListener("click", (e) => {
+        if (e.target === $("editThemeModal")) closeEditModal();
+      });
       document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape" && !$("addThemeModal").classList.contains("hidden")) closeModal();
+        if (e.key !== "Escape") return;
+        if (!$("addThemeModal").classList.contains("hidden")) closeModal();
+        if (!$("editThemeModal").classList.contains("hidden")) closeEditModal();
       });
 
       function closeModal() {
@@ -1357,6 +1497,23 @@ Nota 2"
         if (activeView === "week") renderWeekView();
       });
 
+      $("editThemeForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const oldTheme = $("editThemeFormOriginalTheme").value;
+        const theme = $("editThemeFormTheme").value.trim();
+        const jiraKey = $("editThemeFormJiraKey").value.trim();
+        const themeDescription = $("editThemeFormThemeDescription").value.trim();
+        if (!theme) return;
+
+        const ok = await updateThemeByName(oldTheme, { theme, jiraKey, themeDescription });
+        if (!ok) return;
+
+        closeEditModal();
+        renderDashboard();
+        if (activeView === "theme") renderThemeView();
+        if (activeView === "week") renderWeekView();
+      });
+
       // Delete + save note (event delegation)
       $("themesGrid").addEventListener("click", (e) => {
         const target = e.target;
@@ -1372,6 +1529,14 @@ Nota 2"
           const themeEnc = themeBtn.getAttribute("data-theme-enc");
           const theme = decodeURIComponent(themeEnc || "");
           if (confirm("Excluir este tema e todas as suas notas?")) deleteThemeByName(theme);
+          return;
+        }
+
+        const editThemeBtn = target.closest && target.closest('[data-action="edit-theme"]');
+        if (editThemeBtn) {
+          const themeEnc = editThemeBtn.getAttribute("data-theme-enc");
+          const theme = decodeURIComponent(themeEnc || "");
+          openEditThemeModal(theme);
           return;
         }
 
