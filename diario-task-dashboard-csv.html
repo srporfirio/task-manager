@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html class="light" lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Task Dashboard</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Hanken+Grotesk:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+      rel="stylesheet"
+    />
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "secondary-container": "#72a6fe",
+              "on-secondary-fixed-variant": "#00458e",
+              "on-surface": "#191c1d",
+              "on-background": "#191c1d",
+              outline: "#6d7979",
+              background: "#f8fafb",
+              "on-secondary-fixed": "#001b3f",
+              "on-surface-variant": "#3d4949",
+              "on-secondary-container": "#003a79",
+              "tertiary-container": "#5d769b",
+              "surface-container": "#eceeef",
+              "inverse-surface": "#2d3132",
+              "surface-bright": "#f8fafb",
+              "inverse-on-surface": "#eff1f2",
+              "on-primary-fixed": "#002020",
+              "on-tertiary-container": "#fefcff",
+              "surface-container-lowest": "#ffffff",
+              "on-tertiary-fixed": "#001c3a",
+              "on-tertiary": "#ffffff",
+              tertiary: "#445d81",
+              "surface-tint": "#00696b",
+              "surface-container-highest": "#e1e3e4",
+              error: "#ba1a1a",
+              "primary-container": "#008284",
+              "on-secondary": "#ffffff",
+              "surface-container-low": "#f2f4f5",
+              "on-error": "#ffffff",
+              "error-container": "#ffdad6",
+              "secondary-fixed": "#d7e3ff",
+              "surface-variant": "#e1e3e4",
+              "on-primary": "#ffffff",
+              primary: "#006768",
+              "outline-variant": "#bcc9c9",
+              "surface-dim": "#d8dadb",
+              "on-error-container": "#93000a",
+              "primary-fixed": "#83f4f6",
+              secondary: "#1e5db0",
+              "on-primary-container": "#f3fffe",
+              "on-secondary-fixed-variant": "#00458e",
+              "on-primary-fixed-variant": "#004f51",
+              "secondary-fixed-dim": "#65d8d9",
+              "primary-fixed-dim": "#65d8d9",
+            },
+            borderRadius: { DEFAULT: "0.125rem", lg: "0.25rem", xl: "0.5rem", full: "0.75rem" },
+            spacing: {
+              "margin-page": "32px",
+              gutter: "24px",
+              "sidebar-width": "260px",
+              "container-max": "1440px",
+              base: "8px",
+            },
+            fontFamily: {
+              "title-lg": ["Inter"],
+              "body-md": ["Inter"],
+              "headline-xl": ["Hanken Grotesk"],
+              "label-md": ["Inter"],
+              "headline-md": ["Hanken Grotesk"],
+              "headline-lg": ["Hanken Grotesk"],
+              "headline-lg-mobile": ["Hanken Grotesk"],
+              "body-lg": ["Inter"],
+            },
+            fontSize: {
+              "title-lg": ["20px", { lineHeight: "28px", fontWeight: "600" }],
+              "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+              "headline-xl": ["40px", { lineHeight: "48px", letterSpacing: "-0.02em", fontWeight: "700" }],
+              "label-md": ["12px", { lineHeight: "16px", letterSpacing: "0.05em", fontWeight: "600" }],
+              "headline-md": ["24px", { lineHeight: "32px", fontWeight: "600" }],
+              "headline-lg": ["32px", { lineHeight: "40px", letterSpacing: "-0.01em", fontWeight: "600" }],
+              "headline-lg-mobile": ["28px", { lineHeight: "36px", fontWeight: "600" }],
+              "body-lg": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      .material-symbols-outlined {
+        font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+        vertical-align: middle;
+      }
+
+      .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+      }
+      .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+
+      @media print {
+        body.print-export-week aside {
+          display: none !important;
+        }
+        body.print-export-week header {
+          display: none !important;
+        }
+
+        /* mostra apenas a seção Week View */
+        body.print-export-week main > div > section {
+          display: none !important;
+        }
+        body.print-export-week main #weekView {
+          display: block !important;
+        }
+        body.print-export-week main #weekView * {
+          visibility: visible !important;
+          display: inherit !important;
+        }
+        body.print-export-week #btnExportWeekPdf {
+          display: none !important;
+        }
+      }
+    </style>
+  </head>
+
+  <body class="bg-background text-on-background font-body-md min-h-screen flex">
+    <!-- SideNavBar -->
+    <aside class="fixed left-0 top-0 h-full w-[260px] bg-surface-container-low flex flex-col py-8 px-4 gap-4 z-50">
+      <div class="flex items-center gap-3 px-2 mb-6">
+        <img
+          class="w-full h-12 object-contain"
+          alt="Logo Diario Task Dashboard"
+          src="file:///C:/Users/99834395/.cursor/projects/c-Users-99834395-Cursor/assets/c__Users_99834395_AppData_Roaming_Cursor_User_workspaceStorage_b523eb13f202c8ea1f8e16ffa35eb702_images_Gemini_Generated_Image_15ney715ney715ne-0c7c2643-7607-4b1b-897b-b9da18c613b3.png"
+        />
+      </div>
+
+      <nav class="flex flex-col gap-1 flex-grow">
+        <a id="navDashboard" class="flex items-center gap-3 px-4 py-3 text-primary font-bold bg-secondary-container/20 rounded-lg transition-all" href="#">
+          <span class="material-symbols-outlined">dashboard</span>
+          <span class="font-label-md text-label-md">Dashboard</span>
+        </a>
+        <a id="navThemeView" class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-highest rounded-lg transition-all" href="#">
+          <span class="material-symbols-outlined">view_kanban</span>
+          <span class="font-label-md text-label-md">Theme View</span>
+        </a>
+        <a id="navWeekView" class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-highest rounded-lg transition-all" href="#">
+          <span class="material-symbols-outlined">calendar_month</span>
+          <span class="font-label-md text-label-md">Week View</span>
+        </a>
+      </nav>
+
+      <div class="mt-auto border-t border-outline-variant pt-4">
+        <div class="px-4 pb-2 text-label-md text-outline">
+          Dados salvos localmente no navegador (IndexedDB).
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="ml-[260px] flex-grow min-h-screen flex flex-col">
+      <header class="sticky top-0 z-40 bg-surface border-b border-outline-variant flex justify-between items-center w-full px-margin-page h-16">
+        <div class="flex items-center gap-4">
+          <h2 id="pageTitle" class="font-headline-md text-headline-md font-bold text-primary">Dashboard</h2>
+        </div>
+        <div class="flex items-center gap-6"></div>
+      </header>
+
+      <div class="p-margin-page max-w-container-max mx-auto w-full">
+        <!-- Dashboard -->
+        <section id="dashboardFilters" class="flex flex-col md:flex-row md:flex-nowrap gap-gutter items-center md:items-end mb-8 bg-surface-container-lowest p-6 rounded-xl border border-outline-variant">
+          <div class="flex flex-col gap-1 w-full md:flex-grow">
+            <label class="font-label-md text-label-md text-outline">Pesquisa Rápida</label>
+            <div class="relative">
+              <span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline">search</span>
+              <input
+                id="searchInput"
+                class="w-full pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-lg focus:outline-none focus:border-primary text-body-md transition-all"
+                placeholder="Procurar por Tema ou Jira Key..."
+                type="text"
+              />
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-1 w-full md:w-auto">
+            <label class="font-label-md text-label-md text-outline">Filtrar por Status</label>
+            <select
+              id="statusSelect"
+              class="bg-surface border border-outline-variant rounded-lg px-4 py-2 text-body-md focus:ring-2 focus:ring-primary min-w-[200px]"
+            >
+              <option value="ALL">Todos</option>
+              <option value="To do">To do</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Done">Done</option>
+            </select>
+          </div>
+
+          <div class="flex flex-col gap-1 w-full md:w-auto">
+            <label class="font-label-md text-label-md text-outline">Ordenar</label>
+            <select
+              id="sortSelect"
+              class="bg-surface border border-outline-variant rounded-lg px-4 py-2 text-body-md focus:ring-2 focus:ring-primary min-w-[220px]"
+            >
+              <option value="update_desc">Atualização (mais recente)</option>
+              <option value="update_asc">Atualização (mais antiga)</option>
+              <option value="tema_az">Tema (A-Z)</option>
+              <option value="tema_za">Tema (Z-A)</option>
+            </select>
+          </div>
+
+          <button
+            id="btnAddTheme"
+            class="bg-primary text-on-primary px-4 py-3 rounded-xl font-label-md shadow-sm hover:opacity-90 transition-all flex items-center justify-center gap-2 w-auto flex-shrink-0 whitespace-nowrap"
+            type="button"
+            title="Adicionar novo tema"
+          >
+            <span class="material-symbols-outlined" style="font-size: 18px;">add</span>
+            Adicionar novo tema
+          </button>
+        </section>
+
+        <section id="notesView" class="flex flex-col gap-6">
+          <div id="emptyState" class="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 hidden">
+            <div class="text-body-md text-outline">
+              Nenhuma iniciativa encontrada. Adicione um novo tema.
+            </div>
+          </div>
+          <div id="themesGrid" class="flex flex-col gap-6"></div>
+        </section>
+
+        <!-- Theme View -->
+        <section id="themeView" class="hidden mt-2">
+          <div class="flex flex-col gap-4">
+            <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant">
+              <div class="flex flex-col md:flex-row md:flex-nowrap gap-gutter items-center md:items-end">
+                <div class="flex flex-col gap-1 w-full md:flex-grow">
+                  <label class="font-label-md text-label-md text-on-surface-variant">Data início</label>
+                  <input id="themeDateStart" type="date" class="bg-surface-container-low border border-outline-variant rounded-lg px-3 py-2 text-body-md focus:ring-2 focus:ring-primary focus:outline-none" />
+                </div>
+                <div class="flex flex-col gap-1 w-full md:flex-grow">
+                  <label class="font-label-md text-label-md text-on-surface-variant">Data fim</label>
+                  <input id="themeDateEnd" type="date" class="bg-surface-container-low border border-outline-variant rounded-lg px-3 py-2 text-body-md focus:ring-2 focus:ring-primary focus:outline-none" />
+                </div>
+                <div class="flex items-end">
+                  <button
+                    id="btnThemeDateApply"
+                    class="bg-primary text-on-primary px-4 py-2 rounded-lg font-label-md shadow-sm hover:opacity-90 transition-all w-full md:w-auto"
+                    type="button"
+                    title="Aplicar filtro por período"
+                  >
+                    Aplicar
+                  </button>
+                </div>
+              </div>
+              <div class="mt-1 text-label-md text-outline text-right" id="themeViewCount"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-4">
+                <h3 class="font-label-md text-label-md text-on-surface-variant mb-3">To do</h3>
+                <div id="themeColTodo" class="flex flex-col gap-2"></div>
+              </div>
+              <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-4">
+                <h3 class="font-label-md text-label-md text-on-surface-variant mb-3">In Progress</h3>
+                <div id="themeColInProgress" class="flex flex-col gap-2"></div>
+              </div>
+              <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-4">
+                <h3 class="font-label-md text-label-md text-on-surface-variant mb-3">Done</h3>
+                <div id="themeColDone" class="flex flex-col gap-2"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Week View -->
+        <section id="weekView" class="hidden mt-2">
+          <div class="flex flex-col gap-4">
+            <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant">
+              <div class="flex items-center justify-end gap-4 mb-6">
+                <div class="flex items-center gap-3">
+                  <div class="text-label-md text-outline" id="weekViewCount"></div>
+                  <button
+                    id="btnExportWeekPdf"
+                    type="button"
+                    class="bg-primary text-on-primary px-4 py-2 rounded-lg font-title-lg hover:opacity-90 transition-all flex items-center gap-2 print:hidden"
+                    title="Exportar resumo semanal em PDF"
+                  >
+                    <span class="material-symbols-outlined">picture_as_pdf</span>
+                    Export PDF
+                  </button>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-4">
+                  <h3 class="font-label-md text-label-md text-on-surface-variant mb-3">To do</h3>
+                  <div id="weekColTodo" class="flex flex-col gap-2"></div>
+                </div>
+                <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-4">
+                  <h3 class="font-label-md text-label-md text-on-surface-variant mb-3">In Progress</h3>
+                  <div id="weekColInProgress" class="flex flex-col gap-2"></div>
+                </div>
+                <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-4">
+                  <h3 class="font-label-md text-label-md text-on-surface-variant mb-3">Done</h3>
+                  <div id="weekColDone" class="flex flex-col gap-2"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- Add Theme Modal -->
+    <div id="addThemeModal" class="fixed inset-0 z-50 hidden" aria-hidden="true">
+      <div class="absolute inset-0 bg-black/40" role="presentation"></div>
+      <div class="relative mx-auto mt-24 w-full max-w-2xl px-4">
+        <div class="bg-background border border-outline-variant rounded-xl shadow-lg p-6">
+          <div class="flex items-start justify-between gap-4 mb-4">
+            <div>
+              <h3 class="font-headline-md text-headline-md font-bold text-primary">Adicionar novo tema</h3>
+              <p class="text-body-md text-outline mt-1">Preencha theme e a primeira nota.</p>
+            </div>
+            <button
+              id="addThemeModalClose"
+              class="bg-surface-container-low border border-outline-variant px-3 py-2 rounded-lg hover:bg-surface-container-highest transition-colors"
+              type="button"
+              title="Fechar"
+            >
+              <span class="material-symbols-outlined">close</span>
+            </button>
+          </div>
+
+          <form id="addThemeForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="flex flex-col gap-1">
+              <label class="text-label-md text-on-surface-variant font-semibold">theme</label>
+              <input
+                id="addThemeFormTheme"
+                class="bg-surface-container-low border border-outline-variant rounded-lg p-3 text-body-md focus:ring-2 focus:ring-primary focus:outline-none"
+                type="text"
+                placeholder="Ex.: KPI enhancements (Visits e Orders)"
+                required
+              />
+            </div>
+
+            <div class="flex flex-col gap-1">
+              <label class="text-label-md text-on-surface-variant font-semibold">theme_status</label>
+              <select
+                id="addThemeFormStatus"
+                class="bg-surface-container-low border border-outline-variant rounded-lg p-3 text-body-md focus:ring-2 focus:ring-primary focus:outline-none"
+              >
+                <option>To do</option>
+                <option>In Progress</option>
+                <option>Done</option>
+              </select>
+            </div>
+
+            <div class="flex flex-col gap-1">
+              <label class="text-label-md text-on-surface-variant font-semibold">jiraKey (opcional)</label>
+              <input
+                id="addThemeFormJiraKey"
+                class="bg-surface-container-low border border-outline-variant rounded-lg p-3 text-body-md focus:ring-2 focus:ring-primary focus:outline-none"
+                type="text"
+                placeholder="Ex.: BEESOT-68606"
+              />
+            </div>
+
+            <div class="flex flex-col gap-1">
+              <label class="text-label-md text-on-surface-variant font-semibold">jiraStatus (opcional)</label>
+              <input
+                id="addThemeFormJiraStatus"
+                class="bg-surface-container-low border border-outline-variant rounded-lg p-3 text-body-md focus:ring-2 focus:ring-primary focus:outline-none"
+                type="text"
+                placeholder="Se tiver (opcional)"
+              />
+            </div>
+
+            <div class="md:col-span-2 flex flex-col gap-1">
+              <label class="text-label-md text-on-surface-variant font-semibold">notes (pode ter várias)</label>
+              <textarea
+                id="addThemeFormNotes"
+                class="bg-surface-container-low border border-outline-variant rounded-lg p-3 text-body-md min-h-[120px] resize-y focus:ring-2 focus:ring-primary focus:outline-none"
+                placeholder="Escreva uma nota inicial...
+
+Se quiser adicionar mais notas agora, separe por uma linha em branco.
+Ex.:
+Nota 1
+
+Nota 2"
+              ></textarea>
+              <div class="text-label-md text-outline mt-1">
+                Se deixar vazio, cria com nota vazia.
+              </div>
+            </div>
+
+            <div class="md:col-span-2 flex justify-end gap-3 pt-2">
+              <button
+                id="addThemeCancel"
+                class="bg-surface-container-low border border-outline-variant px-6 py-2.5 rounded-lg hover:bg-surface-container-highest transition-colors"
+                type="button"
+              >
+                Cancelar
+              </button>
+              <button
+                class="bg-primary text-on-primary px-6 py-2.5 rounded-lg font-title-lg hover:opacity-90 transition-all flex items-center gap-2"
+                type="submit"
+              >
+                Salvar
+                <span class="material-symbols-outlined">save</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const DB_NAME = "diario-atividades-db-v1";
+      const STORE_NAME = "diario";
+      const KEY_ALL = "all";
+
+      /** @type {{theme:string, theme_status:string, jiraKey:string, jiraStatus:string, notes:string, lastUpdate:string, __seq:number}[]} */
+      let currentRows = [];
+      let seqCounter = 1;
+      let isReady = false;
+      let activeView = "dashboard";
+
+      const $ = (id) => document.getElementById(id);
+
+      function escapeHtml(s) {
+        return String(s || "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+
+      function normalizeStatus(s) {
+        const raw = String(s || "").trim();
+        const v = raw.toLowerCase().replace(/\s+/g, " ");
+        if (v === "done") return "Done";
+        if (v === "in progress") return "In Progress";
+        if (v === "to do" || v === "todo") return "To do";
+        if (v.includes("done")) return "Done";
+        if (v.includes("in progress")) return "In Progress";
+        if (v.includes("to do") || v.includes("todo")) return "To do";
+        return raw || "To do";
+      }
+
+      function statusBarClass(status) {
+        const st = normalizeStatus(status);
+        if (st === "Done") return "bg-primary-container";
+        if (st === "In Progress") return "bg-secondary";
+        return "bg-outline";
+      }
+
+      function statusPillClass(status) {
+        const st = normalizeStatus(status);
+        if (st === "Done") return "bg-primary-container text-on-primary-container";
+        if (st === "In Progress") return "bg-secondary-fixed text-on-secondary-fixed";
+        return "bg-surface-variant text-on-surface-variant";
+      }
+
+      function shortJira(jiraKey) {
+        return jiraKey ? jiraKey : "-";
+      }
+      function themeLink(jiraKey) {
+        return `<span class="flex items-center gap-2">${escapeHtml(shortJira(jiraKey))}</span>`;
+      }
+
+      function normalize(s) {
+        return String(s || "").toLowerCase().trim();
+      }
+
+      function groupByTheme(rows) {
+        const map = new Map();
+        for (const r of rows) {
+          const key = r.theme || "";
+          if (!map.has(key)) map.set(key, []);
+          map.get(key).push(r);
+        }
+        return map;
+      }
+
+      function derivedThemeStatusLatest(sortedRowsForTheme) {
+        const first = sortedRowsForTheme && sortedRowsForTheme[0];
+        return normalizeStatus(first?.theme_status || "To do");
+      }
+
+      function currentLastUpdateValue() {
+        return new Date().toISOString();
+      }
+
+      function syncSeqCounter(rows) {
+        let maxSeq = 0;
+        for (const r of rows) {
+          const v = Number(r && r.__seq);
+          if (Number.isFinite(v) && v > maxSeq) maxSeq = v;
+        }
+        seqCounter = maxSeq + 1;
+      }
+
+      function openDB() {
+        return new Promise((resolve, reject) => {
+          if (!("indexedDB" in window)) return reject(new Error("IndexedDB indisponivel."));
+          const req = indexedDB.open(DB_NAME, 1);
+          req.onupgradeneeded = () => {
+            const db = req.result;
+            if (!db.objectStoreNames.contains(STORE_NAME)) db.createObjectStore(STORE_NAME);
+          };
+          req.onsuccess = () => resolve(req.result);
+          req.onerror = () => reject(req.error);
+        });
+      }
+
+      async function persist() {
+        const db = await openDB();
+        return new Promise((resolve, reject) => {
+          const tx = db.transaction(STORE_NAME, "readwrite");
+          const store = tx.objectStore(STORE_NAME);
+          const payload = { rows: currentRows, savedAt: new Date().toISOString() };
+          const req = store.put(payload, KEY_ALL);
+          req.onsuccess = () => resolve(true);
+          req.onerror = () => reject(req.error);
+        });
+      }
+
+      async function loadFromDB() {
+        const db = await openDB();
+        return new Promise((resolve) => {
+          const tx = db.transaction(STORE_NAME, "readonly");
+          const store = tx.objectStore(STORE_NAME);
+          const req = store.get(KEY_ALL);
+          req.onsuccess = () => {
+            const payload = req.result;
+            const rows = payload && Array.isArray(payload.rows) ? payload.rows : [];
+            currentRows = rows;
+            syncSeqCounter(currentRows);
+            resolve(rows.length > 0);
+          };
+          req.onerror = () => resolve(false);
+        });
+      }
+
+      function updateHeader() {
+        const title = document.querySelector("header #pageTitle");
+        if (title) title.textContent = activeView === "dashboard" ? "Dashboard" : activeView === "theme" ? "Theme View" : "Week View";
+      }
+
+      function setActiveNav(which) {
+        const navDashboard = $("navDashboard");
+        const navThemeView = $("navThemeView");
+        const navWeekView = $("navWeekView");
+
+        const set = (el, isActive) => {
+          if (!el) return;
+          if (isActive) {
+            el.classList.add("bg-secondary-container/20", "text-primary", "font-bold");
+            el.classList.remove("text-on-surface-variant", "hover:bg-surface-container-highest");
+          } else {
+            el.classList.remove("bg-secondary-container/20", "text-primary", "font-bold");
+            el.classList.add("text-on-surface-variant", "hover:bg-surface-container-highest");
+          }
+        };
+        set(navDashboard, which === "dashboard");
+        set(navThemeView, which === "theme");
+        set(navWeekView, which === "week");
+      }
+
+      function showDashboard() {
+        activeView = "dashboard";
+        $("dashboardFilters").classList.remove("hidden");
+        $("notesView").classList.remove("hidden");
+        $("themeView").classList.add("hidden");
+        $("weekView").classList.add("hidden");
+        setActiveNav("dashboard");
+        updateHeader();
+        renderDashboard();
+      }
+
+      function showThemeView() {
+        activeView = "theme";
+        $("dashboardFilters").classList.add("hidden");
+        $("notesView").classList.add("hidden");
+        $("themeView").classList.remove("hidden");
+        $("weekView").classList.add("hidden");
+        setActiveNav("theme");
+        updateHeader();
+        renderThemeView();
+      }
+
+      function showWeekView() {
+        activeView = "week";
+        $("dashboardFilters").classList.add("hidden");
+        $("notesView").classList.add("hidden");
+        $("themeView").classList.add("hidden");
+        $("weekView").classList.remove("hidden");
+        setActiveNav("week");
+        updateHeader();
+        renderWeekView();
+      }
+
+      function compareLastUpdateDesc(a, b) {
+        const ta = Date.parse(String(a.lastUpdate || ""));
+        const tb = Date.parse(String(b.lastUpdate || ""));
+        const da = Number.isFinite(ta) ? ta : 0;
+        const db = Number.isFinite(tb) ? tb : 0;
+        if (db !== da) return db - da;
+        return Number(b.__seq || 0) - Number(a.__seq || 0);
+      }
+      function compareLastUpdateAsc(a, b) {
+        return -compareLastUpdateDesc(a, b);
+      }
+
+      function renderDashboard() {
+        const statusFilter = $("statusSelect").value;
+        const normStatusFilter = statusFilter === "ALL" ? "ALL" : normalizeStatus(statusFilter);
+        const sortMode = $("sortSelect").value;
+        const search = normalize($("searchInput").value);
+
+        const map = groupByTheme(currentRows);
+        const themes = Array.from(map.entries()).map(([theme, rows]) => {
+          const sorted = [...rows].sort(compareLastUpdateDesc);
+          const status = derivedThemeStatusLatest(sorted);
+          const jiraKey = sorted.find((r) => (r.jiraKey || "").trim())?.jiraKey || "";
+          const lastUpdate = sorted[0]?.lastUpdate || "";
+          return { theme, rows: sorted, status, jiraKey, lastUpdate, lastSeq: Number(sorted[0]?.__seq || 0), updateMs: Number(Date.parse(String(lastUpdate || ""))) || 0 };
+        });
+
+        const filtered = themes
+          .filter((t) => {
+            if (normStatusFilter !== "ALL" && t.status !== normStatusFilter) return false;
+            if (!search) return true;
+            const hay = normalize(t.theme) + " " + normalize(t.jiraKey);
+            return hay.includes(search);
+          })
+          .sort((a, b) => {
+            const aSeq = Number(a.lastSeq || 0);
+            const bSeq = Number(b.lastSeq || 0);
+            const aMs = Number(a.updateMs || 0);
+            const bMs = Number(b.updateMs || 0);
+
+            if (sortMode === "update_asc") {
+              if (aMs !== bMs) return aMs - bMs;
+              return aSeq - bSeq;
+            }
+            if (sortMode === "tema_az") {
+              const cmp = normalize(a.theme).localeCompare(normalize(b.theme));
+              if (cmp !== 0) return cmp;
+              if (aMs !== bMs) return bMs - aMs;
+              return bSeq - aSeq;
+            }
+            if (sortMode === "tema_za") {
+              const cmp = normalize(b.theme).localeCompare(normalize(a.theme));
+              if (cmp !== 0) return cmp;
+              if (aMs !== bMs) return bMs - aMs;
+              return bSeq - aSeq;
+            }
+            // default update_desc
+            if (aMs !== bMs) return bMs - aMs;
+            return bSeq - aSeq;
+          });
+
+        const grid = $("themesGrid");
+        const emptyState = $("emptyState");
+        grid.innerHTML = "";
+
+        if (filtered.length === 0) {
+          emptyState.classList.remove("hidden");
+          return;
+        }
+        emptyState.classList.add("hidden");
+
+        for (const t of filtered) {
+          const cardStatus = t.status;
+          const statusPill = escapeHtml(cardStatus);
+          const safeThemeId = normalize(t.theme).replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+          const jiraKeyHtml = themeLink(t.jiraKey);
+
+          const notesHtml = t.rows
+            .map((r) => {
+              const noteStatus = normalizeStatus(r.theme_status || "To do");
+              const noteTime = escapeHtml(r.lastUpdate || "");
+              const noteText = escapeHtml(r.notes || "");
+              const seq = Number(r.__seq);
+              return `
+                <div class="flex gap-4 items-start relative pl-6 border-l-2 border-surface-container">
+                  <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-surface-container-lowest border-2 border-surface-container-lowest"></div>
+                  <div class="flex-grow bg-surface-container-low p-4 rounded-lg">
+                    <div class="flex justify-between items-center mb-2 gap-3">
+                      <span class="px-2 py-0.5 ${statusPillClass(noteStatus)} text-label-md rounded">
+                        ${escapeHtml(noteStatus)}
+                      </span>
+                      <div class="flex items-center gap-3">
+                        <span class="text-label-md text-outline">${noteTime || "-"}</span>
+                        <button
+                          type="button"
+                          class="bg-error-container text-on-error-container px-3 py-1.5 rounded-lg hover:opacity-90 transition-all flex items-center gap-2 print:hidden"
+                          data-action="delete-note"
+                          data-note-seq="${seq}"
+                          title="Excluir esta nota"
+                        >
+                          <span class="material-symbols-outlined" style="font-size: 18px;">delete</span>
+                        </button>
+                      </div>
+                    </div>
+                    <p class="text-body-md text-on-surface" style="white-space: pre-wrap;">${noteText}</p>
+                  </div>
+                </div>
+              `;
+            })
+            .join("");
+
+          const card = `
+            <div class="bg-surface-container-lowest rounded-xl border border-outline-variant overflow-hidden shadow-sm relative group hover:shadow-md transition-shadow">
+              <div class="status-bar ${statusBarClass(cardStatus)}"></div>
+              <div class="p-6">
+                <div class="flex flex-wrap justify-between items-start gap-4 mb-6">
+                  <div class="flex flex-col gap-1">
+                    <h3 class="font-headline-md text-headline-md text-on-surface">${escapeHtml(t.theme)}</h3>
+                    <div class="flex items-center gap-3">
+                      <span class="px-3 py-1 ${statusPillClass(cardStatus)} text-label-md rounded-full font-semibold">${statusPill}</span>
+                      <div class="text-secondary font-label-md">${jiraKeyHtml}</div>
+                    </div>
+                  </div>
+                  <div class="text-right flex flex-col items-end gap-2">
+                    <p class="text-label-md text-outline">Última atualização</p>
+                    <p class="font-title-lg text-title-lg text-on-surface-variant">${escapeHtml(t.lastUpdate || "-")}</p>
+                    <button
+                      type="button"
+                      class="bg-error-container text-on-error-container px-3 py-1.5 rounded-lg hover:opacity-90 transition-all flex items-center gap-2 print:hidden"
+                      data-action="delete-theme"
+                      data-theme-enc="${encodeURIComponent(t.theme)}"
+                      title="Excluir todas as notas deste tema"
+                    >
+                      <span class="material-symbols-outlined" style="font-size: 18px;">delete_sweep</span>
+                      <span class="font-label-md text-label-md">Excluir tema</span>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="space-y-4 mb-8">${notesHtml || `<div class="text-body-md text-outline">Nenhuma nota ainda.</div>`}</div>
+
+                <div class="pt-6 border-t border-outline-variant">
+                  <div class="flex flex-col gap-3">
+                    <textarea
+                      id="noteTextarea-${safeThemeId}"
+                      class="w-full bg-surface-container-low border border-outline-variant rounded-lg p-4 text-body-md min-h-[100px] focus:ring-2 focus:ring-primary focus:outline-none"
+                      placeholder="Escreva uma nova nota..."
+                    ></textarea>
+                    <div class="flex gap-3 items-center justify-between">
+                      <div class="flex items-center gap-3">
+                        <label class="text-label-md text-on-surface-variant">Status da nota</label>
+                        <select
+                          id="noteStatus-${safeThemeId}"
+                          class="bg-surface border border-outline-variant rounded-lg px-4 py-2 text-body-md focus:ring-2 focus:ring-primary"
+                        >
+                          <option>To do</option>
+                          <option>In Progress</option>
+                          <option>Done</option>
+                        </select>
+                      </div>
+                      <div class="flex justify-end">
+                        <button
+                          class="bg-primary text-on-primary px-8 py-2.5 rounded-lg font-title-lg hover:opacity-90 transition-all flex items-center gap-2"
+                          type="button"
+                          data-action="save-note"
+                          data-theme-enc="${encodeURIComponent(t.theme)}"
+                          data-safe-theme-id="${safeThemeId}"
+                        >
+                          Salvar
+                          <span class="material-symbols-outlined text-[20px]">send</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+          grid.insertAdjacentHTML("beforeend", card);
+        }
+      }
+
+      function renderThemeView() {
+        const colTodo = $("themeColTodo");
+        const colInProgress = $("themeColInProgress");
+        const colDone = $("themeColDone");
+        const countEl = $("themeViewCount");
+        if (!colTodo || !colInProgress || !colDone) return;
+
+        colTodo.innerHTML = "";
+        colInProgress.innerHTML = "";
+        colDone.innerHTML = "";
+
+        const startVal = $("themeDateStart").value;
+        const endVal = $("themeDateEnd").value;
+
+        const startMs = startVal ? Date.parse(startVal + "T00:00:00.000") : null;
+        const endMs = endVal ? Date.parse(endVal + "T23:59:59.999") : null;
+
+        const map = groupByTheme(currentRows);
+        const allThemes = Array.from(map.entries()).map(([theme, rows]) => {
+          const sorted = [...rows].sort(compareLastUpdateDesc);
+          const latest = sorted[0];
+          const status = derivedThemeStatusLatest(sorted);
+          const jiraKey = sorted.find((r) => (r.jiraKey || "").trim())?.jiraKey || "";
+          const updateMs = Number.isFinite(Date.parse(String(latest?.lastUpdate || ""))) ? Date.parse(String(latest.lastUpdate)) : 0;
+          return { theme, status, jiraKey, updateMs, lastSeq: Number(latest?.__seq || 0) };
+        });
+
+        const filtered = allThemes.filter((t) => {
+          if (startMs !== null && Number(t.updateMs || 0) < startMs) return false;
+          if (endMs !== null && Number(t.updateMs || 0) > endMs) return false;
+          return true;
+        });
+
+        filtered.sort((a, b) => {
+          if (b.updateMs !== a.updateMs) return b.updateMs - a.updateMs;
+          return b.lastSeq - a.lastSeq;
+        });
+
+        const toItem = (t) => {
+          const jira = t.jiraKey ? `<span class="text-label-md text-outline">${escapeHtml(t.jiraKey)}</span>` : "";
+          return `
+            <div class="bg-surface-container-low p-3 rounded-lg border border-outline-variant flex flex-col gap-1">
+              <div class="font-label-md text-label-md text-on-surface">${escapeHtml(t.theme)}</div>
+              ${jira}
+            </div>
+          `;
+        };
+
+        for (const t of filtered) {
+          if (t.status === "Done") colDone.insertAdjacentHTML("beforeend", toItem(t));
+          else if (t.status === "In Progress") colInProgress.insertAdjacentHTML("beforeend", toItem(t));
+          else colTodo.insertAdjacentHTML("beforeend", toItem(t));
+        }
+
+        if (countEl) countEl.textContent = `${filtered.length} theme(s).`;
+      }
+
+      function renderWeekView() {
+        const weekView = $("weekView");
+        if (!weekView || weekView.classList.contains("hidden")) return;
+
+        const colTodo = $("weekColTodo");
+        const colInProgress = $("weekColInProgress");
+        const colDone = $("weekColDone");
+        const countEl = $("weekViewCount");
+        if (!colTodo || !colInProgress || !colDone) return;
+
+        colTodo.innerHTML = "";
+        colInProgress.innerHTML = "";
+        colDone.innerHTML = "";
+
+        const now = new Date();
+        const start = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+
+        const recentRows = currentRows.filter((r) => {
+          const t = Date.parse(String(r.lastUpdate || ""));
+          return Number.isFinite(t) && t >= start.getTime();
+        });
+
+        if (!recentRows.length) {
+          colTodo.innerHTML = `<div class="text-body-md text-outline">Sem atualizações na semana.</div>`;
+          if (countEl) countEl.textContent = "0 theme(s) atualizados na semana.";
+          return;
+        }
+
+        const mapAll = groupByTheme(currentRows);
+        const mapRecent = groupByTheme(recentRows);
+
+        const themes = Array.from(mapRecent.keys()).map((theme) => {
+          const allRows = mapAll.get(theme) || [];
+          const sorted = [...allRows].sort(compareLastUpdateDesc);
+          const latest = sorted[0];
+          const status = derivedThemeStatusLatest(sorted);
+          const jiraKey = sorted.find((r) => (r.jiraKey || "").trim())?.jiraKey || "";
+          const updateMs = Date.parse(String(latest?.lastUpdate || "")) || 0;
+          return { theme, status, jiraKey, updateMs, lastSeq: Number(latest?.__seq || 0) };
+        });
+
+        themes.sort((a, b) => {
+          if (b.updateMs !== a.updateMs) return b.updateMs - a.updateMs;
+          return b.lastSeq - a.lastSeq;
+        });
+
+        const toItem = (t) => {
+          const jira = t.jiraKey ? `<span class="text-label-md text-outline">${escapeHtml(t.jiraKey)}</span>` : "";
+          return `
+            <div class="bg-surface-container-low p-3 rounded-lg border border-outline-variant flex flex-col gap-1">
+              <div class="font-label-md text-label-md text-on-surface">${escapeHtml(t.theme)}</div>
+              ${jira}
+            </div>
+          `;
+        };
+
+        for (const t of themes) {
+          if (t.status === "Done") colDone.insertAdjacentHTML("beforeend", toItem(t));
+          else if (t.status === "In Progress") colInProgress.insertAdjacentHTML("beforeend", toItem(t));
+          else colTodo.insertAdjacentHTML("beforeend", toItem(t));
+        }
+
+        if (countEl) countEl.textContent = `${themes.length} theme(s) atualizados na semana.`;
+      }
+
+      function splitNotes(notesTextRaw) {
+        const notesText = String(notesTextRaw || "").replace(/\r\n/g, "\n");
+        const notesTrimmed = notesText.trim();
+        if (!notesTrimmed) return [""];
+
+        // Suporta separador "---" e também linhas em branco para múltiplas notas.
+        const partsTop = notesText.split(/\n---\s*\n/g);
+        let notes = [];
+        for (const chunk of partsTop) {
+          const subparts = chunk.split(/\n\s*\n+/g);
+          for (const p of subparts) {
+            const t = String(p || "").trim();
+            if (t) notes.push(t);
+          }
+        }
+        if (notes.length === 0) notes = [notesTrimmed];
+        return notes;
+      }
+
+      async function saveNoteForTheme(theme, safeThemeId) {
+        const ta = document.getElementById("noteTextarea-" + safeThemeId);
+        const sel = document.getElementById("noteStatus-" + safeThemeId);
+        if (!ta || !sel) return;
+
+        const noteText = (ta.value || "").trim();
+        if (!noteText) {
+          alert("Escreva uma nota antes de clicar em Salvar.");
+          return;
+        }
+
+        const noteStatus = sel.value || "To do";
+
+        // Reuse jiraKey/jiraStatus from existing rows of that theme (if present).
+        const existing = currentRows.filter((r) => String(r.theme || "") === String(theme || ""));
+        const jiraKey = existing.find((r) => (r.jiraKey || "").trim())?.jiraKey || "";
+        const jiraStatus = existing.find((r) => (r.jiraStatus || "").trim())?.jiraStatus || "";
+
+        currentRows.push({
+          theme,
+          theme_status: noteStatus,
+          jiraKey,
+          jiraStatus,
+          notes: noteText,
+          lastUpdate: currentLastUpdateValue(),
+          __seq: seqCounter++,
+        });
+
+        await persist();
+        ta.value = "";
+        renderDashboard();
+        if (activeView === "theme") renderThemeView();
+        if (activeView === "week") renderWeekView();
+      }
+
+      function deleteNoteBySeq(seq) {
+        const n = Number(seq);
+        if (!Number.isFinite(n)) return;
+        currentRows = currentRows.filter((r) => Number(r.__seq) !== n);
+        persist().then(() => {
+          renderDashboard();
+          if (activeView === "theme") renderThemeView();
+          if (activeView === "week") renderWeekView();
+        });
+      }
+
+      function deleteThemeByName(theme) {
+        const themeStr = String(theme || "");
+        currentRows = currentRows.filter((r) => String(r.theme || "") !== themeStr);
+        persist().then(() => {
+          renderDashboard();
+          if (activeView === "theme") renderThemeView();
+          if (activeView === "week") renderWeekView();
+        });
+      }
+
+      // Event bindings
+      $("statusSelect").addEventListener("change", () => renderDashboard());
+      $("sortSelect").addEventListener("change", () => renderDashboard());
+      $("searchInput").addEventListener("input", () => renderDashboard());
+
+      $("btnAddTheme").addEventListener("click", () => {
+        $("addThemeModal").classList.remove("hidden");
+        $("addThemeModal").setAttribute("aria-hidden", "false");
+        $("addThemeFormTheme").focus();
+      });
+      $("addThemeModalClose").addEventListener("click", closeModal);
+      $("addThemeCancel").addEventListener("click", closeModal);
+      $("addThemeModal").addEventListener("click", (e) => {
+        if (e.target === $("addThemeModal")) closeModal();
+      });
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && !$("addThemeModal").classList.contains("hidden")) closeModal();
+      });
+
+      function closeModal() {
+        $("addThemeModal").classList.add("hidden");
+        $("addThemeModal").setAttribute("aria-hidden", "true");
+      }
+
+      $("addThemeForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const theme = $("addThemeFormTheme").value.trim();
+        const theme_status = $("addThemeFormStatus").value;
+        const jiraKey = $("addThemeFormJiraKey").value.trim();
+        const jiraStatus = $("addThemeFormJiraStatus").value.trim();
+        const notesTextRaw = $("addThemeFormNotes").value;
+        if (!theme) return;
+
+        const allowed = ["To do", "In Progress", "Done"];
+        const finalThemeStatus = allowed.includes(theme_status) ? theme_status : "To do";
+        const notesList = splitNotes(notesTextRaw);
+
+        for (const n of notesList) {
+          currentRows.push({
+            theme,
+            theme_status: finalThemeStatus,
+            jiraKey,
+            jiraStatus,
+            notes: n,
+            lastUpdate: currentLastUpdateValue(),
+            __seq: seqCounter++,
+          });
+        }
+
+        await persist();
+        closeModal();
+        $("addThemeFormNotes").value = "";
+        $("addThemeFormJiraKey").value = "";
+        $("addThemeFormJiraStatus").value = "";
+        $("addThemeFormTheme").value = "";
+        renderDashboard();
+        if (activeView === "theme") renderThemeView();
+        if (activeView === "week") renderWeekView();
+      });
+
+      // Delete + save note (event delegation)
+      $("themesGrid").addEventListener("click", (e) => {
+        const target = e.target;
+        const noteBtn = target.closest && target.closest('[data-action="delete-note"]');
+        if (noteBtn) {
+          const seq = noteBtn.getAttribute("data-note-seq");
+          if (confirm("Excluir esta nota?")) deleteNoteBySeq(seq);
+          return;
+        }
+
+        const themeBtn = target.closest && target.closest('[data-action="delete-theme"]');
+        if (themeBtn) {
+          const themeEnc = themeBtn.getAttribute("data-theme-enc");
+          const theme = decodeURIComponent(themeEnc || "");
+          if (confirm("Excluir este tema e todas as suas notas?")) deleteThemeByName(theme);
+          return;
+        }
+
+        const saveBtn = target.closest && target.closest('[data-action="save-note"]');
+        if (saveBtn) {
+          const themeEnc = saveBtn.getAttribute("data-theme-enc") || "";
+          const safeThemeId = saveBtn.getAttribute("data-safe-theme-id") || "";
+          const theme = decodeURIComponent(themeEnc);
+          saveNoteForTheme(theme, safeThemeId);
+        }
+      });
+
+      // Nav
+      $("navDashboard").addEventListener("click", (e) => {
+        e.preventDefault();
+        showDashboard();
+      });
+      $("navThemeView").addEventListener("click", (e) => {
+        e.preventDefault();
+        showThemeView();
+      });
+      $("navWeekView").addEventListener("click", (e) => {
+        e.preventDefault();
+        showWeekView();
+      });
+
+      $("btnExportWeekPdf").addEventListener("click", () => {
+        showWeekView();
+        document.body.classList.add("print-export-week");
+        setTimeout(() => {
+          window.print();
+          document.body.classList.remove("print-export-week");
+        }, 60);
+      });
+
+      // Theme View date defaults (last 30 days)
+      $("btnThemeDateApply").addEventListener("click", () => renderThemeView());
+      (function initThemeDateDefaults() {
+        const toInputValue = (d) => {
+          const yyyy = d.getFullYear();
+          const mm = String(d.getMonth() + 1).padStart(2, "0");
+          const dd = String(d.getDate()).padStart(2, "0");
+          return `${yyyy}-${mm}-${dd}`;
+        };
+        const now = new Date();
+        const end = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
+        const start = new Date(end);
+        start.setDate(start.getDate() - 30);
+        $("themeDateStart").value = toInputValue(start);
+        $("themeDateEnd").value = toInputValue(end);
+      })();
+
+      // Init
+      (async function init() {
+        try {
+          await loadFromDB();
+        } catch (e) {
+          console.warn("Erro ao carregar do IndexedDB:", e);
+        } finally {
+          isReady = true;
+          renderDashboard();
+          setActiveNav("dashboard");
+          updateHeader();
+        }
+      })();
+    </script>
+  </body>
+</html>
+
