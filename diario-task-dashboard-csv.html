@@ -114,27 +114,168 @@
         z-index: 30;
       }
 
+      .week-print-report {
+        display: none;
+      }
+
       @media print {
-        body.print-export-week aside {
-          display: none !important;
+        @page {
+          margin: 18mm 16mm;
         }
-        body.print-export-week header {
+
+        body.print-export-week {
+          background: #fff !important;
+          color: #111 !important;
+        }
+
+        body.print-export-week aside,
+        body.print-export-week header,
+        body.print-export-week .week-screen-only,
+        body.print-export-week #btnExportWeekPdf {
           display: none !important;
         }
 
-        /* mostra apenas a seção Week View */
+        body.print-export-week main {
+          margin-left: 0 !important;
+          width: 100% !important;
+        }
+
         body.print-export-week main > div > section {
           display: none !important;
         }
+
         body.print-export-week main #weekView {
           display: block !important;
         }
-        body.print-export-week main #weekView * {
-          visibility: visible !important;
-          display: inherit !important;
+
+        body.print-export-week #weekView .bg-surface-container-lowest {
+          border: none !important;
+          padding: 0 !important;
+          background: transparent !important;
+          box-shadow: none !important;
         }
-        body.print-export-week #btnExportWeekPdf {
-          display: none !important;
+
+        body.print-export-week .week-print-report {
+          display: block !important;
+        }
+
+        body.print-export-week .week-print-header {
+          margin-bottom: 24px;
+          padding-bottom: 16px;
+          border-bottom: 2px solid #006768;
+        }
+
+        body.print-export-week .week-print-title {
+          font-family: "Hanken Grotesk", Inter, sans-serif;
+          font-size: 28px;
+          font-weight: 700;
+          color: #006768;
+          margin: 0 0 8px;
+        }
+
+        body.print-export-week .week-print-meta {
+          font-size: 13px;
+          color: #4b5563;
+          margin: 0;
+        }
+
+        body.print-export-week .week-print-section {
+          margin-bottom: 28px;
+          break-inside: avoid-page;
+        }
+
+        body.print-export-week .week-print-section-title {
+          font-family: "Hanken Grotesk", Inter, sans-serif;
+          font-size: 18px;
+          font-weight: 700;
+          margin: 0 0 12px;
+          padding: 8px 12px;
+          border-radius: 6px;
+        }
+
+        body.print-export-week .week-print-section-title.done {
+          background: #e6f4f4;
+          color: #006768;
+        }
+
+        body.print-export-week .week-print-section-title.in-progress {
+          background: #eef4ff;
+          color: #1e5db0;
+        }
+
+        body.print-export-week .week-print-section-title.todo {
+          background: #f3f4f6;
+          color: #374151;
+        }
+
+        body.print-export-week .week-print-theme {
+          border: 1px solid #d1d5db;
+          border-radius: 8px;
+          padding: 14px 16px;
+          margin-bottom: 12px;
+          break-inside: avoid-page;
+          background: #fff;
+        }
+
+        body.print-export-week .week-print-theme-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: baseline;
+          gap: 12px;
+          margin-bottom: 10px;
+          padding-bottom: 8px;
+          border-bottom: 1px solid #e5e7eb;
+        }
+
+        body.print-export-week .week-print-theme-name {
+          font-size: 15px;
+          font-weight: 700;
+          color: #111827;
+          margin: 0;
+        }
+
+        body.print-export-week .week-print-theme-description {
+          font-size: 12px;
+          color: #4b5563;
+          margin: 4px 0 0;
+          white-space: pre-wrap;
+        }
+
+        body.print-export-week .week-print-jira {
+          font-size: 12px;
+          color: #6b7280;
+          white-space: nowrap;
+        }
+
+        body.print-export-week .week-print-note {
+          padding: 8px 0;
+          border-top: 1px dashed #e5e7eb;
+        }
+
+        body.print-export-week .week-print-note:first-child {
+          border-top: none;
+          padding-top: 0;
+        }
+
+        body.print-export-week .week-print-note-meta {
+          font-size: 11px;
+          color: #6b7280;
+          margin-bottom: 4px;
+        }
+
+        body.print-export-week .week-print-note-text {
+          font-size: 13px;
+          line-height: 1.5;
+          color: #1f2937;
+          margin: 0;
+          white-space: pre-wrap;
+        }
+
+        body.print-export-week .week-print-empty {
+          font-size: 13px;
+          color: #6b7280;
+          font-style: italic;
+          margin: 0;
         }
       }
     </style>
@@ -292,7 +433,7 @@
         <section id="weekView" class="hidden mt-2">
           <div class="flex flex-col gap-4">
             <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant">
-              <div class="flex items-center justify-end gap-4 mb-6">
+              <div class="week-screen-only flex items-center justify-end gap-4 mb-6">
                 <div class="flex items-center gap-3">
                   <div class="text-label-md text-outline" id="weekViewCount"></div>
                   <button
@@ -307,7 +448,7 @@
                 </div>
               </div>
 
-              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="week-screen-only grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-4">
                   <h3 class="font-label-md text-label-md text-on-surface-variant mb-3">To do</h3>
                   <div id="weekColTodo" class="flex flex-col gap-2"></div>
@@ -320,6 +461,29 @@
                   <h3 class="font-label-md text-label-md text-on-surface-variant mb-3">Done</h3>
                   <div id="weekColDone" class="flex flex-col gap-2"></div>
                 </div>
+              </div>
+
+              <div id="weekPrintReport" class="week-print-report" aria-hidden="true">
+                <header class="week-print-header">
+                  <h1 class="week-print-title">Resumo Semanal de Atividades</h1>
+                  <p class="week-print-meta" id="weekPrintPeriod"></p>
+                  <p class="week-print-meta" id="weekPrintSummary"></p>
+                </header>
+
+                <section class="week-print-section">
+                  <h2 class="week-print-section-title done">Concluído</h2>
+                  <div id="weekPrintDone"></div>
+                </section>
+
+                <section class="week-print-section">
+                  <h2 class="week-print-section-title in-progress">Em progresso</h2>
+                  <div id="weekPrintInProgress"></div>
+                </section>
+
+                <section class="week-print-section">
+                  <h2 class="week-print-section-title todo">A fazer</h2>
+                  <div id="weekPrintTodo"></div>
+                </section>
               </div>
             </div>
           </div>
@@ -381,14 +545,13 @@
               />
             </div>
 
-            <div class="flex flex-col gap-1">
-              <label class="text-label-md text-on-surface-variant font-semibold">jiraStatus (opcional)</label>
-              <input
-                id="addThemeFormJiraStatus"
-                class="bg-surface-container-low border border-outline-variant rounded-lg p-3 text-body-md focus:ring-2 focus:ring-primary focus:outline-none"
-                type="text"
-                placeholder="Se tiver (opcional)"
-              />
+            <div class="md:col-span-2 flex flex-col gap-1">
+              <label class="text-label-md text-on-surface-variant font-semibold">theme description (opcional)</label>
+              <textarea
+                id="addThemeFormThemeDescription"
+                class="bg-surface-container-low border border-outline-variant rounded-lg p-3 text-body-md min-h-[72px] resize-y focus:ring-2 focus:ring-primary focus:outline-none"
+                placeholder="Breve descrição do tema ou iniciativa"
+              ></textarea>
             </div>
 
             <div class="md:col-span-2 flex flex-col gap-1">
@@ -435,7 +598,7 @@ Nota 2"
       const STORE_NAME = "diario";
       const KEY_ALL = "all";
 
-      /** @type {{theme:string, theme_status:string, jiraKey:string, jiraStatus:string, notes:string, lastUpdate:string, __seq:number}[]} */
+      /** @type {{theme:string, theme_status:string, jiraKey:string, themeDescription:string, notes:string, lastUpdate:string, __seq:number}[]} */
       let currentRows = [];
       let seqCounter = 1;
       let isReady = false;
@@ -489,6 +652,18 @@ Nota 2"
         return String(s || "").toLowerCase().trim();
       }
 
+      function getThemeDescription(rows) {
+        const found = rows.find((r) => String(r.themeDescription || r.jiraStatus || "").trim());
+        return String(found?.themeDescription || found?.jiraStatus || "").trim();
+      }
+
+      function normalizeLoadedRows(rows) {
+        return rows.map((r) => ({
+          ...r,
+          themeDescription: String(r.themeDescription || r.jiraStatus || "").trim(),
+        }));
+      }
+
       function groupByTheme(rows) {
         const map = new Map();
         for (const r of rows) {
@@ -506,6 +681,24 @@ Nota 2"
 
       function currentLastUpdateValue() {
         return new Date().toISOString();
+      }
+
+      function formatDateDisplay(value) {
+        const t = Date.parse(String(value || ""));
+        if (!Number.isFinite(t)) return String(value || "-");
+        return new Date(t).toLocaleString("pt-BR", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+      }
+
+      function formatDateShort(value) {
+        const t = Date.parse(String(value || ""));
+        if (!Number.isFinite(t)) return "-";
+        return new Date(t).toLocaleDateString("pt-BR");
       }
 
       function syncSeqCounter(rows) {
@@ -551,7 +744,7 @@ Nota 2"
           req.onsuccess = () => {
             const payload = req.result;
             const rows = payload && Array.isArray(payload.rows) ? payload.rows : [];
-            currentRows = rows;
+            currentRows = normalizeLoadedRows(rows);
             syncSeqCounter(currentRows);
             resolve(rows.length > 0);
           };
@@ -640,15 +833,16 @@ Nota 2"
           const sorted = [...rows].sort(compareLastUpdateDesc);
           const status = derivedThemeStatusLatest(sorted);
           const jiraKey = sorted.find((r) => (r.jiraKey || "").trim())?.jiraKey || "";
+          const themeDescription = getThemeDescription(sorted);
           const lastUpdate = sorted[0]?.lastUpdate || "";
-          return { theme, rows: sorted, status, jiraKey, lastUpdate, lastSeq: Number(sorted[0]?.__seq || 0), updateMs: Number(Date.parse(String(lastUpdate || ""))) || 0 };
+          return { theme, rows: sorted, status, jiraKey, themeDescription, lastUpdate, lastSeq: Number(sorted[0]?.__seq || 0), updateMs: Number(Date.parse(String(lastUpdate || ""))) || 0 };
         });
 
         const filtered = themes
           .filter((t) => {
             if (normStatusFilter !== "ALL" && t.status !== normStatusFilter) return false;
             if (!search) return true;
-            const hay = normalize(t.theme) + " " + normalize(t.jiraKey);
+            const hay = normalize(t.theme) + " " + normalize(t.jiraKey) + " " + normalize(t.themeDescription);
             return hay.includes(search);
           })
           .sort((a, b) => {
@@ -693,6 +887,9 @@ Nota 2"
           const statusPill = escapeHtml(cardStatus);
           const safeThemeId = normalize(t.theme).replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
           const jiraKeyHtml = themeLink(t.jiraKey);
+          const themeDescriptionHtml = t.themeDescription
+            ? `<p class="text-body-md text-on-surface-variant mt-1" style="white-space: pre-wrap;">${escapeHtml(t.themeDescription)}</p>`
+            : "";
 
           const notesHtml = t.rows
             .map((r) => {
@@ -735,7 +932,8 @@ Nota 2"
                 <div class="flex flex-wrap justify-between items-start gap-4 mb-6">
                   <div class="flex flex-col gap-1">
                     <h3 class="font-headline-md text-headline-md text-on-surface">${escapeHtml(t.theme)}</h3>
-                    <div class="flex items-center gap-3">
+                    ${themeDescriptionHtml}
+                    <div class="flex items-center gap-3 mt-1">
                       <span class="px-3 py-1 ${statusPillClass(cardStatus)} text-label-md rounded-full font-semibold">${statusPill}</span>
                       <div class="text-secondary font-label-md">${jiraKeyHtml}</div>
                     </div>
@@ -822,8 +1020,9 @@ Nota 2"
           const latest = sorted[0];
           const status = derivedThemeStatusLatest(sorted);
           const jiraKey = sorted.find((r) => (r.jiraKey || "").trim())?.jiraKey || "";
+          const themeDescription = getThemeDescription(sorted);
           const updateMs = Number.isFinite(Date.parse(String(latest?.lastUpdate || ""))) ? Date.parse(String(latest.lastUpdate)) : 0;
-          return { theme, status, jiraKey, updateMs, lastSeq: Number(latest?.__seq || 0) };
+          return { theme, status, jiraKey, themeDescription, updateMs, lastSeq: Number(latest?.__seq || 0) };
         });
 
         const filtered = allThemes.filter((t) => {
@@ -839,9 +1038,13 @@ Nota 2"
 
         const toItem = (t) => {
           const jira = t.jiraKey ? `<span class="text-label-md text-outline">${escapeHtml(t.jiraKey)}</span>` : "";
+          const desc = t.themeDescription
+            ? `<p class="text-body-md text-on-surface-variant text-xs mt-0.5" style="white-space: pre-wrap;">${escapeHtml(t.themeDescription)}</p>`
+            : "";
           return `
             <div class="bg-surface-container-low p-3 rounded-lg border border-outline-variant flex flex-col gap-1">
               <div class="font-label-md text-label-md text-on-surface">${escapeHtml(t.theme)}</div>
+              ${desc}
               ${jira}
             </div>
           `;
@@ -864,11 +1067,19 @@ Nota 2"
         const colInProgress = $("weekColInProgress");
         const colDone = $("weekColDone");
         const countEl = $("weekViewCount");
+        const printDone = $("weekPrintDone");
+        const printInProgress = $("weekPrintInProgress");
+        const printTodo = $("weekPrintTodo");
+        const printPeriod = $("weekPrintPeriod");
+        const printSummary = $("weekPrintSummary");
         if (!colTodo || !colInProgress || !colDone) return;
 
         colTodo.innerHTML = "";
         colInProgress.innerHTML = "";
         colDone.innerHTML = "";
+        if (printDone) printDone.innerHTML = "";
+        if (printInProgress) printInProgress.innerHTML = "";
+        if (printTodo) printTodo.innerHTML = "";
 
         const now = new Date();
         const start = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
@@ -879,8 +1090,17 @@ Nota 2"
         });
 
         if (!recentRows.length) {
-          colTodo.innerHTML = `<div class="text-body-md text-outline">Sem atualizações na semana.</div>`;
+          const emptyMsg = `<div class="text-body-md text-outline">Sem atualizações na semana.</div>`;
+          const printEmpty = `<p class="week-print-empty">Nenhuma atualização nesta semana.</p>`;
+          colTodo.innerHTML = emptyMsg;
+          if (printDone) printDone.innerHTML = printEmpty;
+          if (printInProgress) printInProgress.innerHTML = printEmpty;
+          if (printTodo) printTodo.innerHTML = printEmpty;
           if (countEl) countEl.textContent = "0 theme(s) atualizados na semana.";
+          if (printPeriod) {
+            printPeriod.textContent = `Período: ${formatDateShort(start)} a ${formatDateShort(now)} · Gerado em ${formatDateDisplay(now)}`;
+          }
+          if (printSummary) printSummary.textContent = "0 tema(s) atualizado(s) na semana.";
           return;
         }
 
@@ -889,12 +1109,14 @@ Nota 2"
 
         const themes = Array.from(mapRecent.keys()).map((theme) => {
           const allRows = mapAll.get(theme) || [];
+          const weekRows = [...(mapRecent.get(theme) || [])].sort(compareLastUpdateDesc);
           const sorted = [...allRows].sort(compareLastUpdateDesc);
           const latest = sorted[0];
           const status = derivedThemeStatusLatest(sorted);
           const jiraKey = sorted.find((r) => (r.jiraKey || "").trim())?.jiraKey || "";
+          const themeDescription = getThemeDescription(sorted);
           const updateMs = Date.parse(String(latest?.lastUpdate || "")) || 0;
-          return { theme, status, jiraKey, updateMs, lastSeq: Number(latest?.__seq || 0) };
+          return { theme, status, jiraKey, themeDescription, updateMs, lastSeq: Number(latest?.__seq || 0), weekRows };
         });
 
         themes.sort((a, b) => {
@@ -902,23 +1124,102 @@ Nota 2"
           return b.lastSeq - a.lastSeq;
         });
 
-        const toItem = (t) => {
+        const toScreenItem = (t) => {
           const jira = t.jiraKey ? `<span class="text-label-md text-outline">${escapeHtml(t.jiraKey)}</span>` : "";
+          const desc = t.themeDescription
+            ? `<p class="text-body-md text-on-surface-variant text-xs mt-0.5" style="white-space: pre-wrap;">${escapeHtml(t.themeDescription)}</p>`
+            : "";
+          const notesHtml = (t.weekRows || [])
+            .map((r) => {
+              const noteText = escapeHtml(r.notes || "");
+              const noteTime = escapeHtml(formatDateDisplay(r.lastUpdate));
+              const noteStatus = normalizeStatus(r.theme_status || "To do");
+              return `
+                <div class="border-t border-outline-variant pt-2 mt-1 flex flex-col gap-1">
+                  <div class="flex items-center justify-between gap-2">
+                    <span class="px-2 py-0.5 ${statusPillClass(noteStatus)} text-label-md rounded">${escapeHtml(noteStatus)}</span>
+                    <span class="text-label-md text-outline text-xs">${noteTime}</span>
+                  </div>
+                  <p class="text-body-md text-on-surface" style="white-space: pre-wrap;">${noteText}</p>
+                </div>
+              `;
+            })
+            .join("");
+
           return `
             <div class="bg-surface-container-low p-3 rounded-lg border border-outline-variant flex flex-col gap-1">
               <div class="font-label-md text-label-md text-on-surface">${escapeHtml(t.theme)}</div>
+              ${desc}
               ${jira}
+              ${notesHtml}
             </div>
           `;
         };
 
+        const toPrintTheme = (t) => {
+          const jira = t.jiraKey
+            ? `<span class="week-print-jira">${escapeHtml(t.jiraKey)}</span>`
+            : `<span class="week-print-jira">Sem Jira Key</span>`;
+          const desc = t.themeDescription
+            ? `<p class="week-print-theme-description">${escapeHtml(t.themeDescription)}</p>`
+            : "";
+          const notesHtml = (t.weekRows || [])
+            .map((r) => {
+              const noteText = escapeHtml(r.notes || "");
+              const noteTime = escapeHtml(formatDateDisplay(r.lastUpdate));
+              return `
+                <div class="week-print-note">
+                  <div class="week-print-note-meta">${noteTime}</div>
+                  <p class="week-print-note-text">${noteText}</p>
+                </div>
+              `;
+            })
+            .join("");
+
+          return `
+            <article class="week-print-theme">
+              <div class="week-print-theme-header">
+                <div>
+                  <h3 class="week-print-theme-name">${escapeHtml(t.theme)}</h3>
+                  ${desc}
+                </div>
+                ${jira}
+              </div>
+              <div class="week-print-notes">${notesHtml}</div>
+            </article>
+          `;
+        };
+
+        const doneThemes = themes.filter((t) => t.status === "Done");
+        const inProgressThemes = themes.filter((t) => t.status === "In Progress");
+        const todoThemes = themes.filter((t) => t.status !== "Done" && t.status !== "In Progress");
+
         for (const t of themes) {
-          if (t.status === "Done") colDone.insertAdjacentHTML("beforeend", toItem(t));
-          else if (t.status === "In Progress") colInProgress.insertAdjacentHTML("beforeend", toItem(t));
-          else colTodo.insertAdjacentHTML("beforeend", toItem(t));
+          if (t.status === "Done") colDone.insertAdjacentHTML("beforeend", toScreenItem(t));
+          else if (t.status === "In Progress") colInProgress.insertAdjacentHTML("beforeend", toScreenItem(t));
+          else colTodo.insertAdjacentHTML("beforeend", toScreenItem(t));
         }
 
+        const fillPrintSection = (el, items) => {
+          if (!el) return;
+          if (!items.length) {
+            el.innerHTML = `<p class="week-print-empty">Nenhum tema nesta categoria.</p>`;
+            return;
+          }
+          el.innerHTML = items.map(toPrintTheme).join("");
+        };
+
+        fillPrintSection(printDone, doneThemes);
+        fillPrintSection(printInProgress, inProgressThemes);
+        fillPrintSection(printTodo, todoThemes);
+
         if (countEl) countEl.textContent = `${themes.length} theme(s) atualizados na semana.`;
+        if (printPeriod) {
+          printPeriod.textContent = `Período: ${formatDateShort(start)} a ${formatDateShort(now)} · Gerado em ${formatDateDisplay(now)}`;
+        }
+        if (printSummary) {
+          printSummary.textContent = `${themes.length} tema(s) atualizado(s) · ${doneThemes.length} concluído(s) · ${inProgressThemes.length} em progresso · ${todoThemes.length} a fazer`;
+        }
       }
 
       function splitNotes(notesTextRaw) {
@@ -953,16 +1254,16 @@ Nota 2"
 
         const noteStatus = sel.value || "To do";
 
-        // Reuse jiraKey/jiraStatus from existing rows of that theme (if present).
+        // Reuse jiraKey/themeDescription from existing rows of that theme (if present).
         const existing = currentRows.filter((r) => String(r.theme || "") === String(theme || ""));
         const jiraKey = existing.find((r) => (r.jiraKey || "").trim())?.jiraKey || "";
-        const jiraStatus = existing.find((r) => (r.jiraStatus || "").trim())?.jiraStatus || "";
+        const themeDescription = getThemeDescription(existing);
 
         currentRows.push({
           theme,
           theme_status: noteStatus,
           jiraKey,
-          jiraStatus,
+          themeDescription,
           notes: noteText,
           lastUpdate: currentLastUpdateValue(),
           __seq: seqCounter++,
@@ -1025,7 +1326,7 @@ Nota 2"
         const theme = $("addThemeFormTheme").value.trim();
         const theme_status = $("addThemeFormStatus").value;
         const jiraKey = $("addThemeFormJiraKey").value.trim();
-        const jiraStatus = $("addThemeFormJiraStatus").value.trim();
+        const themeDescription = $("addThemeFormThemeDescription").value.trim();
         const notesTextRaw = $("addThemeFormNotes").value;
         if (!theme) return;
 
@@ -1038,7 +1339,7 @@ Nota 2"
             theme,
             theme_status: finalThemeStatus,
             jiraKey,
-            jiraStatus,
+            themeDescription,
             notes: n,
             lastUpdate: currentLastUpdateValue(),
             __seq: seqCounter++,
@@ -1049,7 +1350,7 @@ Nota 2"
         closeModal();
         $("addThemeFormNotes").value = "";
         $("addThemeFormJiraKey").value = "";
-        $("addThemeFormJiraStatus").value = "";
+        $("addThemeFormThemeDescription").value = "";
         $("addThemeFormTheme").value = "";
         renderDashboard();
         if (activeView === "theme") renderThemeView();
@@ -1099,11 +1400,12 @@ Nota 2"
 
       $("btnExportWeekPdf").addEventListener("click", () => {
         showWeekView();
+        renderWeekView();
         document.body.classList.add("print-export-week");
         setTimeout(() => {
           window.print();
           document.body.classList.remove("print-export-week");
-        }, 60);
+        }, 120);
       });
 
       // Theme View date defaults (last 30 days)
