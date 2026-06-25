@@ -108,6 +108,12 @@
         scrollbar-width: none;
       }
 
+      .sticky-below-header {
+        position: sticky;
+        top: 4rem; /* h-16 do header */
+        z-index: 30;
+      }
+
       @media print {
         body.print-export-week aside {
           display: none !important;
@@ -136,12 +142,12 @@
 
   <body class="bg-background text-on-background font-body-md min-h-screen flex">
     <!-- SideNavBar -->
-    <aside class="fixed left-0 top-0 h-full w-[260px] bg-surface-container-low flex flex-col py-8 px-4 gap-4 z-50">
+    <aside class="fixed left-0 top-0 h-full w-[260px] bg-[#e5e7eb] flex flex-col py-8 px-4 gap-4 z-50">
       <div class="flex items-center gap-3 px-2 mb-6">
         <img
           class="w-full h-12 object-contain"
-          alt="Logo Diario Task Dashboard"
-          src="file:///C:/Users/99834395/.cursor/projects/c-Users-99834395-Cursor/assets/c__Users_99834395_AppData_Roaming_Cursor_User_workspaceStorage_b523eb13f202c8ea1f8e16ffa35eb702_images_Gemini_Generated_Image_15ney715ney715ne-0c7c2643-7607-4b1b-897b-b9da18c613b3.png"
+          alt="Mr. PORFS Task Management"
+          src="logo-diario.png"
         />
       </div>
 
@@ -168,8 +174,8 @@
     </aside>
 
     <!-- Main Content -->
-    <main class="ml-[260px] flex-grow min-h-screen flex flex-col">
-      <header class="sticky top-0 z-40 bg-surface border-b border-outline-variant flex justify-between items-center w-full px-margin-page h-16">
+    <main class="ml-[260px] flex-grow min-h-screen flex flex-col bg-background">
+      <header class="sticky top-0 z-40 bg-background border-b border-outline-variant flex justify-between items-center w-full px-margin-page h-16">
         <div class="flex items-center gap-4">
           <h2 id="pageTitle" class="font-headline-md text-headline-md font-bold text-primary">Dashboard</h2>
         </div>
@@ -178,7 +184,7 @@
 
       <div class="p-margin-page max-w-container-max mx-auto w-full">
         <!-- Dashboard -->
-        <section id="dashboardFilters" class="flex flex-col md:flex-row md:flex-nowrap gap-gutter items-center md:items-end mb-8 bg-surface-container-lowest p-6 rounded-xl border border-outline-variant">
+        <section id="dashboardFilters" class="sticky-below-header flex flex-col md:flex-row md:flex-nowrap gap-gutter items-center md:items-end mb-8 bg-surface-container-lowest p-6 rounded-xl border border-outline-variant shadow-sm">
           <div class="flex flex-col gap-1 w-full md:flex-grow">
             <label class="font-label-md text-label-md text-outline">Pesquisa Rápida</label>
             <div class="relative">
@@ -241,7 +247,7 @@
         <!-- Theme View -->
         <section id="themeView" class="hidden mt-2">
           <div class="flex flex-col gap-4">
-            <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant">
+            <div class="sticky-below-header bg-surface-container-lowest p-6 rounded-xl border border-outline-variant shadow-sm">
               <div class="flex flex-col md:flex-row md:flex-nowrap gap-gutter items-center md:items-end">
                 <div class="flex flex-col gap-1 w-full md:flex-grow">
                   <label class="font-label-md text-label-md text-on-surface-variant">Data início</label>
