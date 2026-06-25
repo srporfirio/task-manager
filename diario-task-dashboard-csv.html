@@ -420,6 +420,18 @@
           </div>
 
           <div class="flex flex-col gap-1 w-full md:w-auto">
+            <label class="font-label-md text-label-md text-outline">Week plan</label>
+            <select
+              id="weekPlanSelect"
+              class="bg-surface border border-outline-variant rounded-lg px-4 py-2 text-body-md focus:ring-2 focus:ring-primary min-w-[200px]"
+            >
+              <option value="ALL">Todos</option>
+              <option value="PLANNED">No plano da semana</option>
+              <option value="NOT_PLANNED">Fora do plano</option>
+            </select>
+          </div>
+
+          <div class="flex flex-col gap-1 w-full md:w-auto">
             <label class="font-label-md text-label-md text-outline">Ordenar</label>
             <select
               id="sortSelect"
@@ -696,6 +708,28 @@ Nota 2"
               <div class="text-label-md text-outline mt-1">
                 Se deixar vazio, cria com nota vazia.
               </div>
+            </div>
+
+            <div class="md:col-span-2 flex items-center gap-2">
+              <input
+                id="addThemeFormAddToWeekPlan"
+                type="checkbox"
+                class="rounded border-outline-variant text-primary focus:ring-primary"
+              />
+              <label for="addThemeFormAddToWeekPlan" class="text-body-md text-on-surface-variant cursor-pointer">
+                Adicionar automaticamente ao plano da semana
+              </label>
+            </div>
+
+            <div class="md:col-span-2 flex items-center gap-2">
+              <input
+                id="addThemeFormAddMore"
+                type="checkbox"
+                class="rounded border-outline-variant text-primary focus:ring-primary"
+              />
+              <label for="addThemeFormAddMore" class="text-body-md text-on-surface-variant cursor-pointer">
+                Adicionar mais temas
+              </label>
             </div>
 
             <div class="md:col-span-2 flex justify-end gap-3 pt-2">
@@ -1176,6 +1210,7 @@ Nota 2"
       function renderDashboard() {
         const statusFilter = $("statusSelect").value;
         const normStatusFilter = statusFilter === "ALL" ? "ALL" : normalizeStatus(statusFilter);
+        const weekPlanFilter = $("weekPlanSelect").value;
         const sortMode = $("sortSelect").value;
         const search = normalize($("searchInput").value);
 
@@ -1192,6 +1227,8 @@ Nota 2"
         const filtered = themes
           .filter((t) => {
             if (normStatusFilter !== "ALL" && t.status !== normStatusFilter) return false;
+            if (weekPlanFilter === "PLANNED" && !isThemeInWeekPlan(t.theme)) return false;
+            if (weekPlanFilter === "NOT_PLANNED" && isThemeInWeekPlan(t.theme)) return false;
             if (!search) return true;
             const hay = normalize(t.theme) + " " + normalize(t.jiraKey) + " " + normalize(t.themeDescription);
             return hay.includes(search);
@@ -1908,12 +1945,14 @@ Nota 2"
 
       // Event bindings
       $("statusSelect").addEventListener("change", () => renderDashboard());
+      $("weekPlanSelect").addEventListener("change", () => renderDashboard());
       $("sortSelect").addEventListener("change", () => renderDashboard());
       $("searchInput").addEventListener("input", () => renderDashboard());
 
       $("btnAddTheme").addEventListener("click", () => {
         $("addThemeModal").classList.remove("hidden");
         $("addThemeModal").setAttribute("aria-hidden", "false");
+        resetAddThemeForm();
         $("addThemeFormTheme").focus();
       });
       $("addThemeModalClose").addEventListener("click", closeModal);
@@ -1936,6 +1975,16 @@ Nota 2"
       function closeModal() {
         $("addThemeModal").classList.add("hidden");
         $("addThemeModal").setAttribute("aria-hidden", "true");
+      }
+
+      function resetAddThemeForm({ keepAddMore = false } = {}) {
+        $("addThemeFormTheme").value = "";
+        $("addThemeFormStatus").value = "To do";
+        $("addThemeFormJiraKey").value = "";
+        $("addThemeFormThemeDescription").value = "";
+        $("addThemeFormNotes").value = "";
+        $("addThemeFormAddToWeekPlan").checked = false;
+        if (!keepAddMore) $("addThemeFormAddMore").checked = false;
       }
 
       $("addThemeForm").addEventListener("submit", async (e) => {
@@ -1963,12 +2012,22 @@ Nota 2"
           });
         }
 
+        if ($("addThemeFormAddToWeekPlan").checked) {
+          ensureCurrentWeekPlan();
+          if (!weekPlan.themes.includes(theme)) weekPlan.themes.push(theme);
+        }
+
         await persist();
-        closeModal();
-        $("addThemeFormNotes").value = "";
-        $("addThemeFormJiraKey").value = "";
-        $("addThemeFormThemeDescription").value = "";
-        $("addThemeFormTheme").value = "";
+
+        const addMore = $("addThemeFormAddMore").checked;
+        resetAddThemeForm({ keepAddMore: addMore });
+
+        if (addMore) {
+          $("addThemeFormTheme").focus();
+        } else {
+          closeModal();
+        }
+
         refreshActiveView();
       });
 
