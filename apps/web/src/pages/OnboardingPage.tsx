@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { exportLocalPayload, hasLocalPayload } from "../lib/local-data";
 import { importLegacyPayload, userHasCloudData } from "../lib/import-legacy";
+import { ensureUserProfile } from "../lib/profile";
+import { formatSupabaseError } from "../lib/supabase-error";
 
 export function OnboardingPage() {
   const { user } = useAuth();
@@ -20,6 +22,7 @@ export function OnboardingPage() {
       if (!user) return;
 
       try {
+        await ensureUserProfile(user);
         const [cloudData, localData] = await Promise.all([
           userHasCloudData(user.id),
           hasLocalPayload(),
@@ -35,7 +38,7 @@ export function OnboardingPage() {
         setLocalAvailable(localData);
       } catch (err) {
         if (!mounted) return;
-        setError(err instanceof Error ? err.message : "Falha ao verificar dados.");
+        setError(formatSupabaseError(err));
       } finally {
         if (mounted) setLoading(false);
       }
@@ -62,11 +65,11 @@ export function OnboardingPage() {
       }
 
       setStatus("Importando temas e notas...");
-      await importLegacyPayload(payload, user.id);
+      await importLegacyPayload(payload, user);
       setStatus("Importação concluída.");
       navigate("/", { replace: true });
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Falha na importação.");
+      setError(err instanceof Error ? err.message : formatSupabaseError(err));
     } finally {
       setImporting(false);
     }
@@ -115,6 +118,18 @@ export function OnboardingPage() {
 
         {status ? <p className="mt-4 text-sm text-slate-600">{status}</p> : null}
         {error ? <p className="mt-4 text-sm text-red-600">{error}</p> : null}
+
+        <p className="mt-6 text-center text-sm text-slate-600">
+          Prefere a versão antiga?{" "}
+          <a
+            href="/legacy/index.html"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline hover:text-slate-900"
+          >
+            Abrir HTML offline
+          </a>
+        </p>
       </div>
     </div>
   );

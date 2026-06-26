@@ -26,7 +26,11 @@ export function LoginPage() {
     <div className="min-h-screen flex items-center justify-center p-6">
       <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
         <div className="flex flex-col items-center text-center gap-4">
-          <img src="/logo-diario.png" alt="Diário de Atividades" className="h-16 w-16 object-contain" />
+          <img
+            src="/logo-diario.png"
+            alt="Diário de Atividades"
+            className="h-16 w-auto max-w-[200px] object-contain"
+          />
           <div>
             <h1 className="text-2xl font-bold text-slate-900">Diário de Atividades</h1>
             <p className="mt-2 text-sm text-slate-600">
@@ -47,7 +51,12 @@ export function LoginPage() {
         {error ? <p className="mt-4 text-sm text-red-600">{error}</p> : null}
 
         <div className="mt-6 border-t border-slate-200 pt-4 text-center">
-          <a href="/legacy/index.html" className="text-sm text-slate-600 underline hover:text-slate-900">
+          <a
+            href="/legacy/index.html"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm text-slate-600 underline hover:text-slate-900"
+          >
             Usar versão local (sem conta)
           </a>
         </div>

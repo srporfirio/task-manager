@@ -9,6 +9,7 @@ import {
 } from "react";
 import type { Session, User } from "@supabase/supabase-js";
 import { supabase } from "../lib/supabase";
+import { ensureUserProfile } from "../lib/profile";
 
 type AuthContextValue = {
   session: Session | null;
@@ -35,9 +36,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, nextSession) => {
+    } = supabase.auth.onAuthStateChange((event, nextSession) => {
       setSession(nextSession);
       setLoading(false);
+      if (nextSession?.user && (event === "SIGNED_IN" || event === "INITIAL_SESSION")) {
+        void ensureUserProfile(nextSession.user).catch((err) => {
+          console.warn("ensureUserProfile:", err);
+        });
+      }
     });
 
     return () => {

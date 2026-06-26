@@ -1,5 +1,8 @@
 import { getWeekRange, isThemeStatus, normalizeStatus, type LegacyPayload } from "@task-manager/shared";
+import type { User } from "@supabase/supabase-js";
 import { supabase } from "./supabase";
+import { ensureUserProfile } from "./profile";
+import { formatSupabaseError } from "./supabase-error";
 
 function groupRowsByTheme(rows: LegacyPayload["rows"]) {
   const map = new Map<string, LegacyPayload["rows"]>();
@@ -22,7 +25,9 @@ export async function userHasCloudData(userId: string): Promise<boolean> {
   return (count ?? 0) > 0;
 }
 
-export async function importLegacyPayload(payload: LegacyPayload, userId: string): Promise<void> {
+export async function importLegacyPayload(payload: LegacyPayload, user: User): Promise<void> {
+  await ensureUserProfile(user);
+
   const grouped = groupRowsByTheme(payload.rows);
   const themeIdByName = new Map<string, string>();
 
@@ -34,7 +39,7 @@ export async function importLegacyPayload(payload: LegacyPayload, userId: string
     const { data: theme, error: themeError } = await supabase
       .from("themes")
       .insert({
-        user_id: userId,
+        user_id: user.id,
         name,
         jira_key: jiraKey || null,
         description: description || null,
@@ -42,7 +47,9 @@ export async function importLegacyPayload(payload: LegacyPayload, userId: string
       .select("id")
       .single();
 
-    if (themeError) throw themeError;
+    if (themeError) {
+      throw new Error(`Tema "${name}": ${formatSupabaseError(themeError)}`);
+    }
     themeIdByName.set(name, theme.id);
 
     const notes = rows.map((row) => {
@@ -50,7 +57,7 @@ export async function importLegacyPayload(payload: LegacyPayload, userId: string
       const timestamp = row.lastUpdate || new Date().toISOString();
       return {
         theme_id: theme.id,
-        user_id: userId,
+        user_id: user.id,
         status: isThemeStatus(status) ? status : "To do",
         content: row.notes ?? "",
         created_at: timestamp,
@@ -59,7 +66,9 @@ export async function importLegacyPayload(payload: LegacyPayload, userId: string
     });
 
     const { error: notesError } = await supabase.from("notes").insert(notes);
-    if (notesError) throw notesError;
+    if (notesError) {
+      throw new Error(`Notas de "${name}": ${formatSupabaseError(notesError)}`);
+    }
   }
 
   const { weekKey } = getWeekRange();
@@ -70,7 +79,7 @@ export async function importLegacyPayload(payload: LegacyPayload, userId: string
 
   const { data: weekPlan, error: weekPlanError } = await supabase
     .from("week_plans")
-    .insert({ user_id: userId, week_key: weekKey })
+    .insert({ user_id: user.id, week_key: weekKey })
     .select("id")
     .single();
 

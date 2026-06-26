@@ -3,6 +3,7 @@ import { env } from "./env";
 
 export const supabase = createClient(env.supabaseUrl(), env.supabaseAnonKey(), {
   auth: {
+    flowType: "pkce",
     autoRefreshToken: true,
     persistSession: true,
     detectSessionInUrl: true,
