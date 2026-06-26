@@ -1,24 +1,20 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { filterAndSortThemes, type DashboardTheme } from "@task-manager/shared";
-import { useAuth } from "../contexts/AuthContext";
 import { DashboardFilters, type DashboardFiltersState } from "../components/dashboard/DashboardFilters";
 import { ThemeCard } from "../components/dashboard/ThemeCard";
 import { AddThemeModal } from "../components/dashboard/AddThemeModal";
 import { EditThemeModal } from "../components/dashboard/EditThemeModal";
+import { useThemes } from "../hooks/useThemes";
 import {
   addNote,
   createTheme,
   deleteNote,
   deleteTheme,
-  fetchDashboardThemes,
   updateTheme,
-} from "../lib/api/themes";
+} from "../lib/hybrid-adapter";
 
 export function DashboardPage() {
-  const { user } = useAuth();
-  const [themes, setThemes] = useState<DashboardTheme[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { themes, loading, error, reload, user } = useThemes();
   const [filters, setFilters] = useState<DashboardFiltersState>({
     search: "",
     status: "ALL",
@@ -27,28 +23,6 @@ export function DashboardPage() {
   });
   const [addOpen, setAddOpen] = useState(false);
   const [editingTheme, setEditingTheme] = useState<DashboardTheme | null>(null);
-
-  const reload = useCallback(async () => {
-    if (!user) return;
-    const data = await fetchDashboardThemes(user.id);
-    setThemes(data);
-  }, [user]);
-
-  useEffect(() => {
-    let mounted = true;
-    setLoading(true);
-    setError(null);
-    void reload()
-      .catch((err) => {
-        if (mounted) setError(err instanceof Error ? err.message : "Falha ao carregar temas.");
-      })
-      .finally(() => {
-        if (mounted) setLoading(false);
-      });
-    return () => {
-      mounted = false;
-    };
-  }, [reload]);
 
   const filtered = useMemo(
     () =>

@@ -1,4 +1,5 @@
 import type { LegacyPayload } from "@task-manager/shared";
+import { getWeekRange, localThemeNameFromId } from "@task-manager/shared";
 
 const DB_NAME = "diario-atividades-db-v1";
 const STORE_NAME = "diario";
@@ -43,6 +44,17 @@ export async function exportLocalPayload(): Promise<LegacyPayload | null> {
   });
 }
 
+export async function saveLocalPayload(payload: LegacyPayload): Promise<void> {
+  const db = await openDb();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE_NAME, "readwrite");
+    const store = tx.objectStore(STORE_NAME);
+    const req = store.put({ ...payload, savedAt: new Date().toISOString() }, KEY_ALL);
+    req.onsuccess = () => resolve();
+    req.onerror = () => reject(req.error ?? new Error("Falha ao salvar IndexedDB."));
+  });
+}
+
 export async function hasLocalPayload(): Promise<boolean> {
   try {
     const payload = await exportLocalPayload();
@@ -50,4 +62,40 @@ export async function hasLocalPayload(): Promise<boolean> {
   } catch {
     return false;
   }
+}
+
+export async function addThemeToLocalWeekPlan(themeId: string): Promise<void> {
+  const name = localThemeNameFromId(themeId);
+  if (!name) throw new Error("Tema local inválido.");
+
+  const payload = await exportLocalPayload();
+  if (!payload) throw new Error("Nenhum dado local encontrado.");
+
+  const { weekKey } = getWeekRange();
+  const weekPlan = payload.weekPlan?.weekKey === weekKey
+    ? { weekKey, themes: [...(payload.weekPlan.themes ?? [])] }
+    : { weekKey, themes: [] as string[] };
+
+  if (!weekPlan.themes.includes(name)) {
+    weekPlan.themes.push(name);
+  }
+
+  await saveLocalPayload({ ...payload, weekPlan });
+}
+
+export async function removeThemeFromLocalWeekPlan(themeId: string): Promise<void> {
+  const name = localThemeNameFromId(themeId);
+  if (!name) throw new Error("Tema local inválido.");
+
+  const payload = await exportLocalPayload();
+  if (!payload) return;
+
+  const { weekKey } = getWeekRange();
+  if (payload.weekPlan?.weekKey !== weekKey) return;
+
+  const themes = (payload.weekPlan.themes ?? []).filter((t) => t !== name);
+  await saveLocalPayload({
+    ...payload,
+    weekPlan: { weekKey, themes },
+  });
 }

@@ -1,5 +1,6 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
+import { ThemesProvider } from "./contexts/ThemesContext";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { AppLayout } from "./components/layout/AppLayout";
 import { RequireOnboarding } from "./components/layout/RequireOnboarding";
@@ -7,7 +8,9 @@ import { LoginPage } from "./pages/LoginPage";
 import { AuthCallbackPage } from "./pages/AuthCallbackPage";
 import { OnboardingPage } from "./pages/OnboardingPage";
 import { DashboardPage } from "./pages/DashboardPage";
-import { PlaceholderPage } from "./pages/PlaceholderPage";
+import { WeekPlannerPage } from "./pages/WeekPlannerPage";
+import { ThemeViewPage } from "./pages/ThemeViewPage";
+import { WeekViewPage } from "./pages/WeekViewPage";
 
 export default function App() {
   return (
@@ -21,14 +24,16 @@ export default function App() {
             <Route
               element={
                 <RequireOnboarding>
-                  <AppLayout />
+                  <ThemesProvider>
+                    <AppLayout />
+                  </ThemesProvider>
                 </RequireOnboarding>
               }
             >
               <Route path="/" element={<DashboardPage />} />
-              <Route path="/week-planner" element={<PlaceholderPage title="Week Planner" />} />
-              <Route path="/theme-view" element={<PlaceholderPage title="Theme View" />} />
-              <Route path="/week-view" element={<PlaceholderPage title="Week View" />} />
+              <Route path="/week-planner" element={<WeekPlannerPage />} />
+              <Route path="/theme-view" element={<ThemeViewPage />} />
+              <Route path="/week-view" element={<WeekViewPage />} />
             </Route>
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />
