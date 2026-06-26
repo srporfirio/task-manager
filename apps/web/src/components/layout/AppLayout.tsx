@@ -1,5 +1,6 @@
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
+import { UserMenu } from "./UserMenu";
 
 const navItems = [
   { to: "/", label: "Dashboard", icon: "dashboard", end: true },
@@ -45,10 +46,7 @@ export function AppLayout() {
             </NavLink>
           ))}
         </nav>
-        <div className="mt-auto border-t border-outline-variant pt-4 space-y-2">
-          <p className="px-4 text-label-md text-outline truncate" title={user?.email ?? ""}>
-            {user?.email}
-          </p>
+        <div className="mt-auto border-t border-outline-variant pt-4">
           <a
             href="/legacy/index.html"
             target="_blank"
@@ -57,19 +55,15 @@ export function AppLayout() {
           >
             Modo local (HTML)
           </a>
-          <button
-            type="button"
-            onClick={() => void signOut()}
-            className="w-full text-left px-4 text-label-md text-outline hover:text-on-surface"
-          >
-            Sair
-          </button>
         </div>
       </aside>
 
       <main className="flex-1 min-w-0 flex flex-col bg-background">
-        <header className="sticky top-0 z-40 bg-background border-b border-outline-variant h-16 flex items-center px-margin-page">
-          <h1 className="font-headline text-headline-md font-bold text-primary tracking-tight">{title}</h1>
+        <header className="sticky top-0 z-40 bg-background border-b border-outline-variant h-16 flex items-center justify-between gap-4 px-margin-page">
+          <h1 className="font-headline text-headline-md font-bold text-primary tracking-tight truncate min-w-0">
+            {title}
+          </h1>
+          {user ? <UserMenu user={user} onSignOut={() => void signOut()} /> : null}
         </header>
         <div className="flex-1 p-margin-page max-w-container-max w-full mx-auto">
           <Outlet />
