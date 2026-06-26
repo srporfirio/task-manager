@@ -2,12 +2,76 @@
 @source "../index.html";
 @source "./**/*.{ts,tsx}";
 
+@theme {
+  --color-primary: #006768;
+  --color-on-primary: #ffffff;
+  --color-background: #f8fafb;
+  --color-on-background: #191c1d;
+  --color-on-surface: #191c1d;
+  --color-on-surface-variant: #3d4949;
+  --color-outline: #6d7979;
+  --color-outline-variant: #bcc9c9;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #f2f4f5;
+  --color-surface-container-highest: #e1e3e4;
+  --color-secondary-container: #72a6fe;
+  --color-secondary: #1e5db0;
+  --color-error: #ba1a1a;
+  --color-on-error: #ffffff;
+
+  --font-headline: "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  --text-headline-md: 1.5rem;
+  --text-headline-md--line-height: 2rem;
+  --text-label-md: 0.75rem;
+  --text-label-md--line-height: 1rem;
+  --text-body-md: 0.875rem;
+  --text-body-md--line-height: 1.25rem;
+
+  --spacing-margin-page: 2rem;
+  --spacing-gutter: 1.5rem;
+  --container-container-max: 90rem;
+}
+
 body {
   margin: 0;
   min-height: 100vh;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-  background: #f8fafc;
-  color: #0f172a;
+  font-family: var(--font-body);
+  font-size: var(--text-body-md);
+  line-height: var(--text-body-md--line-height);
+  background: var(--color-background);
+  color: var(--color-on-background);
+}
+
+.material-symbols-outlined {
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+  vertical-align: middle;
+  font-size: 1.25rem;
+}
+
+.sticky-below-header {
+  position: sticky;
+  top: 4rem;
+  z-index: 30;
+}
+
+.week-planner-add-card {
+  border: 2px dashed var(--color-outline-variant);
+  background: var(--color-surface-container-low);
+  min-height: 120px;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.week-planner-add-card:hover:not(:disabled) {
+  background: #eceeef;
+  border-color: var(--color-primary);
+}
+
+.week-planner-add-card:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
 }
 
 .week-print-report {
@@ -42,19 +106,20 @@ body {
 
   .week-print-header {
     margin-bottom: 1rem;
-    border-bottom: 1px solid #cbd5e1;
+    border-bottom: 1px solid var(--color-outline-variant);
     padding-bottom: 0.75rem;
   }
 
   .week-print-title {
+    font-family: var(--font-headline);
     font-size: 1.25rem;
     font-weight: 700;
-    color: #0f172a;
+    color: var(--color-primary);
   }
 
   .week-print-meta {
     font-size: 0.875rem;
-    color: #475569;
+    color: var(--color-outline);
     margin-top: 0.25rem;
   }
 
@@ -77,18 +142,18 @@ body {
   }
 
   .week-print-section-title.in-progress {
-    background: #dbeafe;
+    background: #d7e3ff;
     color: #1e40af;
   }
 
   .week-print-section-title.todo {
-    background: #f1f5f9;
-    color: #334155;
+    background: var(--color-surface-container-low);
+    color: var(--color-on-surface-variant);
   }
 
   .week-print-theme {
     margin-bottom: 0.75rem;
     padding-bottom: 0.5rem;
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1px solid var(--color-outline-variant);
   }
 }

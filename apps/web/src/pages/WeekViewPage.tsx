@@ -38,44 +38,50 @@ export function WeekViewPage() {
   );
 
   if (loading) {
-    return <p className="text-slate-600">Carregando Week View...</p>;
+    return <p className="text-on-surface-variant">Carregando Week View...</p>;
   }
 
   return (
-    <div className="space-y-6">
-      <div className="week-screen-only flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <p className="text-sm text-slate-600">{formatWeekPeriod(weekRange.monday, weekRange.sunday)}</p>
-          <p className="text-sm font-medium text-slate-800">{filtered.length} tema(s) atualizados na semana.</p>
+    <section className="mt-2 flex flex-col gap-4">
+      <div className="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant">
+        <div className="week-screen-only flex items-center justify-end gap-4 mb-6">
+          <div className="flex items-center gap-3 mr-auto">
+            <div className="text-label-md text-outline">
+              {filtered.length} tema(s) atualizados na semana.
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={exportPdf}
+            disabled={filtered.length === 0}
+            className="bg-primary text-on-primary px-4 py-2 rounded-lg text-body-md font-semibold hover:opacity-90 disabled:opacity-50 flex items-center gap-2 print:hidden"
+            title="Exportar resumo semanal em PDF"
+          >
+            <span className="material-symbols-outlined">picture_as_pdf</span>
+            Export PDF
+          </button>
         </div>
-        <button
-          type="button"
-          onClick={exportPdf}
-          disabled={filtered.length === 0}
-          className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-white disabled:opacity-50"
-        >
-          Exportar PDF
-        </button>
-      </div>
 
-      {error ? <p className="text-sm text-red-600">{error}</p> : null}
+        {error ? <p className="mb-4 text-sm text-red-600">{error}</p> : null}
 
-      <div className="week-screen-only">
-        <KanbanBoard
-          done={done}
-          inProgress={inProgress}
-          todo={todo}
-          emptyText="Sem atualizações na semana."
-          showWeekNotes
-          getWeekNotes={getWeekNotes}
+        <div className="week-screen-only">
+          <KanbanBoard
+            done={done}
+            inProgress={inProgress}
+            todo={todo}
+            emptyText="Sem atualizações na semana."
+            showWeekNotes
+            getWeekNotes={getWeekNotes}
+            cardVariant="week"
+          />
+        </div>
+
+        <PrintReport
+          title="Week View"
+          meta={formatWeekPeriod(weekRange.monday, weekRange.sunday)}
+          sections={printSections}
         />
       </div>
-
-      <PrintReport
-        title="Week View"
-        meta={formatWeekPeriod(weekRange.monday, weekRange.sunday)}
-        sections={printSections}
-      />
-    </div>
+    </section>
   );
 }

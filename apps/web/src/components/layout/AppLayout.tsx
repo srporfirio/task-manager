@@ -2,10 +2,10 @@ import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 
 const navItems = [
-  { to: "/", label: "Dashboard", end: true },
-  { to: "/week-planner", label: "Week Planner" },
-  { to: "/theme-view", label: "Theme View" },
-  { to: "/week-view", label: "Week View" },
+  { to: "/", label: "Dashboard", icon: "dashboard", end: true },
+  { to: "/week-planner", label: "Week Planner", icon: "event_note" },
+  { to: "/theme-view", label: "Theme View", icon: "view_kanban" },
+  { to: "/week-view", label: "Week View", icon: "calendar_month" },
 ];
 
 const pageTitles: Record<string, string> = {
@@ -21,10 +21,10 @@ export function AppLayout() {
   const title = pageTitles[pathname] ?? "Diário de Atividades";
 
   return (
-    <div className="min-h-screen flex bg-slate-50">
-      <aside className="w-[260px] shrink-0 bg-slate-200 border-r border-slate-300 flex flex-col p-4">
-        <div className="px-2 py-3 mb-4">
-          <img src="/logo-diario.png" alt="" className="h-12 w-auto max-w-[200px] object-contain" />
+    <div className="min-h-screen flex bg-background text-on-background font-body text-body-md">
+      <aside className="w-[260px] shrink-0 bg-[#e5e7eb] flex flex-col py-8 px-4 gap-4">
+        <div className="px-2 mb-6">
+          <img src="/logo-diario.png" alt="" className="h-12 w-full max-w-[200px] object-contain object-left" />
         </div>
         <nav className="flex flex-col gap-1 flex-grow">
           {navItems.map((item) => (
@@ -33,42 +33,45 @@ export function AppLayout() {
               to={item.to}
               end={item.end}
               className={({ isActive }) =>
-                `px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
-                  isActive ? "bg-blue-100 text-blue-800" : "text-slate-700 hover:bg-slate-300/60"
+                `flex items-center gap-3 px-4 py-3 rounded-lg text-label-md font-semibold uppercase tracking-wide transition-colors ${
+                  isActive
+                    ? "bg-secondary-container/20 text-primary font-bold"
+                    : "text-on-surface-variant hover:bg-surface-container-highest"
                 }`
               }
             >
-              {item.label}
+              <span className="material-symbols-outlined">{item.icon}</span>
+              <span>{item.label}</span>
             </NavLink>
           ))}
         </nav>
-        <div className="mt-auto border-t border-slate-300 pt-4 space-y-2">
-          <p className="px-2 text-xs text-slate-600 truncate" title={user?.email ?? ""}>
+        <div className="mt-auto border-t border-outline-variant pt-4 space-y-2">
+          <p className="px-4 text-label-md text-outline truncate" title={user?.email ?? ""}>
             {user?.email}
           </p>
           <a
             href="/legacy/index.html"
             target="_blank"
             rel="noopener noreferrer"
-            className="block px-2 text-xs text-slate-600 underline hover:text-slate-900"
+            className="block px-4 text-label-md text-outline underline hover:text-on-surface"
           >
             Modo local (HTML)
           </a>
           <button
             type="button"
             onClick={() => void signOut()}
-            className="w-full text-left px-2 text-xs text-slate-600 hover:text-slate-900"
+            className="w-full text-left px-4 text-label-md text-outline hover:text-on-surface"
           >
             Sair
           </button>
         </div>
       </aside>
 
-      <main className="flex-1 min-w-0 flex flex-col">
-        <header className="sticky top-0 z-40 bg-slate-50 border-b border-slate-200 h-16 flex items-center px-6">
-          <h1 className="text-lg font-bold text-blue-800">{title}</h1>
+      <main className="flex-1 min-w-0 flex flex-col bg-background">
+        <header className="sticky top-0 z-40 bg-background border-b border-outline-variant h-16 flex items-center px-margin-page">
+          <h1 className="font-headline text-headline-md font-bold text-primary tracking-tight">{title}</h1>
         </header>
-        <div className="flex-1 p-6 max-w-6xl w-full mx-auto">
+        <div className="flex-1 p-margin-page max-w-container-max w-full mx-auto">
           <Outlet />
         </div>
       </main>

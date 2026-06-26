@@ -8,22 +8,30 @@ type KanbanColumnProps = {
   showWeekNotes?: boolean;
   getWeekNotes?: (theme: DashboardTheme) => DashboardTheme["notes"];
   onRemove?: (themeId: string) => void;
+  cardVariant?: "default" | "planner" | "week";
 };
 
-function KanbanColumn({ title, themes, emptyText, showWeekNotes, getWeekNotes, onRemove }: KanbanColumnProps) {
+function KanbanColumn({
+  title,
+  themes,
+  emptyText,
+  showWeekNotes,
+  getWeekNotes,
+  onRemove,
+  cardVariant = "default",
+}: KanbanColumnProps) {
   return (
-    <section className="min-w-0 flex-1">
-      <h2 className="text-sm font-bold text-slate-700 mb-3">{title}</h2>
-      <div className="space-y-3">
+    <section className="bg-surface-container-lowest border border-outline-variant rounded-xl p-4 min-w-0">
+      <h3 className="text-label-md font-semibold uppercase tracking-wide text-on-surface-variant mb-3">{title}</h3>
+      <div className="flex flex-col gap-2">
         {themes.length === 0 ? (
-          <p className="text-sm text-slate-500 bg-white border border-dashed border-slate-200 rounded-xl p-4">
-            {emptyText}
-          </p>
+          <p className="text-body-md text-outline">{emptyText}</p>
         ) : (
           themes.map((theme) => (
             <ThemeBoardCard
               key={theme.id}
               theme={theme}
+              variant={cardVariant}
               weekNotes={showWeekNotes ? getWeekNotes?.(theme) : undefined}
               onRemove={onRemove ? () => onRemove(theme.id) : undefined}
             />
@@ -42,6 +50,7 @@ type KanbanBoardProps = {
   showWeekNotes?: boolean;
   getWeekNotes?: (theme: DashboardTheme) => DashboardTheme["notes"];
   onRemove?: (themeId: string) => void;
+  cardVariant?: "default" | "planner" | "week";
 };
 
 export function KanbanBoard({
@@ -52,12 +61,13 @@ export function KanbanBoard({
   showWeekNotes = false,
   getWeekNotes,
   onRemove,
+  cardVariant = "default",
 }: KanbanBoardProps) {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-      <KanbanColumn title="To do" themes={todo} emptyText={emptyText} showWeekNotes={showWeekNotes} getWeekNotes={getWeekNotes} onRemove={onRemove} />
-      <KanbanColumn title="In Progress" themes={inProgress} emptyText={emptyText} showWeekNotes={showWeekNotes} getWeekNotes={getWeekNotes} onRemove={onRemove} />
-      <KanbanColumn title="Done" themes={done} emptyText={emptyText} showWeekNotes={showWeekNotes} getWeekNotes={getWeekNotes} onRemove={onRemove} />
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <KanbanColumn title="To do" themes={todo} emptyText={emptyText} showWeekNotes={showWeekNotes} getWeekNotes={getWeekNotes} onRemove={onRemove} cardVariant={cardVariant} />
+      <KanbanColumn title="In Progress" themes={inProgress} emptyText={emptyText} showWeekNotes={showWeekNotes} getWeekNotes={getWeekNotes} onRemove={onRemove} cardVariant={cardVariant} />
+      <KanbanColumn title="Done" themes={done} emptyText={emptyText} showWeekNotes={showWeekNotes} getWeekNotes={getWeekNotes} onRemove={onRemove} cardVariant={cardVariant} />
     </div>
   );
 }
