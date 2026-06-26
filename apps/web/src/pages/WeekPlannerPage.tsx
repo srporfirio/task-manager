@@ -103,8 +103,7 @@ export function WeekPlannerPage() {
           <button
             type="button"
             onClick={exportPdf}
-            disabled={planned.length === 0}
-            className="bg-primary text-on-primary px-4 py-2 rounded-lg text-body-md font-semibold hover:opacity-90 disabled:opacity-50 flex items-center gap-2 shrink-0 print:hidden"
+            className="bg-primary text-on-primary px-4 py-2 rounded-lg text-body-md font-semibold hover:opacity-90 flex items-center gap-2 shrink-0 print:hidden"
             title="Exportar plano da semana em PDF"
           >
             <span className="material-symbols-outlined">picture_as_pdf</span>
@@ -149,8 +148,11 @@ export function WeekPlannerPage() {
 
         <PrintReport
           title="Week Planner"
-          meta={formatWeekPeriod(weekRange.monday, weekRange.sunday)}
+          period={formatWeekPeriod(weekRange.monday, weekRange.sunday)}
+          summary={`${planned.length} tema(s) planejado(s).`}
           sections={printSections}
+          globalEmptyMessage="Nenhum tema planejado nesta semana."
+          showPlannedTag
         />
       </div>
 

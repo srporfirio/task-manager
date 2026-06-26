@@ -79,18 +79,31 @@ body {
 }
 
 @media print {
+  @page {
+    margin: 18mm 16mm;
+  }
+
+  body.print-export-week,
+  body.print-export-planner {
+    background: #fff !important;
+    color: #111 !important;
+  }
+
   body.print-export-week aside,
   body.print-export-week main > header,
   body.print-export-planner aside,
   body.print-export-planner main > header,
   body.print-export-week .week-screen-only,
-  body.print-export-planner .planner-screen-only {
+  body.print-export-planner .planner-screen-only,
+  body.print-export-week .week-planner-add-card,
+  body.print-export-planner .week-planner-add-card {
     display: none !important;
   }
 
   body.print-export-week main,
   body.print-export-planner main {
     padding: 0 !important;
+    width: 100% !important;
   }
 
   body.print-export-week main > div,
@@ -99,61 +112,161 @@ body {
     padding: 0 !important;
   }
 
+  body.print-export-week .bg-surface-container-lowest,
+  body.print-export-planner .bg-surface-container-lowest {
+    border: none !important;
+    padding: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
   body.print-export-week .week-print-report,
   body.print-export-planner .week-print-report {
     display: block !important;
   }
 
-  .week-print-header {
-    margin-bottom: 1rem;
-    border-bottom: 1px solid var(--color-outline-variant);
-    padding-bottom: 0.75rem;
+  body.print-export-week .week-print-header,
+  body.print-export-planner .week-print-header {
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid #006768;
+    break-after: avoid-page;
+    page-break-after: avoid;
   }
 
-  .week-print-title {
-    font-family: var(--font-headline);
-    font-size: 1.25rem;
+  body.print-export-week .week-print-title,
+  body.print-export-planner .week-print-title {
+    font-family: "Hanken Grotesk", Inter, sans-serif;
+    font-size: 28px;
     font-weight: 700;
-    color: var(--color-primary);
+    color: #006768;
+    margin: 0 0 8px;
   }
 
-  .week-print-meta {
-    font-size: 0.875rem;
-    color: var(--color-outline);
-    margin-top: 0.25rem;
+  body.print-export-week .week-print-meta,
+  body.print-export-planner .week-print-meta {
+    font-size: 13px;
+    color: #4b5563;
+    margin: 0;
   }
 
-  .week-print-section {
-    margin-top: 1rem;
-    break-inside: avoid;
+  body.print-export-week .week-print-section,
+  body.print-export-planner .week-print-section {
+    margin-bottom: 28px;
+    break-inside: avoid-page;
   }
 
-  .week-print-section-title {
-    font-size: 0.875rem;
+  body.print-export-week .week-print-section-title,
+  body.print-export-planner .week-print-section-title {
+    font-family: "Hanken Grotesk", Inter, sans-serif;
+    font-size: 18px;
     font-weight: 700;
-    margin-bottom: 0.5rem;
-    padding: 0.25rem 0.5rem;
-    border-radius: 0.25rem;
+    margin: 0 0 12px;
+    padding: 8px 12px;
+    border-radius: 6px;
   }
 
-  .week-print-section-title.done {
-    background: #ccfbf1;
-    color: #115e59;
+  body.print-export-week .week-print-section-title.done,
+  body.print-export-planner .week-print-section-title.done {
+    background: #e6f4f4;
+    color: #006768;
   }
 
-  .week-print-section-title.in-progress {
-    background: #d7e3ff;
-    color: #1e40af;
+  body.print-export-week .week-print-section-title.in-progress,
+  body.print-export-planner .week-print-section-title.in-progress {
+    background: #eef4ff;
+    color: #1e5db0;
   }
 
-  .week-print-section-title.todo {
-    background: var(--color-surface-container-low);
-    color: var(--color-on-surface-variant);
+  body.print-export-week .week-print-section-title.todo,
+  body.print-export-planner .week-print-section-title.todo {
+    background: #f3f4f6;
+    color: #374151;
   }
 
-  .week-print-theme {
-    margin-bottom: 0.75rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid var(--color-outline-variant);
+  body.print-export-week .week-print-theme,
+  body.print-export-planner .week-print-theme {
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    break-inside: avoid-page;
+    background: #fff;
+  }
+
+  body.print-export-week .week-print-theme-header,
+  body.print-export-planner .week-print-theme-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  body.print-export-week .week-print-theme-name,
+  body.print-export-planner .week-print-theme-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: #111827;
+    margin: 0;
+  }
+
+  body.print-export-week .week-print-theme-description,
+  body.print-export-planner .week-print-theme-description {
+    font-size: 12px;
+    color: #4b5563;
+    margin: 4px 0 0;
+    white-space: pre-wrap;
+  }
+
+  body.print-export-week .week-print-planned-tag,
+  body.print-export-planner .week-print-planned-tag {
+    color: #b45309;
+    font-weight: 600;
+  }
+
+  body.print-export-week .week-print-jira,
+  body.print-export-planner .week-print-jira {
+    font-size: 12px;
+    color: #6b7280;
+    white-space: nowrap;
+  }
+
+  body.print-export-week .week-print-note,
+  body.print-export-planner .week-print-note {
+    padding: 8px 0;
+    border-top: 1px dashed #e5e7eb;
+  }
+
+  body.print-export-week .week-print-note:first-child,
+  body.print-export-planner .week-print-note:first-child {
+    border-top: none;
+    padding-top: 0;
+  }
+
+  body.print-export-week .week-print-note-meta,
+  body.print-export-planner .week-print-note-meta {
+    font-size: 11px;
+    color: #6b7280;
+    margin-bottom: 4px;
+  }
+
+  body.print-export-week .week-print-note-text,
+  body.print-export-planner .week-print-note-text {
+    font-size: 13px;
+    line-height: 1.5;
+    color: #1f2937;
+    margin: 0;
+    white-space: pre-wrap;
+  }
+
+  body.print-export-week .week-print-empty,
+  body.print-export-planner .week-print-empty {
+    font-size: 13px;
+    color: #6b7280;
+    font-style: italic;
+    margin: 0;
   }
 }

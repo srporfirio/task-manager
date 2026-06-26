@@ -53,8 +53,7 @@ export function WeekViewPage() {
           <button
             type="button"
             onClick={exportPdf}
-            disabled={filtered.length === 0}
-            className="bg-primary text-on-primary px-4 py-2 rounded-lg text-body-md font-semibold hover:opacity-90 disabled:opacity-50 flex items-center gap-2 print:hidden"
+            className="bg-primary text-on-primary px-4 py-2 rounded-lg text-body-md font-semibold hover:opacity-90 flex items-center gap-2 print:hidden"
             title="Exportar resumo semanal em PDF"
           >
             <span className="material-symbols-outlined">picture_as_pdf</span>
@@ -78,8 +77,11 @@ export function WeekViewPage() {
 
         <PrintReport
           title="Week View"
-          meta={formatWeekPeriod(weekRange.monday, weekRange.sunday)}
+          period={formatWeekPeriod(weekRange.monday, weekRange.sunday)}
+          summary={`${filtered.length} tema(s) atualizado(s) na semana.`}
           sections={printSections}
+          globalEmptyMessage="Nenhuma atualização nesta semana."
+          showPlannedTag
         />
       </div>
     </section>
