@@ -1721,13 +1721,8 @@ Nota 2"
         if (printInProgress) printInProgress.innerHTML = "";
         if (printTodo) printTodo.innerHTML = "";
 
-        const now = new Date();
-        const start = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-
-        const recentRows = currentRows.filter((r) => {
-          const t = Date.parse(String(r.lastUpdate || ""));
-          return Number.isFinite(t) && t >= start.getTime();
-        });
+        const { monday, sunday } = getWeekRange();
+        const recentRows = getRowsInCalendarWeek();
 
         if (!recentRows.length) {
           const emptyMsg = `<div class="text-body-md text-outline">Sem atualizações na semana.</div>`;
@@ -1738,7 +1733,7 @@ Nota 2"
           if (printTodo) printTodo.innerHTML = printEmpty;
           if (countEl) countEl.textContent = "0 theme(s) atualizados na semana.";
           if (printPeriod) {
-            printPeriod.textContent = `Semana de ${formatDateShort(start)} a ${formatDateShort(now)}`;
+            printPeriod.textContent = `Semana de ${formatDateShort(monday)} a ${formatDateShort(sunday)}`;
           }
           if (printSummary) printSummary.textContent = "0 tema(s) atualizado(s) na semana.";
           return;
@@ -1816,7 +1811,7 @@ Nota 2"
 
         if (countEl) countEl.textContent = `${themes.length} theme(s) atualizados na semana.`;
         if (printPeriod) {
-          printPeriod.textContent = `Semana de ${formatDateShort(start)} a ${formatDateShort(now)}`;
+          printPeriod.textContent = `Semana de ${formatDateShort(monday)} a ${formatDateShort(sunday)}`;
         }
         if (printSummary) {
           printSummary.textContent = `${themes.length} tema(s) atualizado(s) na semana.`;
