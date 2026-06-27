@@ -49,17 +49,6 @@ export function LoginPage() {
         </button>
 
         {error ? <p className="mt-4 text-sm text-red-600">{error}</p> : null}
-
-        <div className="mt-6 border-t border-slate-200 pt-4 text-center">
-          <a
-            href="/legacy/index.html"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm text-slate-600 underline hover:text-slate-900"
-          >
-            Usar versão local (sem conta)
-          </a>
-        </div>
       </div>
     </div>
   );

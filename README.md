@@ -1,12 +1,13 @@
 # Task Manager (Diário de Atividades)
 
-Monorepo com a versão HTML legada (offline) e o app React com Supabase.
+Monorepo com o app React (Supabase) e a versão HTML offline arquivada.
 
 ## Estrutura
 
 ```
-├── diario-task-dashboard-csv.html   # versão local (IndexedDB)
+├── legacy/                          # versão local arquivada (IndexedDB, sem login)
 ├── apps/web/                        # React + Vite + Supabase Auth
+├── apps/mobile/                     # React Native (Expo) + Android APK
 ├── packages/shared/                 # regras compartilhadas (status, semana)
 └── supabase/migrations/             # schema Postgres
 ```
@@ -28,11 +29,19 @@ npm run dev       # http://localhost:5173
 npm run build
 ```
 
-## Fluxo atual (Sprint 2)
+## App online
 
 - Login com Google
-- Onboarding com import opcional do IndexedDB
-- Home com contagem de temas na nuvem
-- Link para `/legacy/index.html` (cópia do HTML offline)
+- Dashboard, Week Planner, Theme View e Week View
+- Dados sincronizados no Supabase
 
-Próximo passo: Dashboard React com `HybridAdapter` e feature flags.
+## App mobile (Android)
+
+```bash
+npm run mobile          # Expo dev server
+npm run mobile:apk      # APK via EAS (nuvem)
+```
+
+Ver `apps/mobile/README.md` para Android Studio, JDK e build local.
+
+A versão offline antiga está em `legacy/` apenas para consulta histórica.

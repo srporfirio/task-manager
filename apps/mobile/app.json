@@ -1,0 +1,38 @@
+{
+  "expo": {
+    "name": "Diário de Atividades",
+    "slug": "diario-atividades",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "scheme": "diarioatividades",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.diario.atividades"
+    },
+    "android": {
+      "package": "com.diario.atividades",
+      "adaptiveIcon": {
+        "backgroundColor": "#006768",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-dev-client",
+      "expo-web-browser"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "12f2f030-d2c6-44de-87e4-d9af200d760f"
+      }
+    },
+    "owner": "srporfirio"
+  }
+}

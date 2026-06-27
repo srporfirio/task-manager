@@ -46,16 +46,6 @@ export function AppLayout() {
             </NavLink>
           ))}
         </nav>
-        <div className="mt-auto border-t border-outline-variant pt-4">
-          <a
-            href="/legacy/index.html"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block px-4 text-label-md text-outline underline hover:text-on-surface"
-          >
-            Modo local (HTML)
-          </a>
-        </div>
       </aside>
 
       <main className="flex-1 min-w-0 flex flex-col bg-background">

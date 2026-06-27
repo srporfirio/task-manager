@@ -1,0 +1,37 @@
+{
+  "name": "@task-manager/mobile",
+  "version": "1.0.0",
+  "private": true,
+  "main": "index.ts",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "prebuild:android": "expo prebuild --platform android --clean",
+    "apk:debug": "expo run:android --variant debug",
+    "apk:release": "expo run:android --variant release",
+    "build:apk": "eas build --platform android --profile preview",
+    "build:apk:local": "eas build --platform android --profile preview --local"
+  },
+  "dependencies": {
+    "@react-native-async-storage/async-storage": "2.2.0",
+    "@supabase/supabase-js": "^2.49.8",
+    "@task-manager/shared": "*",
+    "expo": "~56.0.12",
+    "expo-auth-session": "~56.0.14",
+    "expo-constants": "~56.0.18",
+    "expo-crypto": "~56.0.4",
+    "expo-dev-client": "~56.0.20",
+    "expo-linking": "~56.0.14",
+    "expo-status-bar": "~56.0.4",
+    "expo-web-browser": "~56.0.5",
+    "react": "19.2.3",
+    "react-native": "0.85.3",
+    "react-native-url-polyfill": "^2.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "~19.2.2",
+    "eas-cli": "^16.28.0",
+    "typescript": "~6.0.3"
+  }
+}

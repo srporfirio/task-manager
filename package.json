@@ -6,9 +6,13 @@
     "packages/*"
   ],
   "scripts": {
-    "dev": "npm run copy:legacy && npm run dev --workspace @task-manager/web",
-    "build": "npm run copy:legacy && npm run build --workspace @task-manager/web",
+    "dev": "npm run dev --workspace @task-manager/web",
+    "build": "npm run build --workspace @task-manager/web",
     "test": "npm run test --workspace @task-manager/shared",
-    "copy:legacy": "node scripts/copy-legacy.mjs"
+    "mobile": "npm run start --workspace @task-manager/mobile",
+    "mobile:android": "npm run android --workspace @task-manager/mobile",
+    "mobile:prebuild": "npm run prebuild:android --workspace @task-manager/mobile",
+    "mobile:apk": "npm run build:apk --workspace @task-manager/mobile",
+    "mobile:apk:setup": "powershell -ExecutionPolicy Bypass -File scripts/build-apk.ps1"
   }
 }

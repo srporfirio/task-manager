@@ -3,10 +3,8 @@ import { AuthProvider } from "./contexts/AuthContext";
 import { ThemesProvider } from "./contexts/ThemesContext";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { AppLayout } from "./components/layout/AppLayout";
-import { RequireOnboarding } from "./components/layout/RequireOnboarding";
 import { LoginPage } from "./pages/LoginPage";
 import { AuthCallbackPage } from "./pages/AuthCallbackPage";
-import { OnboardingPage } from "./pages/OnboardingPage";
 import { DashboardPage } from "./pages/DashboardPage";
 import { WeekPlannerPage } from "./pages/WeekPlannerPage";
 import { ThemeViewPage } from "./pages/ThemeViewPage";
@@ -20,14 +18,11 @@ export default function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/auth/callback" element={<AuthCallbackPage />} />
           <Route element={<ProtectedRoute />}>
-            <Route path="/onboarding" element={<OnboardingPage />} />
             <Route
               element={
-                <RequireOnboarding>
-                  <ThemesProvider>
-                    <AppLayout />
-                  </ThemesProvider>
-                </RequireOnboarding>
+                <ThemesProvider>
+                  <AppLayout />
+                </ThemesProvider>
               }
             >
               <Route path="/" element={<DashboardPage />} />
@@ -36,6 +31,7 @@ export default function App() {
               <Route path="/week-view" element={<WeekViewPage />} />
             </Route>
           </Route>
+          <Route path="/onboarding" element={<Navigate to="/" replace />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>
