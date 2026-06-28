@@ -11,15 +11,28 @@ type Props = {
   variant?: "planner" | "week" | "kanban";
   weekNotes?: DashboardNote[];
   onRemove?: () => void;
+  removeLabel?: string;
 };
 
-export function ThemeBoardCard({ theme, variant = "kanban", weekNotes, onRemove }: Props) {
+export function ThemeBoardCard({
+  theme,
+  variant = "kanban",
+  weekNotes,
+  onRemove,
+  removeLabel = "Remover do plano",
+}: Props) {
   if (variant === "planner") {
     return (
       <View style={styles.plannerCard}>
         {onRemove ? (
-          <Pressable onPress={onRemove} style={styles.removeBtn} hitSlop={8}>
-            <MaterialIcons name="close" size={20} color={colors.onError} />
+          <Pressable
+            onPress={onRemove}
+            style={styles.removeBtn}
+            hitSlop={8}
+            accessibilityRole="button"
+            accessibilityLabel={removeLabel}
+          >
+            <MaterialIcons name="close" size={18} color={colors.onError} />
           </Pressable>
         ) : null}
         <Text style={styles.plannerCategory}>{theme.jiraKey || theme.name.split(" ")[0]}</Text>
@@ -32,6 +45,12 @@ export function ThemeBoardCard({ theme, variant = "kanban", weekNotes, onRemove 
             </View>
           ) : null}
         </View>
+        {onRemove ? (
+          <Pressable onPress={onRemove} style={styles.removeRow} accessibilityRole="button">
+            <MaterialIcons name="remove-circle-outline" size={18} color={colors.error} />
+            <Text style={styles.removeRowText}>{removeLabel}</Text>
+          </Pressable>
+        ) : null}
       </View>
     );
   }
@@ -89,7 +108,12 @@ const styles = StyleSheet.create({
     top: 12,
     right: 12,
     zIndex: 1,
-    padding: 4,
+    width: 32,
+    height: 32,
+    borderRadius: 8,
+    backgroundColor: colors.error,
+    alignItems: "center",
+    justifyContent: "center",
   },
   plannerCategory: {
     fontSize: 12,
@@ -119,6 +143,20 @@ const styles = StyleSheet.create({
     fontSize: 10,
     fontWeight: "700",
     color: colors.onSecondaryFixed,
+  },
+  removeRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+    marginTop: spacing.gapMd,
+    paddingTop: spacing.gapSm,
+    borderTopWidth: 1,
+    borderTopColor: colors.outlineVariant,
+  },
+  removeRowText: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: colors.error,
   },
   weekCard: {
     backgroundColor: colors.surfaceContainerLowest,

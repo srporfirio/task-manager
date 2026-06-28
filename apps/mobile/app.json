@@ -27,6 +27,7 @@
         }
       ],
       "package": "com.diario.atividades",
+      "softwareKeyboardLayoutMode": "resize",
       "adaptiveIcon": {
         "backgroundColor": "#006768",
         "foregroundImage": "./assets/android-icon-foreground.png",

@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   View,
   Text,
@@ -11,15 +11,22 @@ import {
 import { MaterialIcons } from "@expo/vector-icons";
 import {
   buildPrintSections,
+  computeWeekViewStats,
   filterThemesWithWeekActivity,
+  getWeekEfficiencyDisplay,
   formatWeekPeriod,
   getNotesInWeekRange,
   getWeekRange,
-  partitionThemesByStatus,
+  getWeekViewEmptyMessage,
+  getWeekViewFilterSummary,
+  type DashboardTheme,
+  type WeekViewFilterMode,
 } from "@task-manager/shared";
 import { useThemes } from "../contexts/ThemesContext";
 import { TopAppBar } from "../components/layout/TopAppBar";
 import { ThemeBoardCard } from "../components/views/ThemeBoardCard";
+import { WeekViewFilterChips } from "../components/views/WeekViewFilterChips";
+import { hybridFetchPlannedThemes } from "../lib/hybrid-adapter";
 import { exportPdfReport } from "../lib/pdf-export";
 import { colors } from "../theme/colors";
 import { spacing } from "../theme/spacing";
@@ -36,42 +43,62 @@ function SectionHeader({ label, bg, text }: { label: string; bg: string; text: s
 }
 
 export function WeekViewScreen() {
-  const { themes, loading, error } = useThemes();
+  const { themes, loading, error, user } = useThemes();
+  const [planned, setPlanned] = useState<DashboardTheme[]>([]);
+  const [filterMode, setFilterMode] = useState<WeekViewFilterMode>("week_plan");
+  const [pageError, setPageError] = useState<string | null>(null);
   const weekRange = useMemo(() => getWeekRange(), []);
 
-  const filtered = useMemo(
-    () => filterThemesWithWeekActivity(themes, weekRange.monday, weekRange.sunday),
-    [themes, weekRange],
+  const loadPlanned = useCallback(async () => {
+    if (!user) return;
+    const data = await hybridFetchPlannedThemes(user.id);
+    setPlanned(data);
+  }, [user]);
+
+  useEffect(() => {
+    if (!user) return;
+    void loadPlanned().catch((err) => {
+      setPageError(err instanceof Error ? err.message : "Falha ao carregar plano.");
+    });
+  }, [user, loadPlanned, themes]);
+
+  const visibleThemes = useMemo(() => {
+    if (filterMode === "week_plan") return planned;
+    return filterThemesWithWeekActivity(themes, weekRange.monday, weekRange.sunday);
+  }, [filterMode, planned, themes, weekRange]);
+
+  const { done, inProgress, todo, completedCount, pendingCount, total } = useMemo(
+    () => computeWeekViewStats(visibleThemes),
+    [visibleThemes],
   );
 
-  const { done, inProgress, todo } = useMemo(() => partitionThemesByStatus(filtered), [filtered]);
-
-  const completedNotes = filtered.reduce(
-    (acc, t) => acc + getNotesInWeekRange(t.notes, weekRange.monday, weekRange.sunday).length,
-    0,
+  const efficiencyDisplay = useMemo(
+    () => getWeekEfficiencyDisplay(completedCount, total),
+    [completedCount, total],
   );
-  const pendingThemes = todo.length + inProgress.length;
-  const efficiency = filtered.length ? Math.round((done.length / filtered.length) * 100) : 0;
 
-  const getWeekNotes = (theme: (typeof filtered)[number]) =>
+  const getWeekNotes = (theme: DashboardTheme) =>
     getNotesInWeekRange(theme.notes, weekRange.monday, weekRange.sunday);
 
   const printSections = useMemo(
     () =>
-      buildPrintSections(filtered, {
+      buildPrintSections(visibleThemes, {
         showNotes: true,
         monday: weekRange.monday,
         sunday: weekRange.sunday,
       }),
-    [filtered, weekRange],
+    [visibleThemes, weekRange],
   );
+
+  const summary = getWeekViewFilterSummary(filterMode, visibleThemes.length);
+  const emptyMessage = getWeekViewEmptyMessage(filterMode);
 
   async function handleExportPdf() {
     try {
       await exportPdfReport(
         "Week View",
         formatWeekPeriod(weekRange.monday, weekRange.sunday),
-        `${filtered.length} tema(s) atualizado(s) na semana.`,
+        summary,
         printSections,
       );
     } catch (err) {
@@ -81,52 +108,62 @@ export function WeekViewScreen() {
 
   return (
     <View style={styles.root}>
-      <TopAppBar title="Week View" />
+      <TopAppBar
+        title="Week View"
+        rightActions={
+          <Pressable onPress={() => void handleExportPdf()} style={styles.iconBtn} hitSlop={8}>
+            <MaterialIcons name="picture-as-pdf" size={24} color={colors.primary} />
+          </Pressable>
+        }
+      />
 
       <ScrollView contentContainerStyle={styles.content}>
-        <View style={styles.periodRow}>
-          <View>
-            <Text style={styles.periodLabel}>Current Period</Text>
-            <Text style={styles.period}>{formatWeekPeriod(weekRange.monday, weekRange.sunday)}</Text>
-          </View>
-          <Pressable onPress={() => void handleExportPdf()} style={styles.exportBtn}>
-            <MaterialIcons name="picture-as-pdf" size={18} color={colors.onPrimary} />
-            <Text style={styles.exportText}>Export PDF</Text>
-          </Pressable>
-        </View>
+        <Text style={styles.periodLabel}>Current Period</Text>
+        <Text style={styles.period}>{formatWeekPeriod(weekRange.monday, weekRange.sunday)}</Text>
+
+        <WeekViewFilterChips mode={filterMode} onChange={setFilterMode} />
+        <Text style={styles.planSummary}>{summary}</Text>
 
         <View style={styles.bentoLarge}>
           <Text style={styles.bentoLabel}>Weekly Efficiency</Text>
           <View style={styles.progressRow}>
-            <Text style={styles.efficiency}>{efficiency}%</Text>
+            <Text style={styles.efficiency}>{efficiencyDisplay.percentageLabel}</Text>
             <View style={styles.progressTrack}>
-              <View style={[styles.progressFill, { width: `${efficiency}%` }]} />
+              <View
+                style={[
+                  styles.progressFill,
+                  { width: efficiencyDisplay.isEmpty ? "0%" : `${efficiencyDisplay.percentage ?? 0}%` },
+                ]}
+              />
             </View>
           </View>
+          <Text style={styles.efficiencyDetail}>{efficiencyDisplay.detail}</Text>
         </View>
 
         <View style={styles.bentoRow}>
           <View style={[styles.bentoSquare, { backgroundColor: colors.secondaryFixed }]}>
             <MaterialIcons name="task-alt" size={24} color={colors.onSecondaryFixed} />
-            <Text style={[styles.bentoNumber, { color: colors.onSecondaryFixed }]}>{completedNotes}</Text>
+            <Text style={[styles.bentoNumber, { color: colors.onSecondaryFixed }]}>{completedCount}</Text>
             <Text style={[styles.bentoSub, { color: colors.onSecondaryFixedVariant }]}>Completed</Text>
           </View>
           <View style={[styles.bentoSquare, { backgroundColor: colors.tertiaryFixed }]}>
             <MaterialIcons name="pending" size={24} color={colors.onTertiaryFixed} />
-            <Text style={[styles.bentoNumber, { color: colors.onTertiaryFixed }]}>{pendingThemes}</Text>
+            <Text style={[styles.bentoNumber, { color: colors.onTertiaryFixed }]}>{pendingCount}</Text>
             <Text style={[styles.bentoSub, { color: colors.onTertiaryFixedVariant }]}>Pending</Text>
           </View>
         </View>
 
         {loading ? (
           <ActivityIndicator color={colors.primary} style={{ marginTop: 24 }} />
-        ) : error ? (
-          <Text style={styles.error}>{error}</Text>
+        ) : error || pageError ? (
+          <Text style={styles.error}>{error ?? pageError}</Text>
+        ) : visibleThemes.length === 0 ? (
+          <Text style={styles.empty}>{emptyMessage}</Text>
         ) : (
           <>
             <SectionHeader label="Done" bg={colors.primaryContainer} text={colors.onPrimaryContainer} />
             {done.length === 0 ? (
-              <Text style={styles.empty}>Sem itens concluídos.</Text>
+              <Text style={styles.empty}>Sem temas concluídos.</Text>
             ) : (
               done.map((theme) => (
                 <ThemeBoardCard key={theme.id} theme={theme} variant="week" weekNotes={getWeekNotes(theme)} />
@@ -138,12 +175,7 @@ export function WeekViewScreen() {
               <Text style={styles.empty}>Nada em progresso.</Text>
             ) : (
               inProgress.map((theme) => (
-                <ThemeBoardCard
-                  key={theme.id}
-                  theme={theme}
-                  variant="week"
-                  weekNotes={getWeekNotes(theme)}
-                />
+                <ThemeBoardCard key={theme.id} theme={theme} variant="week" weekNotes={getWeekNotes(theme)} />
               ))
             )}
 
@@ -169,13 +201,7 @@ export function WeekViewScreen() {
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.background },
   content: { padding: spacing.marginMobile, paddingBottom: 100 },
-  periodRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-start",
-    marginBottom: spacing.gapMd,
-    gap: spacing.gapSm,
-  },
+  iconBtn: { padding: 8 },
   periodLabel: {
     fontSize: 12,
     fontWeight: "600",
@@ -183,17 +209,8 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
     letterSpacing: 0.5,
   },
-  period: { fontSize: 20, fontWeight: "600", color: colors.onSurface, marginTop: 4 },
-  exportBtn: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 4,
-    backgroundColor: colors.primary,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 8,
-  },
-  exportText: { color: colors.onPrimary, fontSize: 12, fontWeight: "600" },
+  period: { fontSize: 20, fontWeight: "600", color: colors.onSurface, marginTop: 4, marginBottom: spacing.gapSm },
+  planSummary: { fontSize: 14, color: colors.onSurfaceVariant, marginBottom: spacing.gapMd },
   bentoLarge: {
     backgroundColor: colors.surfaceContainerLowest,
     borderRadius: 12,
@@ -214,6 +231,7 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
   progressFill: { height: "100%", backgroundColor: colors.primary },
+  efficiencyDetail: { fontSize: 12, color: colors.onSurfaceVariant, marginTop: 8 },
   bentoRow: { flexDirection: "row", gap: 12, marginBottom: spacing.gapMd },
   bentoSquare: {
     flex: 1,

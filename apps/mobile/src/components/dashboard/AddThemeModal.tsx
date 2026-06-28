@@ -1,16 +1,15 @@
 import { useEffect, useState } from "react";
 import {
-  Modal,
   View,
   Text,
   TextInput,
   Pressable,
-  ScrollView,
   StyleSheet,
   Switch,
   Alert,
 } from "react-native";
 import { THEME_STATUSES } from "../../lib/status-styles";
+import { KeyboardFormSheet } from "../layout/KeyboardFormSheet";
 import { colors } from "../../theme/colors";
 import { spacing } from "../../theme/spacing";
 
@@ -70,11 +69,8 @@ export function AddThemeModal({ visible, onClose, onSubmit }: Props) {
   }
 
   return (
-    <Modal visible={visible} animationType="slide" transparent onRequestClose={onClose}>
-      <View style={styles.overlay}>
-        <View style={styles.sheet}>
-          <ScrollView contentContainerStyle={styles.content}>
-            <Text style={styles.title}>Adicionar Tema</Text>
+    <KeyboardFormSheet visible={visible} onClose={onClose}>
+      <Text style={styles.title}>Adicionar Tema</Text>
 
             <Text style={styles.label}>Tema</Text>
             <TextInput
@@ -149,29 +145,11 @@ export function AddThemeModal({ visible, onClose, onSubmit }: Props) {
                 <Text style={styles.saveText}>{saving ? "Salvando..." : "Salvar"}</Text>
               </Pressable>
             </View>
-          </ScrollView>
-        </View>
-      </View>
-    </Modal>
+    </KeyboardFormSheet>
   );
 }
 
 const styles = StyleSheet.create({
-  overlay: {
-    flex: 1,
-    backgroundColor: "rgba(0,0,0,0.4)",
-    justifyContent: "flex-end",
-  },
-  sheet: {
-    backgroundColor: colors.surfaceContainerLowest,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    maxHeight: "92%",
-  },
-  content: {
-    padding: spacing.marginMobile,
-    paddingBottom: 32,
-  },
   title: {
     fontSize: 20,
     fontWeight: "700",

@@ -7,6 +7,11 @@ import {
   filterThemesWithWeekActivity,
   getNotesInWeekRange,
   partitionThemesByStatus,
+  computeWeekViewStats,
+  computeWeekEfficiency,
+  formatWeekEfficiencyDetail,
+  getWeekEfficiencyDisplay,
+  getWeekViewFilterSummary,
 } from "./view-utils";
 
 const sampleTheme = (id: string, status: string, updateMs: number, notes: DashboardNote[] = []) => ({
@@ -63,6 +68,31 @@ describe("view-utils", () => {
     const filtered = filterThemesWithWeekActivity(themes, monday, sunday);
     expect(filtered.map((t) => t.id)).toEqual(["with"]);
     expect(getNotesInWeekRange(themes[0].notes, monday, sunday)).toHaveLength(1);
+  });
+
+  it("computes week view stats from visible themes", () => {
+    const themes = [
+      sampleTheme("a", "Done", 3),
+      sampleTheme("b", "In Progress", 2),
+      sampleTheme("c", "To do", 1),
+      sampleTheme("d", "Done", 4),
+    ];
+    const stats = computeWeekViewStats(themes);
+    expect(stats.completedCount).toBe(2);
+    expect(stats.pendingCount).toBe(2);
+    expect(stats.efficiency).toBe(50);
+    expect(getWeekViewFilterSummary("week_plan", stats.total)).toContain("plano da semana");
+    expect(getWeekViewFilterSummary("week_activity", stats.total)).toContain("atualizados na semana");
+    expect(computeWeekEfficiency(2, 4)).toBe(50);
+    expect(computeWeekEfficiency(0, 0)).toBe(0);
+    expect(formatWeekEfficiencyDetail(2, 4)).toBe("2 de 4 tema(s) concluído(s)");
+    expect(formatWeekEfficiencyDetail(0, 0)).toContain("Nenhum tema");
+    const emptyDisplay = getWeekEfficiencyDisplay(0, 0);
+    expect(emptyDisplay.isEmpty).toBe(true);
+    expect(emptyDisplay.percentageLabel).toBe("—");
+    const filledDisplay = getWeekEfficiencyDisplay(2, 4);
+    expect(filledDisplay.percentageLabel).toBe("50%");
+    expect(filledDisplay.isEmpty).toBe(false);
   });
 });
 

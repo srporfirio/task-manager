@@ -85,19 +85,30 @@ export function WeekPlannerScreen() {
     }
   }
 
-  async function handleRemove(themeId: string) {
+  async function handleRemove(themeId: string, themeName: string) {
     if (!user) return;
-    setBusy(true);
-    setPageError(null);
-    try {
-      await hybridRemoveFromWeekPlan(user.id, themeId);
-      await reload();
-      await loadPlanned();
-    } catch (err) {
-      setPageError(err instanceof Error ? err.message : "Falha ao remover tema.");
-    } finally {
-      setBusy(false);
-    }
+    Alert.alert("Remover do plano", `Remover "${themeName}" do plano desta semana?`, [
+      { text: "Cancelar", style: "cancel" },
+      {
+        text: "Remover",
+        style: "destructive",
+        onPress: () => {
+          void (async () => {
+            setBusy(true);
+            setPageError(null);
+            try {
+              await hybridRemoveFromWeekPlan(user.id, themeId);
+              await reload();
+              await loadPlanned();
+            } catch (err) {
+              setPageError(err instanceof Error ? err.message : "Falha ao remover tema.");
+            } finally {
+              setBusy(false);
+            }
+          })();
+        },
+      },
+    ]);
   }
 
   async function handleExportPdf() {
@@ -147,7 +158,7 @@ export function WeekPlannerScreen() {
               key={theme.id}
               theme={theme}
               variant="planner"
-              onRemove={() => void handleRemove(theme.id)}
+              onRemove={() => handleRemove(theme.id, theme.name)}
             />
           ))
         )}

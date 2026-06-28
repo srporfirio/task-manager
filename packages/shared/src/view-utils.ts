@@ -1,4 +1,5 @@
 import { formatDateDisplay } from "./format";
+import { normalizeStatus } from "./status";
 import type { DashboardNote, DashboardTheme } from "./theme-utils";
 import type { ThemeStatus } from "./types";
 
@@ -81,12 +82,102 @@ export function partitionThemesByStatus(themes: DashboardTheme[]): {
   const todo: DashboardTheme[] = [];
 
   for (const theme of themes) {
-    if (theme.status === "Done") done.push(theme);
-    else if (theme.status === "In Progress") inProgress.push(theme);
+    const status = normalizeStatus(theme.status);
+    if (status === "Done") done.push(theme);
+    else if (status === "In Progress") inProgress.push(theme);
     else todo.push(theme);
   }
 
   return { done, inProgress, todo };
+}
+
+export type WeekViewFilterMode = "week_plan" | "week_activity";
+
+export const WEEK_VIEW_FILTER_OPTIONS: ReadonlyArray<{
+  mode: WeekViewFilterMode;
+  label: string;
+  shortLabel: string;
+}> = [
+  { mode: "week_plan", label: "Plano da semana", shortLabel: "Week Plan" },
+  { mode: "week_activity", label: "Atualizados na semana", shortLabel: "Updated" },
+];
+
+export function computeWeekEfficiency(completedCount: number, total: number): number {
+  if (total <= 0) return 0;
+  return Math.round((completedCount / total) * 100);
+}
+
+export function formatWeekEfficiencyDetail(completedCount: number, total: number): string {
+  if (total <= 0) {
+    return "Nenhum tema neste filtro para calcular a eficiência.";
+  }
+  return `${completedCount} de ${total} tema(s) concluído(s)`;
+}
+
+export type WeekEfficiencyDisplay = {
+  percentage: number | null;
+  percentageLabel: string;
+  detail: string;
+  isEmpty: boolean;
+};
+
+export function getWeekEfficiencyDisplay(completedCount: number, total: number): WeekEfficiencyDisplay {
+  if (total <= 0) {
+    return {
+      percentage: null,
+      percentageLabel: "—",
+      detail: formatWeekEfficiencyDetail(completedCount, total),
+      isEmpty: true,
+    };
+  }
+
+  const percentage = computeWeekEfficiency(completedCount, total);
+  return {
+    percentage,
+    percentageLabel: `${percentage}%`,
+    detail: formatWeekEfficiencyDetail(completedCount, total),
+    isEmpty: false,
+  };
+}
+
+export function computeWeekViewStats(themes: DashboardTheme[]): {
+  done: DashboardTheme[];
+  inProgress: DashboardTheme[];
+  todo: DashboardTheme[];
+  completedCount: number;
+  pendingCount: number;
+  efficiency: number;
+  total: number;
+} {
+  const { done, inProgress, todo } = partitionThemesByStatus(themes);
+  const completedCount = done.length;
+  const pendingCount = inProgress.length + todo.length;
+  const total = themes.length;
+  const efficiency = computeWeekEfficiency(completedCount, total);
+
+  return {
+    done,
+    inProgress,
+    todo,
+    completedCount,
+    pendingCount,
+    efficiency,
+    total,
+  };
+}
+
+export function getWeekViewFilterSummary(mode: WeekViewFilterMode, total: number): string {
+  if (mode === "week_plan") {
+    return `${total} tema(s) no plano da semana.`;
+  }
+  return `${total} tema(s) atualizados na semana.`;
+}
+
+export function getWeekViewEmptyMessage(mode: WeekViewFilterMode): string {
+  if (mode === "week_plan") {
+    return "Nenhum tema no plano desta semana.";
+  }
+  return "Sem atualizações na semana.";
 }
 
 export function defaultThemeViewDateRange(): { start: string; end: string } {

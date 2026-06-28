@@ -8,6 +8,8 @@ import {
   StyleSheet,
   Alert,
   ActivityIndicator,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import type { RouteProp } from "@react-navigation/native";
@@ -77,10 +79,19 @@ export function ThemeDetailScreen() {
   }
 
   return (
-    <View style={styles.root}>
+    <KeyboardAvoidingView
+      style={styles.root}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 8 : 0}
+    >
       <TopAppBar title={theme.name} />
 
-      <ScrollView contentContainerStyle={styles.content}>
+      <ScrollView
+        contentContainerStyle={styles.content}
+        keyboardShouldPersistTaps="handled"
+        keyboardDismissMode="on-drag"
+        automaticallyAdjustKeyboardInsets
+      >
         <View style={styles.header}>
           <Text style={styles.name}>{theme.name}</Text>
           {theme.description ? <Text style={styles.desc}>{theme.description}</Text> : null}
@@ -165,13 +176,13 @@ export function ThemeDetailScreen() {
           await reload();
         }}
       />
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.background },
-  content: { padding: spacing.marginMobile, paddingBottom: 40 },
+  content: { padding: spacing.marginMobile, paddingBottom: 120 },
   header: {
     backgroundColor: colors.surfaceContainerLowest,
     borderRadius: 12,
