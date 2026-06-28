@@ -3,14 +3,14 @@ import { useAuth } from "../../contexts/AuthContext";
 import { UserMenu } from "./UserMenu";
 
 const navItems = [
-  { to: "/", label: "Dashboard", icon: "dashboard", end: true },
+  { to: "/", label: "Backlog", icon: "view_list", end: true },
   { to: "/week-planner", label: "Week Planner", icon: "event_note" },
   { to: "/theme-view", label: "Theme View", icon: "view_kanban" },
   { to: "/week-view", label: "Week View", icon: "calendar_month" },
 ];
 
 const pageTitles: Record<string, string> = {
-  "/": "Dashboard",
+  "/": "Backlog",
   "/week-planner": "Week Planner",
   "/theme-view": "Theme View",
   "/week-view": "Week View",

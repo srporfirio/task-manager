@@ -31,7 +31,7 @@ export function LoginScreen() {
     <View style={styles.container}>
       <View style={styles.brand}>
         <View style={styles.logo}>
-          <MaterialIcons name="dashboard" size={40} color={colors.onPrimary} />
+          <MaterialIcons name="view-list" size={40} color={colors.onPrimary} />
         </View>
         <Text style={styles.title}>Diário de Atividades</Text>
         <Text style={styles.subtitle}>Organize temas, notas e o plano da semana.</Text>

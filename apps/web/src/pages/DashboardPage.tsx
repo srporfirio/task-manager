@@ -36,7 +36,7 @@ export function DashboardPage() {
   );
 
   if (loading) {
-    return <p className="text-slate-600">Carregando dashboard...</p>;
+    return <p className="text-slate-600">Carregando backlog...</p>;
   }
 
   return (

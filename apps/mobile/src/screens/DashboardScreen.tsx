@@ -20,6 +20,7 @@ import { TopAppBar } from "../components/layout/TopAppBar";
 import { FilterChips, type StatusFilter } from "../components/dashboard/FilterChips";
 import { DashboardThemeCard } from "../components/dashboard/DashboardThemeCard";
 import { AddThemeModal } from "../components/dashboard/AddThemeModal";
+import { AddThemeFab } from "../components/dashboard/AddThemeFab";
 import { createTheme } from "../lib/hybrid-adapter";
 import { colors } from "../theme/colors";
 import { spacing } from "../theme/spacing";
@@ -56,7 +57,7 @@ export function DashboardScreen() {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       keyboardVerticalOffset={Platform.OS === "ios" ? 8 : 0}
     >
-      <TopAppBar title="Dashboard" onSearchPress={() => setSearchFocused(true)} />
+      <TopAppBar title="Backlog" onSearchPress={() => setSearchFocused(true)} />
 
       <ScrollView
         contentContainerStyle={styles.content}
@@ -109,10 +110,7 @@ export function DashboardScreen() {
         )}
       </ScrollView>
 
-      <Pressable onPress={() => setAddOpen(true)} style={styles.fab}>
-        <MaterialIcons name="add" size={28} color={colors.onPrimary} />
-      </Pressable>
-
+      <AddThemeFab onPress={() => setAddOpen(true)} />
       <AddThemeModal
         visible={addOpen}
         onClose={() => setAddOpen(false)}
@@ -193,20 +191,5 @@ const styles = StyleSheet.create({
     color: colors.error,
     fontSize: 14,
     marginTop: 8,
-  },
-  fab: {
-    position: "absolute",
-    right: spacing.fabOffset,
-    bottom: spacing.fabOffset + spacing.bottomNavHeight,
-    width: 56,
-    height: 56,
-    borderRadius: 16,
-    backgroundColor: colors.primary,
-    alignItems: "center",
-    justifyContent: "center",
-    elevation: 6,
-    shadowColor: "#000",
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
   },
 });

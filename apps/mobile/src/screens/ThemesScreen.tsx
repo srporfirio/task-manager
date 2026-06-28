@@ -20,6 +20,7 @@ import { useThemes } from "../contexts/ThemesContext";
 import { TopAppBar } from "../components/layout/TopAppBar";
 import { AccordionColumn } from "../components/views/AccordionColumn";
 import { AddThemeModal } from "../components/dashboard/AddThemeModal";
+import { AddThemeFab } from "../components/dashboard/AddThemeFab";
 import { createTheme } from "../lib/hybrid-adapter";
 import { colors } from "../theme/colors";
 import { spacing } from "../theme/spacing";
@@ -98,9 +99,7 @@ export function ThemesScreen() {
         )}
       </ScrollView>
 
-      <Pressable onPress={() => setAddOpen(true)} style={styles.fab}>
-        <MaterialIcons name="add" size={28} color={colors.onPrimaryContainer} />
-      </Pressable>
+      <AddThemeFab onPress={() => setAddOpen(true)} />
 
       {picker ? (
         <DateTimePicker
@@ -159,16 +158,4 @@ const styles = StyleSheet.create({
   applyText: { color: colors.onPrimary, fontWeight: "600", fontSize: 12 },
   count: { fontSize: 12, color: colors.outline, textAlign: "right", marginBottom: spacing.gapMd },
   error: { color: colors.error, fontSize: 14 },
-  fab: {
-    position: "absolute",
-    right: spacing.fabOffset,
-    bottom: spacing.fabOffset + spacing.bottomNavHeight,
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    backgroundColor: colors.primaryContainer,
-    alignItems: "center",
-    justifyContent: "center",
-    elevation: 6,
-  },
 });

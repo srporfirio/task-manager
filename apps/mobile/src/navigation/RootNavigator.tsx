@@ -21,14 +21,14 @@ const Tab = createBottomTabNavigator<MainTabParamList>();
 const DashboardStack = createNativeStackNavigator<DashboardStackParamList>();
 
 const TAB_ICONS: Record<keyof MainTabParamList, keyof typeof MaterialIcons.glyphMap> = {
-  Dashboard: "dashboard",
+  Dashboard: "view-list",
   Planner: "date-range",
   Themes: "palette",
   Week: "view-column",
 };
 
 const TAB_LABELS: Record<keyof MainTabParamList, string> = {
-  Dashboard: "Dashboard",
+  Dashboard: "Backlog",
   Planner: "Planner",
   Themes: "Themes",
   Week: "Week",
