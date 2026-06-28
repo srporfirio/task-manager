@@ -55,6 +55,8 @@ npm run mobile:android  # compila e instala no emulador/dispositivo (requer Andr
 
 ## Gerar APK
 
+> **Política:** builds na nuvem (EAS) só devem ser disparados **com sua confirmação** — o agente não gera APK automaticamente após mudanças de código. O script abaixo também pede confirmação no terminal.
+
 ### Opção A — Nuvem EAS (recomendado sem Android Studio)
 
 ```bash
@@ -79,12 +81,76 @@ cd apps/mobile
 npm run build:apk:local
 ```
 
-## Estrutura prevista
+## Funcionalidades
+
+- Login com Google (Supabase OAuth)
+- **Dashboard** — busca, filtros por status / week plan, cards estilo protótipo, FAB para novo tema
+- **Theme Detail** — editar tema, adicionar/excluir notas
+- **Themes** — filtro por período, kanban em acordeão (To do / In Progress / Done)
+- **Week Planner** — plano da semana, adicionar/remover temas, exportar PDF
+- **Week View** — resumo semanal, grupos por status, exportar PDF
+
+### Redirect URL no Supabase (só login via navegador / web)
+
+Se usar o fluxo antigo por browser, em **Authentication → URL Configuration → Redirect URLs**:
+
+```
+diarioatividades://auth/callback
+```
+
+O app Android atual usa **login nativo Google** (sem abrir `localhost:5173`).
+
+### Login Google nativo (Android) — configurar uma vez
+
+#### 1. Google Cloud Console
+
+Mantenha o OAuth **Web application** (Client ID + Secret no Supabase).
+
+Crie também um OAuth **Android**:
+
+1. [Credentials](https://console.cloud.google.com/apis/credentials) → **Create Credentials → OAuth client ID**
+2. Tipo: **Android**
+3. Package name: `com.diario.atividades`
+4. **SHA-1** do certificado do APK (EAS):
+
+```bash
+cd apps/mobile
+npx eas credentials -p android
+```
+
+Copie o SHA-1 do keystore usado no build **preview** e cole no Google.
+
+#### 2. Variável no app
+
+Em `apps/mobile/.env.local` (e no EAS **preview** ao gerar APK):
+
+```
+EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID=SEU_CLIENT_ID_WEB.apps.googleusercontent.com
+```
+
+Use o **Client ID** do OAuth **Web application** (não o do Android).
+
+#### 3. Supabase → Authentication → Providers → Google
+
+- Client ID / Secret: os do OAuth **Web** (como hoje)
+- **Authorized Client IDs**: inclua o mesmo Web Client ID (`....apps.googleusercontent.com`)
+- Ative **Skip nonce check** (recomendado para login nativo mobile)
+
+#### 4. Novo APK
+
+Mudanças nativas exigem **novo build EAS** (confirme antes de gerar).
+
+## Estrutura
 
 ```
 apps/mobile/
-├── App.tsx              # entrada (provisória)
-├── src/                 # telas e componentes RN (próxima fase)
-├── eas.json             # perfis de build (preview = APK)
-└── metro.config.js      # monorepo + shared
+├── App.tsx
+├── src/
+│   ├── navigation/      # tabs + stack
+│   ├── screens/         # Dashboard, Themes, Planner, Week
+│   ├── components/      # UI compartilhada
+│   ├── contexts/        # Auth + Themes
+│   └── lib/             # Supabase, API, PDF
+├── eas.json
+└── metro.config.js
 ```

@@ -62,7 +62,14 @@ Write-Host "Iniciando build APK na nuvem (perfil preview)..." -ForegroundColor C
 Write-Host "Ao terminar, o link do APK aparece no terminal e em https://expo.dev" -ForegroundColor Gray
 Write-Host ""
 
-npx eas build --platform android --profile preview
+$confirm = Read-Host "Confirmar envio do build EAS para a nuvem? (s/N)"
+if ($confirm -notmatch '^[sS]$') {
+  Write-Host "Build cancelado." -ForegroundColor Yellow
+  exit 0
+}
+
+$env:EAS_NO_VCS = "1"
+npx eas build --platform android --profile preview --non-interactive
 
 if ($LASTEXITCODE -eq 0) {
   Write-Host ""

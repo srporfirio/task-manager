@@ -12,6 +12,20 @@
       "bundleIdentifier": "com.diario.atividades"
     },
     "android": {
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "diarioatividades",
+              "host": "*",
+              "pathPrefix": "/auth/callback"
+            }
+          ],
+          "category": ["BROWSABLE", "DEFAULT"]
+        }
+      ],
       "package": "com.diario.atividades",
       "adaptiveIcon": {
         "backgroundColor": "#006768",
@@ -24,10 +38,7 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": [
-      "expo-dev-client",
-      "expo-web-browser"
-    ],
+    "plugins": [],
     "extra": {
       "eas": {
         "projectId": "12f2f030-d2c6-44de-87e4-d9af200d760f"
