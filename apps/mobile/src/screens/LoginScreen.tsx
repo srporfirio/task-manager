@@ -2,6 +2,7 @@ import { useState } from "react";
 import {
   View,
   Text,
+  Image,
   Pressable,
   StyleSheet,
   ActivityIndicator,
@@ -11,6 +12,8 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { useAuth } from "../contexts/AuthContext";
 import { colors } from "../theme/colors";
 import { spacing } from "../theme/spacing";
+
+const LOGIN_CARD_BG = "#e5e7eb";
 
 export function LoginScreen() {
   const { signInWithGoogle, initError } = useAuth();
@@ -29,32 +32,37 @@ export function LoginScreen() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.brand}>
-        <View style={styles.logo}>
-          <MaterialIcons name="view-list" size={40} color={colors.onPrimary} />
+      <View style={styles.card}>
+        <View style={styles.brand}>
+          <Image
+            source={require("../../assets/logo-diario.png")}
+            style={styles.logo}
+            accessibilityLabel="Diário de Atividades"
+            resizeMode="contain"
+          />
+          <Text style={styles.title}>Diário de Atividades</Text>
+          <Text style={styles.subtitle}>
+            Entre com Google para sincronizar seus temas entre dispositivos.
+          </Text>
         </View>
-        <Text style={styles.title}>Diário de Atividades</Text>
-        <Text style={styles.subtitle}>Organize temas, notas e o plano da semana.</Text>
+
+        {initError ? <Text style={styles.configError}>{initError}</Text> : null}
+
+        <Pressable
+          onPress={() => void handleLogin()}
+          disabled={loading}
+          style={({ pressed }) => [styles.googleBtn, pressed && styles.pressed, loading && styles.disabled]}
+        >
+          {loading ? (
+            <ActivityIndicator color={colors.onSurface} />
+          ) : (
+            <>
+              <MaterialIcons name="login" size={22} color={colors.primary} />
+              <Text style={styles.googleText}>Entrar com Google</Text>
+            </>
+          )}
+        </Pressable>
       </View>
-
-      {initError ? (
-        <Text style={styles.configError}>{initError}</Text>
-      ) : null}
-
-      <Pressable
-        onPress={() => void handleLogin()}
-        disabled={loading}
-        style={({ pressed }) => [styles.googleBtn, pressed && styles.pressed, loading && styles.disabled]}
-      >
-        {loading ? (
-          <ActivityIndicator color={colors.onSurface} />
-        ) : (
-          <>
-            <MaterialIcons name="login" size={22} color={colors.primary} />
-            <Text style={styles.googleText}>Entrar com Google</Text>
-          </>
-        )}
-      </Pressable>
     </View>
   );
 }
@@ -66,28 +74,40 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     padding: spacing.marginMobile,
   },
+  card: {
+    width: "100%",
+    maxWidth: 448,
+    alignSelf: "center",
+    backgroundColor: LOGIN_CARD_BG,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: "#e2e8f0",
+    padding: 32,
+    shadowColor: "#000",
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 1 },
+    elevation: 1,
+  },
   brand: {
     alignItems: "center",
-    marginBottom: 48,
+    marginBottom: 32,
   },
   logo: {
-    width: 72,
-    height: 72,
-    borderRadius: 20,
-    backgroundColor: colors.primary,
-    alignItems: "center",
-    justifyContent: "center",
+    width: 200,
+    height: 64,
     marginBottom: spacing.gapMd,
   },
   title: {
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: "700",
-    color: colors.primary,
+    color: "#0f172a",
     marginBottom: spacing.gapSm,
+    textAlign: "center",
   },
   subtitle: {
     fontSize: 14,
-    color: colors.onSurfaceVariant,
+    color: "#475569",
     textAlign: "center",
     lineHeight: 20,
   },
@@ -103,16 +123,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     gap: spacing.gapSm,
-    backgroundColor: colors.surfaceContainerLowest,
-    borderWidth: 1,
-    borderColor: colors.outlineVariant,
-    borderRadius: 12,
-    paddingVertical: 14,
+    backgroundColor: "#0f172a",
+    borderRadius: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
   },
   googleText: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: "600",
-    color: colors.onSurface,
+    color: "#ffffff",
   },
   pressed: { opacity: 0.85 },
   disabled: { opacity: 0.6 },

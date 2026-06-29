@@ -24,7 +24,7 @@ export function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-6">
-      <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
+      <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-[#e5e7eb] p-8 shadow-sm">
         <div className="flex flex-col items-center text-center gap-4">
           <img
             src="/logo-diario.png"
